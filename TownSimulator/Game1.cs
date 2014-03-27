@@ -1,5 +1,6 @@
 ﻿#region Using Statements
 using System;
+using System.Threading;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -7,83 +8,137 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Storage;
 using Microsoft.Xna.Framework.GamerServices;
+using TileEngine;
 #endregion
 
 namespace TownSimulator
 {
-    /// <summary>
-    /// This is the main type for your game
-    /// </summary>
+ 
     public class Game1 : Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        
+        TileMap tileMap;
+        Camera camera;
+        GameObject obj;
 
         public Game1()
             : base()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-        }
 
-        /// <summary>
-        /// Allows the game to perform any initialization it needs to before starting to run.
-        /// This is where it can query for any required services and load any non-graphic
-        /// related content.  Calling base.Initialize will enumerate through any components
-        /// and initialize them as well.
-        /// </summary>
+
+            graphics.PreferredBackBufferWidth = 1280;
+            graphics.PreferredBackBufferHeight = 720;
+            graphics.ApplyChanges();
+        }
+         
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            tileMap = new TileMap();
+            camera = new Camera();
+            obj = new GameObject();
+            obj.Position = new Point(5, 5);
 
+            
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
+
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
+            //Load un fichier de layer
+            tileMap.Layers.Add(TileLayer.FromFile(Content, "Content/Layers/Layer.layer"));
+            //Load un fichier de collision
+            tileMap.CollisionLayer = CollisionLayer.FromFile("Content/Layers/Collision.collayer");
+
+
+            Texture2D spriteText = Content.Load<Texture2D>("Tiles/rock");
+            obj.ObjectSprite = new Sprite(spriteText);
+
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
+
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+
         protected override void Update(GameTime gameTime)
-        {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+        {   
+            InputHelper.Update();
 
-            // TODO: Add your update logic here
-
+            UpdateCameraMovement();
+            UpdateObjectMovement(gameTime);
+           
+            
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
+        private void UpdateObjectMovement(GameTime gameTime)
+        {
+
+            Point motion = Point.Zero;
+            int speed = 1;
+
+            if (InputHelper.IsKeyDown(Keys.W))
+                motion.Y--;
+            if (InputHelper.IsKeyDown(Keys.S))
+                motion.Y++;
+            if (InputHelper.IsKeyDown(Keys.A))
+                motion.X--;
+            if (InputHelper.IsKeyDown(Keys.D))
+                motion.X++;
+
+
+            obj.Position = new Point(obj.Position.X + motion.X * speed, obj.Position.Y + motion.Y * speed);
+
+
+            obj.Update(gameTime);
+            //obj.IsSolid = true;
+
+        }
+
+        private void UpdateCameraMovement()
+        {
+            Vector2 motion = Vector2.Zero;
+
+            if (InputHelper.IsKeyDown(Keys.Up))
+                motion.Y--;
+            if (InputHelper.IsKeyDown(Keys.Down))
+                motion.Y++;
+            if (InputHelper.IsKeyDown(Keys.Left))
+                motion.X--;
+            if (InputHelper.IsKeyDown(Keys.Right))
+                motion.X++;
+
+            camera.Position += motion * camera.Speed;
+        }
+
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            // TODO: Add your drawing code here
+            
+            tileMap.Draw(spriteBatch, camera);
+
+            spriteBatch.Begin(
+               SpriteSortMode.Texture,
+               BlendState.AlphaBlend,
+               null,
+               null,
+               null,
+               null,
+               camera.TransformMatrix);
+
+            obj.Draw(spriteBatch);
+
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }
