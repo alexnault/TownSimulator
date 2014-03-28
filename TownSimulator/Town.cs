@@ -10,14 +10,12 @@ namespace TownSimulator
 {
     class Town
     {
-        public TileEngine.TileMap Map { get; private set; }
         public Villager[] Villagers { get; private set; }
 
         protected uint NbVillagers;
 
-        public Town(uint nbVillagers, TileEngine.TileMap map)
+        public Town(uint nbVillagers)
         {
-            Map = map;
             NbVillagers = nbVillagers;
 
             Villagers = new Villager[nbVillagers];

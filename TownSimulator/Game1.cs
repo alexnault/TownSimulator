@@ -56,10 +56,36 @@ namespace TownSimulator
                 ObjectSprite = new Sprite(1)
             };
 
-            TileMap.Tiles[5, 6].Objects.Add(obj);       
-            
+                       
+            TileMap.Tiles[0, 0].Objects.Add(obj);
 
+
+            //////////////////////////////////////////
+            ///Testing
+
+            GameObject[] solidObjects = new GameObject[20];
+            for (int i = 0; i < 20; i++)
+            {
+                solidObjects[i] = new GameObject()
+                {
+                    IsSolid = true,
+                    ObjectSprite = new Sprite(2)
+                };
+            }
+
+            for (int y = 0; y < h - 1; y++)
+            {
+                Tile t = TileMap.Tiles[1, y];
+                solidObjects[y].Position = new Vector2(1 * Engine.TileWidth, y * Engine.TileHeight);
+                t.Objects.Add(solidObjects[y]);
+            }
             
+            Point destPoint = new Point(7, 5);
+
+            obj.path = Pathfinding.DoAStar(Engine.ConvertCellToPosition(destPoint), obj.Position);
+            ////////////////////////////////////////////////////
+
+
             base.Initialize();
         }
 
@@ -71,6 +97,8 @@ namespace TownSimulator
 
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass"), 0);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/wood"), 2);
+
         }
 
         protected override void UnloadContent()

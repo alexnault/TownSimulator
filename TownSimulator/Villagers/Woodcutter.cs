@@ -13,7 +13,7 @@ namespace TownSimulator.Villagers
         public Woodcutter(string firstname, string lastname, Town hometown)
             : base(firstname, lastname, hometown)
         {
-            Position = new Point(10, 10);
+            Position = new Vector2(10, 10);
         }
 
         protected override void Run()

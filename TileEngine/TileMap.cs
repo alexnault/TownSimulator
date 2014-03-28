@@ -77,7 +77,12 @@ namespace TileEngine
                         spriteBatch.Draw(
                             texture,
                             new Rectangle(x * Engine.TileWidth, y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight),
-                            Color.White);
+                            null,
+                            Color.White,
+                            0,
+                            new Vector2(0,0),
+                            SpriteEffects.None,
+                            1);
                     }
 
                     //Draws the game objects within the Tile object

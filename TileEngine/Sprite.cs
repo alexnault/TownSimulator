@@ -41,7 +41,20 @@ namespace TileEngine
 
         public void Draw(SpriteBatch spriteBatch, int x, int y)
         {
-            spriteBatch.Draw(TextureManager.Get(TextureID), new Rectangle(x, y, Width, Height), Color.White);
+            spriteBatch.Draw(
+                            TextureManager.Get(TextureID),
+                            new Rectangle(x, y, Width, Height),
+                            null,
+                            Color.White,
+                            0,
+                            new Vector2(0, 0),
+                            SpriteEffects.None,
+                            0.5f);
+
+
+
+
+            //spriteBatch.Draw(, , Color.White);
         }
 
     }

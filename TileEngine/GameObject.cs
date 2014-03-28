@@ -9,6 +9,18 @@ namespace TileEngine
 {
     public class GameObject
     {
+
+
+
+        //////////////////////////////////////////
+        //Testing
+
+        private TimeSpan waitTime = TimeSpan.FromMilliseconds(100);
+        private TimeSpan lastGameTime = new TimeSpan();
+        public List<Vector2> path;
+
+        //////////////////////////////////////////
+
         //private Vector2 _position;
 
         public Vector2 Position { get; set; }
@@ -25,6 +37,11 @@ namespace TileEngine
         //    } 
         //}
 
+    
+
+
+
+
         public Sprite ObjectSprite { get; set; }
         public bool IsSolid { get; set; }
         
@@ -36,9 +53,39 @@ namespace TileEngine
 
         public void Update(GameTime gameTime)
         {
+            //////////////////////////////////
+            //Testing
+
+            if (lastGameTime > waitTime)
+            {
+                MoveToNext();
+                lastGameTime = TimeSpan.FromMilliseconds(0);
+            }
+
+            ////////////////////////////////////
+
+
+
             if (ObjectSprite != null) 
                 ObjectSprite.Update(gameTime);
 
+
+
+            //////////////////////////////////
+            //Testing
+            lastGameTime += gameTime.ElapsedGameTime;
+
+            ////////////////////////////////////
+
+        }
+
+        private void MoveToNext()
+        {
+            if (path != null && path.Count > 0)
+            {
+                Position = new Vector2(path[0].X * Engine.TileWidth, path[0].Y * Engine.TileHeight);
+                path.RemoveAt(0);
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch)
