@@ -23,6 +23,8 @@ namespace TownSimulator.Villagers
         public Item ItemHolding { get; set; }
 
         protected Town HomeTown { get; set; }
+
+        public Semaphore MakeDecision { get; set; }
         
         public Villager(string firstname, string lastname, Town hometown)
         {
@@ -34,6 +36,8 @@ namespace TownSimulator.Villagers
             Thirst = 0;
 
             HomeTown = hometown;
+
+            MakeDecision = new Semaphore(0, 1); // Initially sleeping
 
             thread = new Thread(new ThreadStart(Start));
             thread.Priority = ThreadPriority.Lowest;
