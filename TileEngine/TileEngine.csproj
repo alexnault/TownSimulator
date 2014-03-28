@@ -45,6 +45,7 @@
     <Compile Include="Old TileEngine Files\CollisionLayer.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameObject.cs" />
+    <Compile Include="Pathfinding.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

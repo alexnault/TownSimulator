@@ -33,10 +33,10 @@ namespace TileEngine
             return id;
         }
 
-        public static bool Remove(int id)
-        {
-            return _textures.Remove(id);
-        }
+        //public static bool Remove(int id)
+        //{
+        //    return _textures.Remove(id);
+        //}
 
         public static Texture2D Get(int id)
         {

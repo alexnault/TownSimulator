@@ -7,24 +7,26 @@ using System.Text;
 
 namespace TileEngine
 {
-    public class TileMap
+    public static class TileMap
     {
 
-        public int Width 
+        public static int Width 
         {
             get { return Tiles.GetLength(0); } 
         }
-        public int Height
+
+        public static int Height
         {
             get { return Tiles.GetLength(1); }
         }
-        public Tile[,] Tiles { get; private set; }
+
+        public static Tile[,] Tiles { get; private set; }
 
         /// <summary>
         /// 
         /// </summary>
         ///<param name="layout">Index of the textures for each of the tiles.</param>    
-        public TileMap(int[,] layout)
+        public static void Initialize(int[,] layout)
         {
             int width = layout.GetLength(0);
             int height = layout.GetLength(1);
@@ -43,7 +45,7 @@ namespace TileEngine
 
         }
 
-        public void Update(GameTime gameTime)
+        public static void Update(GameTime gameTime)
         {
             for (int x = 0; x < Width; x++)
             {
@@ -54,7 +56,7 @@ namespace TileEngine
             }
         }
 
-        public void Draw(SpriteBatch spriteBatch, Camera camera)
+        public static void Draw(SpriteBatch spriteBatch, Camera camera)
         {
             spriteBatch.Begin(
                SpriteSortMode.BackToFront,

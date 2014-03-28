@@ -19,7 +19,6 @@ namespace TownSimulator
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         
-        TileMap tileMap;
         Camera camera;
         
 
@@ -50,16 +49,14 @@ namespace TownSimulator
                 for (int j = 0; j < h; j++)
                     textIndexes[i, j] = 0;
 
-            tileMap = new TileMap(textIndexes);
+            TileMap.Initialize(textIndexes);
 
             GameObject obj = new GameObject()
             {
-                ObjectSprite = new Sprite(1),
-                Position = new Point(5, 6)
+                ObjectSprite = new Sprite(1)
             };
 
-            tileMap.Tiles[5, 6].Objects.Add(obj);
-            
+            TileMap.Tiles[5, 6].Objects.Add(obj);       
             
 
             
@@ -89,7 +86,7 @@ namespace TownSimulator
             UpdateCameraMovement();
             //UpdateObjectMovement(gameTime);
 
-            tileMap.Update(gameTime);            
+            TileMap.Update(gameTime);            
            
             
             base.Update(gameTime);
@@ -138,8 +135,8 @@ namespace TownSimulator
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            
-            tileMap.Draw(spriteBatch, camera);
+
+            TileMap.Draw(spriteBatch, camera);
 
             //spriteBatch.Begin(
             //   SpriteSortMode.Texture,
