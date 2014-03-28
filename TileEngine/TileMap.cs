@@ -58,14 +58,14 @@ namespace TileEngine
 
         public static void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            spriteBatch.Begin(
-               SpriteSortMode.BackToFront,
-               BlendState.AlphaBlend,
-               null,
-               null,
-               null,
-               null,
-               camera.TransformMatrix);
+            //spriteBatch.Begin(
+            //   SpriteSortMode.BackToFront,
+            //   BlendState.AlphaBlend,
+            //   null,
+            //   null,
+            //   null,
+            //   null,
+            //   camera.TransformMatrix);
 
             for(int x = 0; x < Width ; x++)
             {
@@ -90,8 +90,62 @@ namespace TileEngine
                 }
             }
 
-            spriteBatch.End();
+            //spriteBatch.End();
         }
 
+
+        // Original idea from
+        // http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
+        public static Point FindClosest(Point origin, Type gameObjectSearching, int maxDistance = 30)
+        {
+            if (gameObjectSearching == typeof(GameObject))
+            {
+                throw new ArgumentException("FindClosest method needs to search for a GameObject type.");
+            }
+
+            int minX = 0;
+            int minY = 0;
+            int maxX = Width - 1;
+            int maxY = Height - 1;
+
+            origin.X = (int)MathHelper.Clamp(origin.X, minX, maxX);
+            origin.Y = (int)MathHelper.Clamp(origin.Y, minY, maxY);
+            if (Tiles[origin.X, origin.Y].Contains(gameObjectSearching))
+                return origin;
+
+            for (int d = 1; d < maxDistance; d++)
+            {
+                for (int i = 0; i < d + 1; i++)
+                {
+                    Point point1 = new Point(origin.X - d + i, origin.Y - i);
+                    point1.X = (int)MathHelper.Clamp(point1.X, minX, maxX);
+                    point1.Y = (int)MathHelper.Clamp(point1.Y, minY, maxY);
+                    if (Tiles[point1.X, point1.Y].Contains(gameObjectSearching))
+                        return point1;
+
+                    Point point2 = new Point(origin.X + d - i, origin.Y + i);
+                    point2.X = (int)MathHelper.Clamp(point2.X, minX, maxX);
+                    point2.Y = (int)MathHelper.Clamp(point2.Y, minY, maxY);
+                    if (Tiles[point2.X, point2.Y].Contains(gameObjectSearching))
+                        return point2;
+                }
+
+                for (int i = 1; i < d; i++)
+                {
+                    Point point1 = new Point(origin.X - i, origin.Y + d - i);
+                    point1.X = (int)MathHelper.Clamp(point1.X, minX, maxX);
+                    point1.Y = (int)MathHelper.Clamp(point1.Y, minY, maxY);
+                    if (Tiles[point1.X, point1.Y].Contains(gameObjectSearching))
+                        return point1;
+
+                    Point point2 = new Point(origin.X + d - i, origin.Y - i);
+                    point2.X = (int)MathHelper.Clamp(point2.X, minX, maxX);
+                    point2.Y = (int)MathHelper.Clamp(point2.Y, minY, maxY);
+                    if (Tiles[point2.X, point2.Y].Contains(gameObjectSearching))
+                        return point2;
+                }
+            }
+            return new Point(-1, -1);
+        }
     }
 }

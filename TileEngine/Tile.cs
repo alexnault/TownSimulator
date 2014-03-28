@@ -37,6 +37,19 @@ namespace TileEngine
             Objects = new List<GameObject>();
         }
 
+        public bool Contains(Type typeSearching, int nb = 1)
+        {
+            int count = 0;
+            foreach (GameObject go in Objects)
+            {
+                if (go.GetType() == typeSearching)
+                {
+                    count++;
+                    if (count == nb) return true;
+                }
+            }
+            return false;
+        }
 
         public void Update(GameTime gameTime)
         {

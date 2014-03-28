@@ -20,7 +20,8 @@ namespace TownSimulator
         SpriteBatch spriteBatch;
         
         Camera camera;
-        
+
+        Town town;
 
         public Game1()
             : base()
@@ -51,13 +52,13 @@ namespace TownSimulator
 
             TileMap.Initialize(textIndexes);
 
-            GameObject obj = new GameObject()
-            {
-                ObjectSprite = new Sprite(1)
-            };
+            //GameObject obj = new GameObject()
+            //{
+            //    ObjectSprite = new Sprite(1)
+            //};
 
                        
-            TileMap.Tiles[0, 0].Objects.Add(obj);
+            //TileMap.Tiles[0, 0].Objects.Add(obj);
 
 
             //////////////////////////////////////////
@@ -79,12 +80,20 @@ namespace TownSimulator
                 solidObjects[y].Position = new Point(1, y);
                 t.Objects.Add(solidObjects[y]);
             }
-            
-            Point destPoint = new Point(7, 5);
 
-            obj.path = Pathfinding.DoAStar(destPoint, obj.Position);
+            TileMap.Tiles[7, 8].Objects.Add(new Items.WoodPile());
+
+            town = new Town(5);
+            town.Villagers[0].ObjectSprite = new Sprite(1);
+
+            // Villager 0 has to make a decision
+            town.Villagers[0].MakeDecision.Release();
+            
+
+            //obj.path = Pathfinding.DoAStar(destPoint, obj.Position);
             ////////////////////////////////////////////////////
 
+            
 
             base.Initialize();
         }
@@ -116,8 +125,8 @@ namespace TownSimulator
             UpdateCameraMovement();
             //UpdateObjectMovement(gameTime);
 
-            TileMap.Update(gameTime);            
-           
+            TileMap.Update(gameTime);
+            town.Update(gameTime);
             
             base.Update(gameTime);
         }
@@ -166,20 +175,20 @@ namespace TownSimulator
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
 
+
+            spriteBatch.Begin(
+               SpriteSortMode.BackToFront,
+               BlendState.AlphaBlend,
+               null,
+               null,
+               null,
+               null,
+               camera.TransformMatrix);
+
             TileMap.Draw(spriteBatch, camera);
-
-            //spriteBatch.Begin(
-            //   SpriteSortMode.Texture,
-            //   BlendState.AlphaBlend,
-            //   null,
-            //   null,
-            //   null,
-            //   null,
-            //   camera.TransformMatrix);
-
-            ////obj.Draw(spriteBatch);
-
-            //spriteBatch.End();
+            town.Draw(spriteBatch);
+            
+            spriteBatch.End();
 
             base.Draw(gameTime);
         }

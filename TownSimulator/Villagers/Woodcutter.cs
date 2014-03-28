@@ -31,7 +31,7 @@ namespace TownSimulator.Villagers
         {
             CurrentState = WoodcutterState.Idle;
             CurrentTask = WoodcutterTask.None;
-            Position = new Point(10, 10);
+            Position = new Point(0, 1);
         }
 
         protected override void Run()
@@ -51,7 +51,15 @@ namespace TownSimulator.Villagers
                         // if hungry, go eat
                         // if thirsty, go drink
                         // else, go cut wood
-                        FindClosest(Position, typeof(TownSimulator.Items.WoodPile), 10);
+                        Point p = TileMap.FindClosest(Position, typeof(Items.WoodPile), 25);
+                        if (p.X != -1)
+                        {
+                            path = Pathfinding.DoAStar(p, Position);
+                        }
+                        else
+                        {
+                            Console.WriteLine("Cannot find a woodpile");
+                        }
                         CurrentTask = WoodcutterTask.GoingToTree;
                         CurrentState = WoodcutterState.Walking;
                         break;
@@ -66,57 +74,6 @@ namespace TownSimulator.Villagers
                         break;
                     default:
                         break;
-                }
-                //Semaphore s = new Semaphore(0, 1);
-                //Thread.Sleep(1000);
-                //s.WaitOne();
-            }
-        }
-
-        // Put in Engine
-        // Adapted from
-        // http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
-        void FindClosest(Point origin, Type gameObjectSearching, int maxDistance = 30)
-        {
-            if (!(gameObjectSearching is GameObject))
-            {
-                throw new ArgumentException("FindClosest method needs to search for a GameObject type.");
-            }
-
-            //int xs, ys; // Start coordinates
-
-            // Check point (xs, ys)
-
-            for (int d = 1; d < maxDistance; d++)
-            {
-                for (int i = 0; i < d + 1; i++)
-                {
-                    Point point1 = new Point(origin.X - d + i, origin.Y - i);
-                    //int x1 = origin.X - d + i;
-                    //int y1 = origin.Y - i;
-                    //TileMap.
-                    // Check point (x1, y1)
-
-                    Point point2 = new Point(origin.X + d - i, origin.Y + i);
-                    //int x2 = origin.X + d - i;
-                    //int y2 = origin.Y + i;
-
-                    // Check point (x2, y2)
-                }
-
-                for (int i = 1; i < d; i++)
-                {
-
-                    Point point1 = new Point(origin.X - i, origin.Y + d - i);
-                    //int x1 = origin.X - i;
-                    //int y1 = origin.Y + d - i;
-
-                    // Check point (x1, y1)
-                    Point point2 = new Point(origin.X + d - i, origin.Y - i);
-                    //int x2 = origin.X + d - i;
-                    //int y2 = origin.Y - i;
-
-                    // Check point (x2, y2)
                 }
             }
         }

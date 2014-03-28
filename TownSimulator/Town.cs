@@ -25,6 +25,15 @@ namespace TownSimulator
             }
         }
 
+        public void Update(Microsoft.Xna.Framework.GameTime gametime)
+        {
+            for (int i = 0; i < NbVillagers; i++)
+            {
+                Villagers[i].Update(gametime);
+            }
+            // TODO update items, buildings, etc.
+        }
+
         public void Draw(SpriteBatch spriteBatch)
         {
             for (int i = 0; i < NbVillagers; i++)
