@@ -28,8 +28,7 @@ namespace TileEngine
                 _nextID++;
             }
             _textures.Add(id, texture);
-
-
+            
             return id;
         }
 

@@ -9,40 +9,12 @@ namespace TileEngine
 {
     public class GameObject
     {
-
-
-
-        //////////////////////////////////////////
-        //Testing
-
-        private TimeSpan waitTime = TimeSpan.FromMilliseconds(100);
-        private TimeSpan lastGameTime = new TimeSpan();
-        public List<Point> path;
-
-        //////////////////////////////////////////
-
-        //private Vector2 _position;
-
         public Point Position { get; set; }
-        //{ 
-        //    get
-        //    {
-        //        return _position;   
-        //    } 
-        //    set
-        //    {
-        //        _position = value;
-        //        if (ObjectSprite != null)
-        //            ObjectSprite.PixelPosition = new Vector2(_position.X, _position.Y);
-        //    } 
-        //}
 
-    
-
-
-
-
+        [System.Xml.Serialization.XmlAttribute]
         public Sprite ObjectSprite { get; set; }
+
+        [System.Xml.Serialization.XmlAttribute]
         public bool IsSolid { get; set; }
         
         public GameObject()
@@ -51,47 +23,21 @@ namespace TileEngine
             Position = new Point(0, 0);
         }
 
-        public void Update(GameTime gameTime)
-        {
-            //////////////////////////////////
-            //Testing
-
-            if (lastGameTime > waitTime)
-            {
-                MoveToNext();
-                lastGameTime = TimeSpan.FromMilliseconds(0);
-            }
-
-            ////////////////////////////////////
-
-
-
-            if (ObjectSprite != null) 
-                ObjectSprite.Update(gameTime);
-
-
-
-            //////////////////////////////////
-            //Testing
-            lastGameTime += gameTime.ElapsedGameTime;
-
-            ////////////////////////////////////
-
-        }
-
-        private void MoveToNext()
-        {
-            if (path != null && path.Count > 0)
-            {
-                Position = path[0];
-                path.RemoveAt(0);
-            }
-        }
-
-        public void Draw(SpriteBatch spriteBatch)
+        public virtual void Update(GameTime gameTime)
         {
             if (ObjectSprite != null)
+            {
+                ObjectSprite.Update(gameTime);
+            }
+        }
+
+
+        public virtual void Draw(SpriteBatch spriteBatch)
+        {
+            if (ObjectSprite != null)
+            {
                 ObjectSprite.Draw(spriteBatch, Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
+            }
         }
 
 

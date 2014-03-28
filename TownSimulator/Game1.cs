@@ -70,7 +70,7 @@ namespace TownSimulator
                 solidObjects[i] = new GameObject()
                 {
                     IsSolid = true,
-                    ObjectSprite = new Sprite(2)
+                    ObjectSprite = new Sprite(1)
                 };
             }
 
@@ -81,10 +81,16 @@ namespace TownSimulator
                 t.Objects.Add(solidObjects[y]);
             }
 
-            TileMap.Tiles[7, 8].Objects.Add(new Items.WoodPile());
+            TileMap.Tiles[7, 8].Objects.Add(
+                new Items.WoodPile() 
+                {
+                    Position = new Point(7, 8),
+                    ObjectSprite = new Sprite(4, 0, 0, 32, 32, 0.6f) 
+                }
+            );
 
             town = new Town(5);
-            town.Villagers[0].ObjectSprite = new Sprite(1);
+            town.Villagers[0].ObjectSprite = new Sprite(3);
 
             // Villager 0 has to make a decision
             town.Villagers[0].MakeDecision.Release();
@@ -107,7 +113,8 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/rock_small"), 1);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
-            //TextureManager.Add(Content.Load<Texture2D>("Tiles/bluesquare"), 3);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/lumberjack_sheet_small"), 3);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);            
 
 
         }

@@ -7,11 +7,15 @@ using TownSimulator.Items;
 
 namespace TownSimulator.Villagers
 {
-    abstract class Villager : TileEngine.GameObject
+    abstract class Villager : TileEngine.MovingGameObject
     {
+        [System.Xml.Serialization.XmlAttribute]
         public string FirstName { get; private set; }
+        [System.Xml.Serialization.XmlAttribute]
         public string LastName { get; private set; }
         public string FullName { get { return FirstName + " " + LastName; } }
+
+        [System.Xml.Serialization.XmlAttribute]
         public uint Age { get; private set; }
 
         public uint Hunger { get; private set; }
@@ -25,8 +29,9 @@ namespace TownSimulator.Villagers
         protected Town HomeTown { get; set; }
 
         public Semaphore MakeDecision { get; set; }
-        
+
         public Villager(string firstname, string lastname, Town hometown)
+            : base()
         {
             FirstName = firstname;
             LastName = lastname;

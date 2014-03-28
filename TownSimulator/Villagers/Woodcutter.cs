@@ -23,8 +23,8 @@ namespace TownSimulator.Villagers
 
     class Woodcutter : Villager
     {
-        WoodcutterState CurrentState;
-        WoodcutterTask CurrentTask;
+        private WoodcutterState CurrentState;
+        private WoodcutterTask CurrentTask;
 
         public Woodcutter(string firstname, string lastname, Town hometown)
             : base(firstname, lastname, hometown)
@@ -54,7 +54,7 @@ namespace TownSimulator.Villagers
                         Point p = TileMap.FindClosest(Position, typeof(Items.WoodPile), 25);
                         if (p.X != -1)
                         {
-                            path = Pathfinding.DoAStar(p, Position);
+                            Path = Pathfinding.DoAStar(p, Position);
                         }
                         else
                         {

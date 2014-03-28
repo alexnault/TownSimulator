@@ -11,9 +11,14 @@ namespace TileEngine
     {
 
         private bool _isSolid;
+
+        [System.Xml.Serialization.XmlAttribute]
         public int GroundTextureID { get; set; }
+
+        [System.Xml.Serialization.XmlAttribute]
         public List<GameObject> Objects { get; private set; }
 
+        [System.Xml.Serialization.XmlAttribute]
         public bool IsSolid
         {
             get

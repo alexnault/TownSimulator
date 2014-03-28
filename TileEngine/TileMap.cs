@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -9,17 +10,17 @@ namespace TileEngine
 {
     public static class TileMap
     {
-
+        [System.Xml.Serialization.XmlAttribute]
         public static int Width 
         {
             get { return Tiles.GetLength(0); } 
         }
-
+        [System.Xml.Serialization.XmlAttribute]
         public static int Height
         {
             get { return Tiles.GetLength(1); }
         }
-
+        [System.Xml.Serialization.XmlAttribute]
         public static Tile[,] Tiles { get; private set; }
 
         /// <summary>
@@ -44,6 +45,75 @@ namespace TileEngine
             }
 
         }
+
+        //public static void IntializeFromFile(string filePath)
+        //{
+        //    int[,] layout;
+
+        //    //Load from file
+
+        //    using(StreamReader reader = new StreamReader(filePath))
+        //    {
+        //        bool readingTextures = false;
+        //        bool readingLayout = false;
+        //        bool readingProperties = false;
+
+        //        while (!reader.EndOfStream)
+        //        {
+        //            string line = reader.ReadLine().Trim(); //Enlève les espaces
+
+        //            if (string.IsNullOrEmpty(line))  //Si la ligne est vide
+        //                continue;   //Retourne au début du while
+
+        //            if (line.Contains("[Textures]"))    //Si la ligne a lu le Tag [Textures]
+        //            {
+        //                readingTextures = true;
+        //                readingLayout = false;
+        //                readingProperties = false;
+        //            }
+        //            else if (line.Contains("[Layout]"))    //Si la ligne a lu le Tag [Textures]
+        //            {
+        //                readingTextures = false;
+        //                readingLayout = true;
+        //                readingProperties = false;
+        //            }
+        //            else if (line.Contains("[Properties]"))
+        //            {
+        //                readingProperties = true;
+        //                readingTextures = false;
+        //                readingLayout = false;
+        //            }
+        //            else if (readingTextures)
+        //                texturesNames.Add(line);
+        //            else if (readingLayout)
+        //            {
+        //                List<int> row = new List<int>();
+        //                string[] cells = line.Split(' ');
+
+        //                foreach (string c in cells)
+        //                {
+        //                    if (!string.IsNullOrEmpty(c))   //Au cas ou il y ait des espaces de trop
+        //                        row.Add(int.Parse(c));  //Ajoute le string en Int
+        //                }
+        //                tempLayout.Add(row);
+        //            }
+        //            else if (readingProperties)
+        //            {
+        //                string[] pair = line.Split('=');
+        //                string key = pair[0].Trim();
+        //                string value = pair[1].Trim();
+
+        //                propertiesDict.Add(key, value);
+        //            }
+
+        //        }
+        //    }
+
+
+        //    Initialize(layout);
+
+
+        //}
 
         public static void Update(GameTime gameTime)
         {
