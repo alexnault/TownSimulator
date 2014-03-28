@@ -100,6 +100,12 @@ namespace TownSimulator
             TileMap.Tiles[3, 0].AddObject(obj1);
             TileMap.Tiles[3, 1].AddObject(obj1);
 
+            TileMap.Tiles[5, 1].AddObject(new Scenery.Tree());
+            TileMap.Tiles[7, 3].AddObject(new Scenery.Tree());
+            TileMap.Tiles[2, 7].AddObject(new Scenery.Tree());
+            TileMap.Tiles[7, 12].AddObject(new Scenery.Tree());
+            TileMap.Tiles[3, 18].AddObject(new Scenery.Tree());
+            TileMap.Tiles[9, 15].AddObject(new Scenery.Tree());
         }
 
 
@@ -113,6 +119,7 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/lumberjack_sheet_small"), 3);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/trees.png"), 5);      
             TextureManager.Add(Content.Load<Texture2D>("Sprites/rock"), 6);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/houses"), 7);                  
               
@@ -156,8 +163,6 @@ namespace TownSimulator
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-
 
             spriteBatch.Begin(
                SpriteSortMode.BackToFront,

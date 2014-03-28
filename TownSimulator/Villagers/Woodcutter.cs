@@ -56,14 +56,14 @@ namespace TownSimulator.Villagers
                         // if hungry, go eat
                         // if thirsty, go drink
                         // else, go cut wood
-                        Point p = TileMap.FindClosest(Position, typeof(Items.WoodPile), 25);
+                        Point p = TileMap.FindClosest(Position, typeof(Scenery.Tree), 25);
                         if (p.X != -1)
                         {
                             Path = Pathfinding.DoAStar(p, Position);
                         }
                         else
                         {
-                            Console.WriteLine("Cannot find a woodpile");
+                            Console.WriteLine("Cannot find a tree");
                         }
                         CurrentTask = WoodcutterTask.GoingToTree;
                         CurrentState = WoodcutterState.Walking;
