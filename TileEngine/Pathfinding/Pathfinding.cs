@@ -10,7 +10,7 @@ namespace TileEngine
     {
 
 
-        public static List<Vector2> DoAStar(Vector2 from, Vector2 to)
+        public static List<Point> DoAStar(Point from, Point to)
         {
             int tileAcross = TileMap.Width;
             int tileDown = TileMap.Height;
@@ -26,8 +26,8 @@ namespace TileEngine
                 }
             }
 
-            Node origin = squares[(int)from.X / Engine.TileWidth, (int)from.Y / Engine.TileHeight];
-            Node destination = squares[(int)to.X / Engine.TileWidth, (int)to.Y / Engine.TileHeight];
+            Node origin = squares[from.X / Engine.TileWidth, from.Y / Engine.TileHeight];
+            Node destination = squares[to.X / Engine.TileWidth, to.Y / Engine.TileHeight];
 
             List<Node> openList = new List<Node>();
             List<Node> closedList = new List<Node>();
@@ -50,7 +50,7 @@ namespace TileEngine
 
                 if (current == destination) // If destination has been reached. 
                 {
-                    int pathX = (int)destination.Position.X, pathY = (int)destination.Position.Y;
+                    int pathX = destination.Position.X, pathY = destination.Position.Y;
                     List<Node> path = new List<Node>();
                     do
                     {
@@ -63,7 +63,7 @@ namespace TileEngine
                     while (pathX != origin.Position.X || pathY != origin.Position.Y);
 
 
-                    List<Vector2> pathCoord = new List<Vector2>();
+                    List<Point> pathCoord = new List<Point>();
                     foreach (Node n in path)
                     {
                         pathCoord.Add(n.Position);
@@ -82,8 +82,8 @@ namespace TileEngine
                 for (int neighOffset = 0; neighOffset < 4; neighOffset++)
                 {
                     // Grab the coordinates of a neighbour tile. 
-                    int NX = (int)current.Position.X + (int)neighbourX[neighOffset];
-                    int NY = (int)current.Position.Y + (int)neighbourY[neighOffset];
+                    int NX = current.Position.X + neighbourX[neighOffset];
+                    int NY = current.Position.Y + neighbourY[neighOffset];
                     if (NX < 0 || NX >= tileAcross || NY < 0 || NY >= tileDown) continue;
 
                     Node neighbour = squares[NX, NY];
@@ -124,9 +124,9 @@ namespace TileEngine
             return (int)(Math.Abs(current.Position.X - target.Position.X) + Math.Abs(current.Position.Y - target.Position.Y)); ;
         }
 
-        private static bool IsWalkable(Vector2 node)
+        private static bool IsWalkable(Point node)
         {
-            return !TileMap.Tiles[(int)node.X, (int)node.Y].IsSolid;
+            return !TileMap.Tiles[node.X, node.Y].IsSolid;
         }
 
     }

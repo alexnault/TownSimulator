@@ -14,7 +14,7 @@ namespace TileEngine
         public int G;  //Nombre de points lors du mouvement vers une case (10 = horizontal/vertical, 14 = diagonal)
         public int F;  //Points par case utilisé pour le choix de la meilleur case (Plus petit = meilleur). Calcul : F = G + H  
 
-        public Vector2 Position { get; private set;}
+        public Point Position { get; private set; }
         public Node ParentNode { get; set; }
 
         public Node()
@@ -32,7 +32,7 @@ namespace TileEngine
             this.G = 0;
             this.H = 0;
             this.F = -1;
-            Position = new Vector2(x, y);
+            Position = new Point(x, y);
             ParentNode = null;
         }
 

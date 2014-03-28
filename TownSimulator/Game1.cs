@@ -42,7 +42,7 @@ namespace TownSimulator
 
 
             int w = 10;
-            int h = 10;
+            int h = 20;
             int[,] textIndexes = new int[w, h];
 
             for (int i = 0; i < w; i++)
@@ -63,8 +63,8 @@ namespace TownSimulator
             //////////////////////////////////////////
             ///Testing
 
-            GameObject[] solidObjects = new GameObject[20];
-            for (int i = 0; i < 20; i++)
+            GameObject[] solidObjects = new GameObject[h - 1];
+            for (int i = 0; i < h - 1; i++)
             {
                 solidObjects[i] = new GameObject()
                 {
@@ -76,13 +76,13 @@ namespace TownSimulator
             for (int y = 0; y < h - 1; y++)
             {
                 Tile t = TileMap.Tiles[1, y];
-                solidObjects[y].Position = new Vector2(1 * Engine.TileWidth, y * Engine.TileHeight);
+                solidObjects[y].Position = new Point(1, y);
                 t.Objects.Add(solidObjects[y]);
             }
             
             Point destPoint = new Point(7, 5);
 
-            obj.path = Pathfinding.DoAStar(Engine.ConvertCellToPosition(destPoint), obj.Position);
+            obj.path = Pathfinding.DoAStar(obj.Position, destPoint);
             ////////////////////////////////////////////////////
 
 
@@ -95,9 +95,9 @@ namespace TownSimulator
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            TextureManager.Add(Content.Load<Texture2D>("Tiles/grass"), 0);
-            TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
-            TextureManager.Add(Content.Load<Texture2D>("Tiles/wood"), 2);
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/rock_small"), 1);
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
 
         }
 

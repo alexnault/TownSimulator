@@ -17,13 +17,13 @@ namespace TileEngine
 
         private TimeSpan waitTime = TimeSpan.FromMilliseconds(100);
         private TimeSpan lastGameTime = new TimeSpan();
-        public List<Vector2> path;
+        public List<Point> path;
 
         //////////////////////////////////////////
 
         //private Vector2 _position;
 
-        public Vector2 Position { get; set; }
+        public Point Position { get; set; }
         //{ 
         //    get
         //    {
@@ -48,7 +48,7 @@ namespace TileEngine
         public GameObject()
         {
             IsSolid = false;
-            Position = new Vector2(0, 0);
+            Position = new Point(0, 0);
         }
 
         public void Update(GameTime gameTime)
@@ -83,7 +83,7 @@ namespace TileEngine
         {
             if (path != null && path.Count > 0)
             {
-                Position = new Vector2(path[0].X * Engine.TileWidth, path[0].Y * Engine.TileHeight);
+                Position = path[0];
                 path.RemoveAt(0);
             }
         }
@@ -91,7 +91,7 @@ namespace TileEngine
         public void Draw(SpriteBatch spriteBatch)
         {
             if (ObjectSprite != null)
-                ObjectSprite.Draw(spriteBatch, (int)Position.X, (int)Position.Y);
+                ObjectSprite.Draw(spriteBatch, Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
         }
 
 
