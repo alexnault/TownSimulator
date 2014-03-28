@@ -13,8 +13,9 @@ namespace TownSimulator.Scenery
 
         public Tree()
         {
-            ObjectSprite = new Sprite(5);
+            IsSolid = true;
 
+            ObjectSprite = new Sprite(5);
             int spriteType = _rand.Next(0, 2);
             switch (spriteType)
             {

@@ -49,9 +49,20 @@ namespace TileEngine
         {
             if (Path != null && Path.Count > 0)
             {
-                SetFacingDirection(Path[0]);
-                Position = Path[0];
-                Path.RemoveAt(0);
+                Point nextPoint = Path[0];
+
+                if (!TileMap.Tiles[nextPoint.X, nextPoint.Y].IsSolid)
+                {
+                    SetFacingDirection(Path[0]);
+                    Position = Path[0];
+                    Path.RemoveAt(0);
+                }
+                else
+                {
+                    // Path has been blocked
+                    Path.Clear();
+                    PathBlocked(); // event
+                }
             }
         }
         
@@ -79,5 +90,6 @@ namespace TileEngine
             base.Draw(spriteBatch);
         }
 
+        protected virtual void PathBlocked() { }
     }
 }

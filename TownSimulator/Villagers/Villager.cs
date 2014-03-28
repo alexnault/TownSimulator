@@ -52,5 +52,10 @@ namespace TownSimulator.Villagers
         }
 
         abstract protected void Run();
+
+        protected override void PathBlocked()
+        {
+            MakeDecision.Release();
+        }
     }
 }
