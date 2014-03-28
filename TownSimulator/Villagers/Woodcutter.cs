@@ -31,7 +31,12 @@ namespace TownSimulator.Villagers
         {
             CurrentState = WoodcutterState.Idle;
             CurrentTask = WoodcutterTask.None;
-            Position = new Point(0, 1);
+            //Position = new Point(0, 1);
+
+            ObjectSprite = new TileEngine.Sprite(3, Position.X, Position.Y, 32, 32, 0.5f);
+
+            XDrawOffset = 0;
+            YDrawOffset = 0;
         }
 
         protected override void Run()

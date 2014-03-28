@@ -73,7 +73,7 @@ namespace TileEngine
         {
             if (ObjectSprite != null)
             {
-                ObjectSprite.TexturePortion = new Rectangle(0, (int)CurrentDirection * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight);                
+                ObjectSprite.TexturePortion = new Rectangle(0, (int)CurrentDirection * ObjectSprite.Height, ObjectSprite.Width, ObjectSprite.Height);
             }
 
             base.Draw(spriteBatch);

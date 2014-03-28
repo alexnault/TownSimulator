@@ -9,15 +9,12 @@ namespace TownSimulator.Villagers
 {
     abstract class Villager : TileEngine.MovingGameObject
     {
-        [System.Xml.Serialization.XmlAttribute]
+
         public string FirstName { get; private set; }
-        [System.Xml.Serialization.XmlAttribute]
+
         public string LastName { get; private set; }
         public string FullName { get { return FirstName + " " + LastName; } }
-
-        [System.Xml.Serialization.XmlAttribute]
         public uint Age { get; private set; }
-
         public uint Hunger { get; private set; }
         public uint Thirst { get; private set; }
         public uint Satisfaction { get { return 100 - ((Hunger + Thirst) / 2); } }

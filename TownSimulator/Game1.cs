@@ -41,7 +41,23 @@ namespace TownSimulator
             TextureManager.Initialize();
             camera = new Camera();
 
+            //////////////////////////////////////////
+            //Creation of the TileMap
+            GenerateMap();
+            ///////////////////////////////////////////
 
+            town = new Town(5);
+
+            // Villager 0 has to make a decision
+            town.Villagers[0].MakeDecision.Release();
+                        
+
+            base.Initialize();
+        }
+        
+        private void GenerateMap()
+        {
+            //Static generation of the tile map
             int w = 10;
             int h = 20;
             int[,] textIndexes = new int[w, h];
@@ -52,17 +68,6 @@ namespace TownSimulator
 
             TileMap.Initialize(textIndexes);
 
-            //GameObject obj = new GameObject()
-            //{
-            //    ObjectSprite = new Sprite(1)
-            //};
-
-                       
-            //TileMap.Tiles[0, 0].Objects.Add(obj);
-
-
-            //////////////////////////////////////////
-            ///Testing
 
             GameObject[] solidObjects = new GameObject[h - 1];
             for (int i = 0; i < h - 1; i++)
@@ -70,38 +75,31 @@ namespace TownSimulator
                 solidObjects[i] = new GameObject()
                 {
                     IsSolid = true,
-                    ObjectSprite = new Sprite(1)
+                    ObjectSprite = new Sprite(6)
                 };
             }
 
             for (int y = 0; y < h - 1; y++)
             {
                 Tile t = TileMap.Tiles[1, y];
-                solidObjects[y].Position = new Point(1, y);
-                t.Objects.Add(solidObjects[y]);
+               // solidObjects[y].Position = new Point(1, y);
+                t.AddObject(solidObjects[y]);
             }
 
-            TileMap.Tiles[7, 8].Objects.Add(
-                new Items.WoodPile() 
-                {
-                    Position = new Point(7, 8),
-                    ObjectSprite = new Sprite(4, 0, 0, 32, 32, 0.6f) 
-                }
-            );
+            TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
 
-            town = new Town(5);
-            town.Villagers[0].ObjectSprite = new Sprite(3);
+            GameObject obj1 = new GameObject()
+            {
+                ObjectSprite = new Sprite(7, 0, 0, 69, 77),
+                XDrawOffset = -16,
+                YDrawOffset = -32
+            };
 
-            // Villager 0 has to make a decision
-            town.Villagers[0].MakeDecision.Release();
-            
+            TileMap.Tiles[2, 0].AddObject(obj1);
+            TileMap.Tiles[2, 1].AddObject(obj1);
+            TileMap.Tiles[3, 0].AddObject(obj1);
+            TileMap.Tiles[3, 1].AddObject(obj1);
 
-            //obj.path = Pathfinding.DoAStar(destPoint, obj.Position);
-            ////////////////////////////////////////////////////
-
-            
-
-            base.Initialize();
         }
 
 
@@ -111,12 +109,13 @@ namespace TownSimulator
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
-            TextureManager.Add(Content.Load<Texture2D>("Tiles/rock_small"), 1);
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/lumberjack_sheet_small"), 3);
-            TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);            
-
-
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/rock"), 6);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/houses"), 7);                  
+              
         }
 
         protected override void UnloadContent()
@@ -137,30 +136,7 @@ namespace TownSimulator
             
             base.Update(gameTime);
         }
-
-        //private void UpdateObjectMovement(GameTime gameTime)
-        //{
-
-        //    Point motion = Point.Zero;
-        //    int speed = 1;
-
-        //    if (InputHelper.IsKeyDown(Keys.W))
-        //        motion.Y--;
-        //    if (InputHelper.IsKeyDown(Keys.S))
-        //        motion.Y++;
-        //    if (InputHelper.IsKeyDown(Keys.A))
-        //        motion.X--;
-        //    if (InputHelper.IsKeyDown(Keys.D))
-        //        motion.X++;
-
-
-        //    obj.Position = new Point(obj.Position.X + motion.X * speed, obj.Position.Y + motion.Y * speed);
-
-
-        //    obj.Update(gameTime);
-
-        //}
-
+        
         private void UpdateCameraMovement()
         {
             Vector2 motion = Vector2.Zero;
@@ -185,7 +161,7 @@ namespace TownSimulator
 
             spriteBatch.Begin(
                SpriteSortMode.BackToFront,
-               BlendState.AlphaBlend,
+               BlendState.NonPremultiplied,
                null,
                null,
                null,

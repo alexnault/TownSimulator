@@ -14,6 +14,9 @@ namespace TileEngine
         [System.Xml.Serialization.XmlAttribute]
         public Sprite ObjectSprite { get; set; }
 
+        public int XDrawOffset { get; set; }
+        public int YDrawOffset { get; set; }
+
         [System.Xml.Serialization.XmlAttribute]
         public bool IsSolid { get; set; }
         
@@ -31,15 +34,13 @@ namespace TileEngine
             }
         }
 
-
         public virtual void Draw(SpriteBatch spriteBatch)
         {
             if (ObjectSprite != null)
             {
-                ObjectSprite.Draw(spriteBatch, Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
+                ObjectSprite.Draw(spriteBatch, Position.X * Engine.TileWidth + XDrawOffset, Position.Y * Engine.TileHeight + YDrawOffset);
             }
         }
-
 
     }
 }

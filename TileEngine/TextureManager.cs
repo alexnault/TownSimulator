@@ -10,26 +10,31 @@ namespace TileEngine
     {
 
         private static Dictionary<int, Texture2D> _textures;
-        private static int _nextID;
+        //private static int _nextID;
 
         public static void Initialize()
         {
-            _nextID = 0;
+            //_nextID = 0;
             _textures = new Dictionary<int, Texture2D>();
         }
 
 
-        public static int Add(Texture2D texture, int id = -1)
-        {
+        //public static int Add(Texture2D texture, int id = -1)
+        //{
 
-            if (id == -1 || _textures.ContainsKey(id))
-            {
-                id = _nextID;
-                _nextID++;
-            }
-            _textures.Add(id, texture);
+        //    if (id == -1 || _textures.ContainsKey(id))
+        //    {
+        //        id = _nextID;
+        //        _nextID++;
+        //    }
+        //    _textures.Add(id, texture);
             
-            return id;
+        //    return id;
+        //}
+
+        public static void Add(Texture2D texture, int id)
+        {
+            _textures.Add(id, texture);
         }
 
         //public static bool Remove(int id)

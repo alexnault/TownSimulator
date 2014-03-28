@@ -7,6 +7,10 @@ namespace TownSimulator.Items
 {
     class WoodPile : Item
     {
-        public WoodPile() { }
+        public WoodPile()
+        {
+            ObjectSprite = new TileEngine.Sprite(4) { ZIndex = 0.6f };
+            
+        }
     }
 }

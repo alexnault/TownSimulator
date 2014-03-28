@@ -11,21 +11,17 @@ namespace TileEngine
     {
 
         private bool _isSolid;
+        private List<GameObject> _objects;
 
-        [System.Xml.Serialization.XmlAttribute]
+        public Point Position { get; private set; }
         public int GroundTextureID { get; set; }
-
-        [System.Xml.Serialization.XmlAttribute]
-        public List<GameObject> Objects { get; private set; }
-
-        [System.Xml.Serialization.XmlAttribute]
         public bool IsSolid
         {
             get
             {
                 bool isItSolid = _isSolid;
 
-                foreach(GameObject obj in Objects)
+                foreach (GameObject obj in _objects)
                 {
                     if(obj.IsSolid) isItSolid = true;
                 }
@@ -35,17 +31,19 @@ namespace TileEngine
         }
 
 
-        public Tile(int textureID, bool isSolid = false)
+        public Tile(int textureID, int posX, int posY, bool isSolid = false)
         {
             _isSolid = isSolid;
+            _objects = new List<GameObject>();
+
             GroundTextureID = textureID;
-            Objects = new List<GameObject>();
+            Position = new Point(posX, posY);
         }
 
         public bool Contains(Type typeSearching, int nb = 1)
         {
             int count = 0;
-            foreach (GameObject go in Objects)
+            foreach (GameObject go in _objects)
             {
                 if (go.GetType() == typeSearching)
                 {
@@ -58,7 +56,7 @@ namespace TileEngine
 
         public void Update(GameTime gameTime)
         {
-            foreach (GameObject obj in Objects)
+            foreach (GameObject obj in _objects)
             {
                 obj.Update(gameTime);
             }
@@ -66,10 +64,21 @@ namespace TileEngine
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            foreach (GameObject obj in Objects)
+            foreach (GameObject obj in _objects)
             {
                 obj.Draw(spriteBatch);
             }
+        }
+
+        public void AddObject(GameObject obj)
+        {
+            obj.Position = Position;
+            _objects.Add(obj);
+        }
+
+        public void RemoveObject(GameObject obj)
+        {
+            _objects.Remove(obj);
         }
     }
 }

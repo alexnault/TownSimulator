@@ -54,12 +54,6 @@ namespace TileEngine
                             new Vector2(0, 0),
                             SpriteEffects.None,
                             ZIndex);
-
-
-
-
-            //spriteBatch.Draw(, , Color.White);
         }
-
     }
 }

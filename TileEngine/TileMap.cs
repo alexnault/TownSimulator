@@ -10,17 +10,14 @@ namespace TileEngine
 {
     public static class TileMap
     {
-        [System.Xml.Serialization.XmlAttribute]
         public static int Width 
         {
             get { return Tiles.GetLength(0); } 
         }
-        [System.Xml.Serialization.XmlAttribute]
         public static int Height
         {
             get { return Tiles.GetLength(1); }
         }
-        [System.Xml.Serialization.XmlAttribute]
         public static Tile[,] Tiles { get; private set; }
 
         /// <summary>
@@ -40,7 +37,7 @@ namespace TileEngine
                 {
                     int textureIndex = layout[x, y];
                     
-                    Tiles[x, y] = new Tile(textureIndex);
+                    Tiles[x, y] = new Tile(textureIndex, x, y);
                 }
             }
 
