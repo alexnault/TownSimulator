@@ -82,7 +82,7 @@ namespace TownSimulator
             
             Point destPoint = new Point(7, 5);
 
-            obj.path = Pathfinding.DoAStar(obj.Position, destPoint);
+            obj.path = Pathfinding.DoAStar(destPoint, obj.Position);
             ////////////////////////////////////////////////////
 
 
@@ -98,6 +98,8 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/rock_small"), 1);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
+            //TextureManager.Add(Content.Load<Texture2D>("Tiles/bluesquare"), 3);
+
 
         }
 

@@ -26,8 +26,11 @@ namespace TileEngine
                 }
             }
 
-            Node origin = squares[from.X / Engine.TileWidth, from.Y / Engine.TileHeight];
-            Node destination = squares[to.X / Engine.TileWidth, to.Y / Engine.TileHeight];
+            //Node origin = squares[from.X / Engine.TileWidth, from.Y / Engine.TileHeight];
+            //Node destination = squares[to.X / Engine.TileWidth, to.Y / Engine.TileHeight];
+
+            Node origin = squares[from.X, from.Y];
+            Node destination = squares[to.X, to.Y];
 
             List<Node> openList = new List<Node>();
             List<Node> closedList = new List<Node>();
@@ -97,9 +100,7 @@ namespace TileEngine
                             neighbour.H = CalculateHeuristic(neighbour, destination); // Calculate heuristic value. 
                             neighbour.ParentNode = current;
 
-
                             neighbour.G = 10 + current.G; // Add 10 (movement cost) to the current tiles cost. 
-
                             openList.Add(neighbour);
                         }
                         else
@@ -107,7 +108,6 @@ namespace TileEngine
                             if (current.G + CalculateHeuristic(current, destination) < neighbour.G + CalculateHeuristic(neighbour, destination))
                             {
                                 neighbour.ParentNode = current;
-
                                 neighbour.G = 10 + current.G; // Add 10 (movement cost) to the current tiles cost.
                             }
                         }

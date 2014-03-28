@@ -11,7 +11,7 @@ namespace TileEngine
     {
 
         private bool _isSolid;
-        public int GroundTextureID { get; private set; }
+        public int GroundTextureID { get; set; }
         public List<GameObject> Objects { get; private set; }
 
         public bool IsSolid
