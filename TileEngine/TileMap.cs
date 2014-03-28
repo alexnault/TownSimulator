@@ -1,63 +1,90 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Graphics;
-using System.Xml;
 
 namespace TileEngine
 {
     public class TileMap
     {
-        public List<TileLayer> Layers = new List<TileLayer>();
-        public CollisionLayer CollisionLayer;
 
-        public int GetWidthInPixels()
+        public int Width 
         {
-            return GetWidth() * Engine.TileWidth;
-        }                   
-        public int GetHeightInPixels()
+            get { return Tiles.GetLength(0); } 
+        }
+        public int Height
         {
-            return GetHeight() * Engine.TileHeight;
+            get { return Tiles.GetLength(1); }
+        }
+        public Tile[,] Tiles { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        ///<param name="layout">Index of the textures for each of the tiles.</param>    
+        public TileMap(int[,] layout)
+        {
+            int width = layout.GetLength(0);
+            int height = layout.GetLength(1);
+
+            Tiles = new Tile[width, height];
+
+            for (int x = 0; x < width; x++)
+            {
+                for (int y = 0; y < height; y++)
+                {
+                    int textureIndex = layout[x, y];
+                    
+                    Tiles[x, y] = new Tile(textureIndex);
+                }
+            }
+
         }
 
-        public int GetWidth()
+        public void Update(GameTime gameTime)
         {
-            int width = 0;    //Initialiser au cas ou
-
-            foreach (TileLayer layer in Layers)
-                width = (int)Math.Max(width, layer.Width);
-
-            return width;
-
-        }
-        public int GetHeight()
-        {
-            int height = 0;    //Initialiser au cas ou
-
-            foreach (TileLayer layer in Layers)
-                height = (int)Math.Max(height, layer.Height);
-
-            return height;
-
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {   
+                    Tiles[x, y].Update(gameTime);
+                }
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, Camera camera)
         {
-            Point min = Engine.ConvertPositionToCell(camera.Position);
-            Point max = Engine.ConvertPositionToCell(
-                camera.Position + new Vector2(
-                    spriteBatch.GraphicsDevice.Viewport.Width + Engine.TileWidth,
-                    spriteBatch.GraphicsDevice.Viewport.Height + Engine.TileHeight)
-                );
+            spriteBatch.Begin(
+               SpriteSortMode.BackToFront,
+               BlendState.AlphaBlend,
+               null,
+               null,
+               null,
+               null,
+               camera.TransformMatrix);
 
+            for(int x = 0; x < Width ; x++)
+            {
+                for(int y = 0 ; y < Height; y++)
+                {
+                    Texture2D texture = TextureManager.Get(Tiles[x, y].GroundTextureID);
+                    if (texture != null)
+                    {
+                        spriteBatch.Draw(
+                            texture,
+                            new Rectangle(x * Engine.TileWidth, y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight),
+                            Color.White);
+                    }
 
-            foreach (TileLayer layer in Layers)
-                layer.Draw(spriteBatch, camera, min, max);
-            
+                    //Draws the game objects within the Tile object
+                    Tiles[x, y].Draw(spriteBatch);
+                }
+            }
 
+            spriteBatch.End();
         }
+
     }
 }

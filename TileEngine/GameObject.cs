@@ -31,7 +31,10 @@ namespace TileEngine
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (ObjectSprite != null) ObjectSprite.Draw(spriteBatch);
+            if (ObjectSprite != null)
+            {
+                ObjectSprite.Draw(spriteBatch);
+            }
         }
 
 

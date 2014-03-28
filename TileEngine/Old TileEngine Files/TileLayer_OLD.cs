@@ -8,7 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace TileEngine
 {
-    public class TileLayer
+    public class TileLayer_OLD
     {
 
 
@@ -41,7 +41,7 @@ namespace TileEngine
             get { return map.GetLength(0); }
         }
 
-        public TileLayer(int height, int width)
+        public TileLayer_OLD(int height, int width)
         {
             map = new int[height, width];
 
@@ -51,7 +51,7 @@ namespace TileEngine
         }
 
 
-        public TileLayer(int[,] existingMap)
+        public TileLayer_OLD(int[,] existingMap)
         {
             map = (int[,])existingMap.Clone();  //Clone la map envoyé en paramètre
         }
@@ -100,9 +100,9 @@ namespace TileEngine
         }
 
 
-        public static TileLayer FromFile(string filename, out string[] textureNameArray) //Pour ouvrir un fichier dans l'éditeur
+        public static TileLayer_OLD FromFile(string filename, out string[] textureNameArray) //Pour ouvrir un fichier dans l'éditeur
         {
-            TileLayer tileLayer;
+            TileLayer_OLD tileLayer;
             List<string> texturesNames = new List<string>();    //Les textures
 
 
@@ -114,9 +114,9 @@ namespace TileEngine
         }
 
         //Pour ouvrir un fichier dans le jeu
-        public static TileLayer FromFile(ContentManager content, string filename)
+        public static TileLayer_OLD FromFile(ContentManager content, string filename)
         {
-            TileLayer tileLayer;
+            TileLayer_OLD tileLayer;
 
             List<string> texturesNames = new List<string>();    //Les textures
 
@@ -128,9 +128,9 @@ namespace TileEngine
             return tileLayer;
         }
 
-        private static TileLayer ProcessFile(string filename, List<string> texturesNames)
+        private static TileLayer_OLD ProcessFile(string filename, List<string> texturesNames)
         {
-            TileLayer tileLayer;
+            TileLayer_OLD tileLayer;
             List<List<int>> tempLayout = new List<List<int>>(); //Le layout
             Dictionary<string, string> propertiesDict = new Dictionary<string, string>();
 
@@ -194,7 +194,7 @@ namespace TileEngine
             int width = tempLayout[0].Count;
             int height = tempLayout.Count;
 
-            tileLayer = new TileLayer(height, width);      //Height and Width sont interchangé, car sinon sa plante, no idea why
+            tileLayer = new TileLayer_OLD(height, width);      //Height and Width sont interchangé, car sinon sa plante, no idea why
 
             foreach (KeyValuePair<string, string> property in propertiesDict)
             {

@@ -21,7 +21,7 @@ namespace TownSimulator
         
         TileMap tileMap;
         Camera camera;
-        GameObject obj;
+        
 
         public Game1()
             : base()
@@ -37,10 +37,30 @@ namespace TownSimulator
          
         protected override void Initialize()
         {
-            tileMap = new TileMap();
+
+            TextureManager.Initialize();
             camera = new Camera();
-            obj = new GameObject();
-            obj.Position = new Point(5, 5);
+
+
+            int w = 10;
+            int h = 10;
+            int[,] textIndexes = new int[w, h];
+
+            for (int i = 0; i < w; i++)
+                for (int j = 0; j < h; j++)
+                    textIndexes[i, j] = 0;
+
+            tileMap = new TileMap(textIndexes);
+
+            GameObject obj = new GameObject()
+            {
+                ObjectSprite = new Sprite(1),
+                Position = new Point(5, 6)
+            };
+
+            tileMap.Tiles[5, 6].Objects.Add(obj);
+            
+            
 
             
             base.Initialize();
@@ -52,15 +72,8 @@ namespace TownSimulator
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            //Load un fichier de layer
-            tileMap.Layers.Add(TileLayer.FromFile(Content, "Content/Layers/Layer.layer"));
-            //Load un fichier de collision
-            tileMap.CollisionLayer = CollisionLayer.FromFile("Content/Layers/Collision.collayer");
-
-
-            Texture2D spriteText = Content.Load<Texture2D>("Tiles/rock");
-            obj.ObjectSprite = new Sprite(spriteText);
-
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/grass"), 0);
+            TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
         }
 
         protected override void UnloadContent()
@@ -74,35 +87,36 @@ namespace TownSimulator
             InputHelper.Update();
 
             UpdateCameraMovement();
-            UpdateObjectMovement(gameTime);
+            //UpdateObjectMovement(gameTime);
+
+            tileMap.Update(gameTime);            
            
             
             base.Update(gameTime);
         }
 
-        private void UpdateObjectMovement(GameTime gameTime)
-        {
+        //private void UpdateObjectMovement(GameTime gameTime)
+        //{
 
-            Point motion = Point.Zero;
-            int speed = 1;
+        //    Point motion = Point.Zero;
+        //    int speed = 1;
 
-            if (InputHelper.IsKeyDown(Keys.W))
-                motion.Y--;
-            if (InputHelper.IsKeyDown(Keys.S))
-                motion.Y++;
-            if (InputHelper.IsKeyDown(Keys.A))
-                motion.X--;
-            if (InputHelper.IsKeyDown(Keys.D))
-                motion.X++;
-
-
-            obj.Position = new Point(obj.Position.X + motion.X * speed, obj.Position.Y + motion.Y * speed);
+        //    if (InputHelper.IsKeyDown(Keys.W))
+        //        motion.Y--;
+        //    if (InputHelper.IsKeyDown(Keys.S))
+        //        motion.Y++;
+        //    if (InputHelper.IsKeyDown(Keys.A))
+        //        motion.X--;
+        //    if (InputHelper.IsKeyDown(Keys.D))
+        //        motion.X++;
 
 
-            obj.Update(gameTime);
-            //obj.IsSolid = true;
+        //    obj.Position = new Point(obj.Position.X + motion.X * speed, obj.Position.Y + motion.Y * speed);
 
-        }
+
+        //    obj.Update(gameTime);
+
+        //}
 
         private void UpdateCameraMovement()
         {
@@ -127,18 +141,18 @@ namespace TownSimulator
             
             tileMap.Draw(spriteBatch, camera);
 
-            spriteBatch.Begin(
-               SpriteSortMode.Texture,
-               BlendState.AlphaBlend,
-               null,
-               null,
-               null,
-               null,
-               camera.TransformMatrix);
+            //spriteBatch.Begin(
+            //   SpriteSortMode.Texture,
+            //   BlendState.AlphaBlend,
+            //   null,
+            //   null,
+            //   null,
+            //   null,
+            //   camera.TransformMatrix);
 
-            obj.Draw(spriteBatch);
+            ////obj.Draw(spriteBatch);
 
-            spriteBatch.End();
+            //spriteBatch.End();
 
             base.Draw(gameTime);
         }

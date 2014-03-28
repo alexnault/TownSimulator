@@ -34,8 +34,8 @@ namespace TileEngine
         public static Vector2 ConvertCellToPosition(Point cell)
         {
             return new Vector2(
-                cell.X * TileWidth + TileWidth / 2,
-                cell.Y * TileHeight + TileHeight / 2);
+                cell.X * TileWidth + TileWidth,
+                cell.Y * TileHeight + TileHeight);
 
         }
     }

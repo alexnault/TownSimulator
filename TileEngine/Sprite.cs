@@ -45,14 +45,14 @@ namespace TileEngine
             }
         }
 
-        public Texture2D Texture { get; set; }
+        public int TextureID { get; set; }
         public Rectangle BoundingBox { get; private set; }
 
         
-        public Sprite(Texture2D texture, int posX = 0, int posY = 0, int width = 32, int height = 32)
+        public Sprite(int textureID, int posX = 0, int posY = 0, int width = 32, int height = 32)
         {            
             PixelPosition = new Vector2(posX, posY);
-            Texture = texture;
+            TextureID = textureID;
             Width = width;
             Height = height;
             BoundingBox = new Rectangle((int)PixelPosition.X, (int)PixelPosition.Y, width, height);
@@ -65,7 +65,7 @@ namespace TileEngine
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(Texture, BoundingBox, Color.White);
+            spriteBatch.Draw(TextureManager.Get(TextureID), BoundingBox, Color.White);
         }
 
     }
