@@ -14,7 +14,8 @@ namespace TownSimulator
         {
             Tree,
             Woodcutter,
-            WoodPile
+            WoodPile,
+            Rock
         }
 
         public static ObjectToAdd State { get; private set; }
@@ -39,6 +40,10 @@ namespace TownSimulator
             else if (InputHelper.IsNewKeyPressed(Keys.V))
             {
                 State = ObjectToAdd.Woodcutter;
+            }
+            else if (InputHelper.IsNewKeyPressed(Keys.R))
+            {
+                State = ObjectToAdd.Rock;
             }
             else if(InputHelper.IsNewKeyPressed(Keys.S))
             {
@@ -72,7 +77,9 @@ namespace TownSimulator
 
                         case ObjectToAdd.WoodPile:
                             TileMap.Tiles[tilePos.X, tilePos.Y].AddObject(new TownSimulator.Items.WoodPile());
-
+                            break;
+                        case ObjectToAdd.Rock:
+                            TileMap.Tiles[tilePos.X, tilePos.Y].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
                             break;
                     }
 
