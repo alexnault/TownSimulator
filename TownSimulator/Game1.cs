@@ -46,7 +46,7 @@ namespace TownSimulator
             GenerateMap();
             ///////////////////////////////////////////
 
-            town = new Town(5);
+            town = new Town(1);
 
             // Villager 0 has to make a decision
             town.Villagers[0].MakeDecision.Release();
@@ -133,8 +133,9 @@ namespace TownSimulator
 
         protected override void Update(GameTime gameTime)
         {   
-            InputHelper.Update();
+            InputHelper.Update(camera);
 
+            GodMode.Update(gameTime, camera, town);
             UpdateCameraMovement();
             //UpdateObjectMovement(gameTime);
 

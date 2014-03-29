@@ -33,10 +33,10 @@ namespace TownSimulator.Villagers
             CurrentTask = WoodcutterTask.None;
             //Position = new Point(0, 1);
 
-            ObjectSprite = new TileEngine.Sprite(3, Position.X, Position.Y, 32, 32, 0.5f);
+            ObjectSprite = new TileEngine.Sprite(3, Position.X, Position.Y, 32, 32);
 
             XDrawOffset = 0;
-            YDrawOffset = 0;
+            YDrawOffset = 0;   
         }
 
         protected override void Run()

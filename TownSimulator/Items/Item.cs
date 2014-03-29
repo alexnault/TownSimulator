@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TownSimulator.Items
 {
-    abstract class Item : TileEngine.GameObject
+    public abstract class Item : TileEngine.GameObject
     {
         public Item() { }
     }

@@ -8,7 +8,7 @@ using TownSimulator.Villagers;
 
 namespace TownSimulator
 {
-    class Town
+    public class Town
     {
         public Villager[] Villagers { get; private set; }
 

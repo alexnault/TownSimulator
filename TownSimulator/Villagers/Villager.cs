@@ -7,7 +7,7 @@ using TownSimulator.Items;
 
 namespace TownSimulator.Villagers
 {
-    abstract class Villager : TileEngine.MovingGameObject
+    public abstract class Villager : TileEngine.MovingGameObject
     {
 
         public string FirstName { get; private set; }
@@ -40,7 +40,7 @@ namespace TownSimulator.Villagers
             HomeTown = hometown;
 
             MakeDecision = new Semaphore(0, 1); // Initially sleeping
-
+                      
             thread = new Thread(new ThreadStart(Start));
             thread.Priority = ThreadPriority.Lowest;
             thread.Start();

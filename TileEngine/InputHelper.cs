@@ -9,23 +9,52 @@ namespace TileEngine
 {
     public static class InputHelper
     {
-        static KeyboardState newState;
-        static KeyboardState oldState;
+        private static KeyboardState newKBState;
+        private static KeyboardState oldKBState;
+        private static MouseState oldMouseState;
+        private static MouseState newMouseState;
 
-        public static void Update()
+        private static Camera _camera;
+
+        public static Vector2 MousePosition
         {
-            oldState = newState;
-            newState = Keyboard.GetState();
+            get { return new Vector2(newMouseState.X, newMouseState.Y); }
+        }
+
+
+        public static void Update(Camera camera)
+        {
+            oldKBState = newKBState;
+            newKBState = Keyboard.GetState();
+
+            oldMouseState = newMouseState;
+            newMouseState = Mouse.GetState();
+
+            _camera = camera;
         }
 
         public static bool IsNewKeyPressed(Keys key)
         {
-            return (newState.IsKeyDown(key) && oldState.IsKeyUp(key));
+            return (newKBState.IsKeyDown(key) && oldKBState.IsKeyUp(key));
         }
 
         public static bool IsKeyDown(Keys key)
         {
-            return newState.IsKeyDown(key);
+            return newKBState.IsKeyDown(key);
+        }
+
+        public static bool IsLeftMouseButtonClicked()
+        {
+            return (newMouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released);
+        }
+        public static bool IsRightMouseButtonClicked()
+        {
+            return (newMouseState.RightButton == ButtonState.Pressed && oldMouseState.RightButton == ButtonState.Released);
+        }
+
+        public static bool IsMouseColliding(Rectangle rect)
+        {
+            return rect.Intersects(new Rectangle(newMouseState.X + (int)_camera.Position.X, newMouseState.Y + (int)_camera.Position.Y, 1, 1));
         }
 
     }
