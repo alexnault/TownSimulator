@@ -72,6 +72,7 @@ namespace TownSimulator.Villagers
                         {
                             if (IsNextTo(Position, tree2.Position))
                             {
+                                SetFacingDirection(tree2.Position);
                                 CutTree(tree2);
                                 CurrentTask = WoodcutterTask.GoingToLumberMill;
                                 MakeDecision.Release(); // May want to remove this later on

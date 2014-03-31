@@ -37,16 +37,13 @@ namespace TownSimulator
          
         protected override void Initialize()
         {
+            spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            TextureManager.Initialize();
             camera = new Camera();
-
-            //////////////////////////////////////////
-            //Creation of the TileMap
             GenerateMap();
-            ///////////////////////////////////////////
-
-            town = new Town(1);                        
+            town = new Town(1);
+            TextureManager.Initialize();
+            DrawingUtils.Initialize(spriteBatch, camera);
 
             base.Initialize();
         }
@@ -65,38 +62,26 @@ namespace TownSimulator
             TileMap.Initialize(textIndexes);
 
 
-            GameObject[] solidObjects = new GameObject[h - 1];
-            for (int i = 0; i < h - 1; i++)
-            {
-                solidObjects[i] = new GameObject()
-                {
-                    IsSolid = true,
-                    ObjectSprite = new Sprite(6)
-                };
-            }
+            //GameObject[] solidObjects = new GameObject[h - 1];
+            //for (int i = 0; i < h - 1; i++)
+            //{
+            //    solidObjects[i] = new GameObject()
+            //    {
+            //        IsSolid = true,
+            //        ObjectSprite = new Sprite(6)
+            //    };
+            //}
 
-            for (int y = 0; y < h - 1; y++)
-            {
-                Tile t = TileMap.Tiles[1, y];
-               // solidObjects[y].Position = new Point(1, y);
-                t.AddObject(solidObjects[y]);
-            }
+            //for (int y = 0; y < h - 1; y++)
+            //{
+            //    Tile t = TileMap.Tiles[1, y];
+            //   // solidObjects[y].Position = new Point(1, y);
+            //    t.AddObject(solidObjects[y]);
+            //}
 
             //TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
             TileMap.Tiles[7, 8].AddObject(new Buildings.LumberMill());
 
-
-            GameObject obj1 = new GameObject()
-            {
-                ObjectSprite = new Sprite(7, 0, 0, 69, 77),
-                XDrawOffset = -16,
-                YDrawOffset = -32
-            };
-
-            TileMap.Tiles[2, 0].AddObject(obj1);
-            TileMap.Tiles[2, 1].AddObject(obj1);
-            TileMap.Tiles[3, 0].AddObject(obj1);
-            TileMap.Tiles[3, 1].AddObject(obj1);
 
             TileMap.Tiles[5, 1].AddObject(new Scenery.Tree());
             TileMap.Tiles[7, 3].AddObject(new Scenery.Tree());
@@ -109,8 +94,7 @@ namespace TownSimulator
 
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            
 
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
@@ -119,7 +103,10 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/trees.png"), 5);      
             TextureManager.Add(Content.Load<Texture2D>("Sprites/rock"), 6);
-            TextureManager.Add(Content.Load<Texture2D>("Sprites/houses"), 7);                  
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/houses"), 7);
+            TextureManager.Add(Content.Load<Texture2D>("texture1px"), 10);
+
+            DrawingUtils.Font = Content.Load<SpriteFont>("Fonts/font1");
               
         }
 
@@ -174,6 +161,7 @@ namespace TownSimulator
 
             TileMap.Draw(spriteBatch, camera);
             town.Draw(spriteBatch);
+            GodMode.Draw();
             
             spriteBatch.End();
 

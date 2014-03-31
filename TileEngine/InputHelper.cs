@@ -43,16 +43,16 @@ namespace TileEngine
             return newKBState.IsKeyDown(key);
         }
 
-        public static bool IsLeftMouseButtonClicked()
+        public static bool LeftMouseButtonClicked()
         {
             return (newMouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released);
         }
-        public static bool IsRightMouseButtonClicked()
+        public static bool RightMouseButtonClicked()
         {
             return (newMouseState.RightButton == ButtonState.Pressed && oldMouseState.RightButton == ButtonState.Released);
         }
 
-        public static bool IsMouseColliding(Rectangle rect)
+        public static bool IsMouseOn(Rectangle rect)
         {
             return rect.Intersects(new Rectangle(newMouseState.X + (int)_camera.Position.X, newMouseState.Y + (int)_camera.Position.Y, 1, 1));
         }

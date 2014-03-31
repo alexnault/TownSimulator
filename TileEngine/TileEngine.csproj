@@ -56,6 +56,7 @@
     <Compile Include="Old TileEngine Files\TileLayer_OLD.cs" />
     <Compile Include="Old TileEngine Files\TileMap_OLD.cs" />
     <Compile Include="TileMap.cs" />
+    <Compile Include="Utils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -41,7 +41,7 @@
     <Compile Include="Buildings\LumberMill.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GodMode.cs" />
-    <Compile Include="House.cs" />
+    <Compile Include="Buildings\House.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\WoodPile.cs" />
     <Compile Include="Program.cs" />
@@ -84,6 +84,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Sprites\woodpile.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\texture1px.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Content\Tiles\bluesquare.png">
@@ -141,6 +144,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <None Include="Content\Fonts\font1.xnb">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Content\Layers\Collision.collayer">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

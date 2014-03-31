@@ -67,8 +67,9 @@ namespace TileEngine
                 }
             }
         }
+
         
-        private void SetFacingDirection(Point newDirection)
+        protected void SetFacingDirection(Point newDirection)
         {            
             if (Position.Y == newDirection.Y)
             {
