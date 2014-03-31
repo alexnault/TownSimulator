@@ -10,18 +10,25 @@ namespace TownSimulator
 {
     public class Town
     {
-        public Villager[] Villagers { get; private set; }
+        public Dictionary<int, Villager> Villagers { get; private set; }
+        //public Villager[] Villagers { get; private set; }
+        public int NbVillagers { get; private set; }
 
-        protected uint NbVillagers;
+        public Semaphore AITurn;
 
-        public Town(uint nbVillagers)
+        public Town(uint initNbVillagers)
         {
-            NbVillagers = nbVillagers;
+            NbVillagers = 0;
 
-            Villagers = new Villager[nbVillagers];
-            for (int i = 0; i < nbVillagers; i++)
+            AITurn = new Semaphore(1, 1);
+            
+            //Villagers = new Villager[nbVillagers];
+            Villagers = new Dictionary<int, Villager>();
+            for (int i = 0; i < initNbVillagers; i++)
             {
-                Villagers[i] = new Woodcutter("Bob", "Gratton", this);
+                // Automaticly added to this town
+                new Woodcutter("Bob", "Gratton", this);
+                //Villagers[i] = new Woodcutter("Bob", "Gratton", this);
             }
         }
 
@@ -41,6 +48,12 @@ namespace TownSimulator
                 Villagers[i].Draw(spriteBatch);
             }
             // TODO draw items, buildings, etc.
+        }
+
+        public void AddVillager(Villager villager)
+        {
+            Villagers.Add(NbVillagers, villager);
+            NbVillagers++;
         }
     }
 }

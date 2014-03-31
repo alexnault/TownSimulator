@@ -38,9 +38,10 @@ namespace TownSimulator.Villagers
             Thirst = 0;
 
             HomeTown = hometown;
+            hometown.AddVillager(this);
 
-            MakeDecision = new Semaphore(0, 1); // Initially sleeping
-                      
+            // TODO MIGHT BE DANGEROUS BECAUSE IT IS DONE BEFORE WOODCUTTER CONSTR.
+            MakeDecision = new Semaphore(1, 1);
             thread = new Thread(new ThreadStart(Start));
             thread.Priority = ThreadPriority.Lowest;
             thread.Start();
@@ -54,6 +55,11 @@ namespace TownSimulator.Villagers
         abstract protected void Run();
 
         protected override void PathBlocked()
+        {
+            MakeDecision.Release();
+        }
+
+        protected override void DestinationReached()
         {
             MakeDecision.Release();
         }
