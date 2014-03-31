@@ -41,6 +41,5 @@ namespace TileEngine
                 ObjectSprite.Draw(spriteBatch, Position.X * Engine.TileWidth + XDrawOffset, Position.Y * Engine.TileHeight + YDrawOffset);
             }
         }
-
     }
 }

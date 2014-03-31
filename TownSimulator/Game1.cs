@@ -46,11 +46,7 @@ namespace TownSimulator
             GenerateMap();
             ///////////////////////////////////////////
 
-            town = new Town(1);
-
-            // Villager 0 has to make a decision
-            town.Villagers[0].MakeDecision.Release();
-                        
+            town = new Town(1);                        
 
             base.Initialize();
         }
@@ -86,7 +82,9 @@ namespace TownSimulator
                 t.AddObject(solidObjects[y]);
             }
 
-            TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
+            //TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
+            TileMap.Tiles[7, 8].AddObject(new Buildings.LumberMill());
+
 
             GameObject obj1 = new GameObject()
             {

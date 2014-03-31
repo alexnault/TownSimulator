@@ -45,11 +45,12 @@ namespace TownSimulator
             {
                 State = ObjectToAdd.Rock;
             }
-            else if(InputHelper.IsNewKeyPressed(Keys.S))
-            {
-                foreach (TownSimulator.Villagers.Villager v in town.Villagers)
-                    v.MakeDecision.Release();
-            }
+            // TODO restore
+            //else if(InputHelper.IsNewKeyPressed(Keys.S))
+            //{
+            //    foreach (TownSimulator.Villagers.Villager v in town.Villagers)
+            //        v.MakeDecision.Release();
+            //}
 
 
         }

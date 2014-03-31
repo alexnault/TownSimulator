@@ -56,12 +56,14 @@ namespace TileEngine
                     SetFacingDirection(Path[0]);
                     Position = Path[0];
                     Path.RemoveAt(0);
+
+                    if (Path.Count == 0)
+                        DestinationReached(); // Event
                 }
-                else
+                else // Path has been blocked
                 {
-                    // Path has been blocked
                     Path.Clear();
-                    PathBlocked(); // event
+                    PathBlocked(); // Event
                 }
             }
         }
@@ -91,5 +93,6 @@ namespace TileEngine
         }
 
         protected virtual void PathBlocked() { }
+        protected virtual void DestinationReached() { }
     }
 }

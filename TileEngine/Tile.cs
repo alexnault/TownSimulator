@@ -20,12 +20,14 @@ namespace TileEngine
             get
             {
                 bool isItSolid = _isSolid;
-
                 foreach (GameObject obj in _objects)
                 {
-                    if(obj.IsSolid) isItSolid = true;
+                    if (obj.IsSolid)
+                    {
+                        isItSolid = true;
+                        break;
+                    }
                 }
-
                 return isItSolid;
             }
         }
@@ -40,12 +42,22 @@ namespace TileEngine
             Position = new Point(posX, posY);
         }
 
-        public bool Contains(Type typeSearching, int nb = 1)
+        public T GetFirstObject<T>() where T : GameObject
+        {
+            foreach (GameObject go in _objects)
+            {
+                if (go.GetType() == typeof(T))
+                    return (T)go;
+            }
+            return null;
+        }
+
+        public bool ContainsObject<T>(int nb = 1) where T : GameObject
         {
             int count = 0;
             foreach (GameObject go in _objects)
             {
-                if (go.GetType() == typeSearching)
+                if (go.GetType() == typeof(T))
                 {
                     count++;
                     if (count == nb) return true;
