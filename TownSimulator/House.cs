@@ -18,39 +18,54 @@ namespace TownSimulator
 
         }
 
-
-        public static void AddToTiles(House house, List<Tile> tiles)
+        public static void AddToTiles(House house, Tile bottomCenter)
         {
-            Tile finalTile = GetLowerRightile(tiles);
+            int width = house.ObjectSprite.Width;
+            int height = house.ObjectSprite.Height;
 
-            tiles.Remove(finalTile);
+            int overflowX = width - Engine.TileWidth;
+            int overflowY = height - Engine.TileHeight;
 
-            foreach (Tile t in tiles)
-            {
-                t.AddObject(house);
-            }
+            int leftOverflow = overflowX / 2;
+            int rightOverflow = overflowY / 2;
+
+
+
         }
 
-        private static Tile GetLowerRightile(List<Tile> tiles)
-        {
-            Tile lrTile = null;
-            int mostRight = -1;
-            int mostDown = -1;
 
-            foreach (Tile t in tiles)
-            {
-                if (t.Position.X > mostRight && t.Position.Y > mostDown)
-                {
-                    mostDown = t.Position.Y;
-                    mostRight = t.Position.X;
+        //public static void AddToTiles(House house, List<Tile> tiles)
+        //{
+        //    Tile finalTile = GetLowerRightile(tiles);
+
+        //    tiles.Remove(finalTile);
+
+        //    foreach (Tile t in tiles)
+        //    {
+        //        t.AddObject(house);
+        //    }
+        //}
+
+        //private static Tile GetLowerRightile(List<Tile> tiles)
+        //{
+        //    Tile lrTile = null;
+        //    int mostRight = -1;
+        //    int mostDown = -1;
+
+        //    foreach (Tile t in tiles)
+        //    {
+        //        if (t.Position.X > mostRight && t.Position.Y > mostDown)
+        //        {
+        //            mostDown = t.Position.Y;
+        //            mostRight = t.Position.X;
                     
-                    lrTile = t;
-                }
+        //            lrTile = t;
+        //        }
 
-            }
+        //    }
 
-            return lrTile;
-        }
+        //    return lrTile;
+        //}
 
 
 
