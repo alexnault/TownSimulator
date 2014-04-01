@@ -42,7 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Camera.cs" />
-    <Compile Include="MovingGameObject.cs" />
+    <Compile Include="Actor.cs" />
     <Compile Include="Old TileEngine Files\CollisionLayer.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameObject.cs" />

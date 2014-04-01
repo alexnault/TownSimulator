@@ -15,16 +15,16 @@ namespace TileEngine
         Up = 3
     }
 
-    public class MovingGameObject : GameObject
+    public class Actor : GameObject
     {
         private TimeSpan lastGameTime;
 
         public TimeSpan MovingTime { get; set; }    //Time to move between 2 tiles
-        public List<Point> Path { get; set; }
+        public List<Point> Path { get; protected set; }
         public Direction CurrentDirection { get; private set; }
 
 
-        public MovingGameObject(int movingTimeMS = 100)
+        public Actor(int movingTimeMS = 100)
             :base()
         {
             lastGameTime = new TimeSpan();
@@ -53,9 +53,11 @@ namespace TileEngine
 
                 if (!TileMap.Tiles[nextPoint.X, nextPoint.Y].IsSolid)
                 {
-                    SetFacingDirection(Path[0]);
-                    Position = Path[0];
-                    Path.RemoveAt(0);
+                    SetFacingDirection(nextPoint);
+                    Position = new Point(nextPoint.X, nextPoint.Y);
+                    //TileMap.Tiles[Position.X, Position.Y].RemoveObject(this);
+                    //TileMap.Tiles[Path[0].X, Path[0].X].AddObject(this);
+                    Path.Remove(nextPoint);
 
                     if (Path.Count == 0)
                         DestinationReached(); // Event

@@ -49,12 +49,11 @@ namespace TownSimulator
             {
                 _state = ObjectToAdd.House;
             }
-            // TODO restore
-            //else if(InputHelper.IsNewKeyPressed(Keys.S))
-            //{
-            //    foreach (TownSimulator.Villagers.Villager v in town.Villagers)
-            //        v.MakeDecision.Release();
-            //}
+            else if (InputHelper.IsNewKeyPressed(Keys.S))
+            {
+                foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
+                    v.Value.MakeDecision.Release();
+            }
 
 
         }

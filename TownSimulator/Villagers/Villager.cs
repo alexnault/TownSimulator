@@ -7,7 +7,7 @@ using TownSimulator.Items;
 
 namespace TownSimulator.Villagers
 {
-    public abstract class Villager : TileEngine.MovingGameObject
+    public abstract class Villager : TileEngine.Actor
     {
 
         public string FirstName { get; private set; }
