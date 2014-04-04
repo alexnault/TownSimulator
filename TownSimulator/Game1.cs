@@ -80,6 +80,8 @@ namespace TownSimulator
             //}
 
             //TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
+            
+            //GameObject.PlaceBigObjectCentered(new Buildings.LumberMill(), 
             TileMap.Tiles[7, 8].AddObject(new Buildings.LumberMill());
 
 
@@ -103,7 +105,7 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/trees.png"), 5);      
             TextureManager.Add(Content.Load<Texture2D>("Sprites/rock"), 6);
-            TextureManager.Add(Content.Load<Texture2D>("Sprites/houses"), 7);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/house1"), 7);
             TextureManager.Add(Content.Load<Texture2D>("texture1px"), 10);
 
             DrawingUtils.Font = Content.Load<SpriteFont>("Fonts/font1");

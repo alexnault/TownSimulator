@@ -26,7 +26,7 @@ namespace TownSimulator.Scenery
             //SomeoneIsCuttingIt = false;
 
             ObjectSprite = new Sprite(5);
-            int spriteType = _rand.Next(0, 2);
+            int spriteType = _rand.Next(0, 4);
             switch (spriteType)
             {
                 case(0):
@@ -34,14 +34,28 @@ namespace TownSimulator.Scenery
                     ObjectSprite.Height = 128;
                     XDrawOffset = -16;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(384, 0, 64, 128);
+                    ObjectSprite.TexturePortion = new Rectangle(256, 0, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case(1):
                     ObjectSprite.Width = 64;
                     ObjectSprite.Height = 128;
                     XDrawOffset = -16;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(448, 0, 64, 128);
+                    ObjectSprite.TexturePortion = new Rectangle(320, 0, ObjectSprite.Width, ObjectSprite.Height);
+                    break;
+                case (2):
+                    ObjectSprite.Width = 96;
+                    ObjectSprite.Height = 128;
+                    XDrawOffset = -32;
+                    YDrawOffset = -96;
+                    ObjectSprite.TexturePortion = new Rectangle(0, 128, ObjectSprite.Width, ObjectSprite.Height);
+                    break;
+                case (3):
+                    ObjectSprite.Width = 96;
+                    ObjectSprite.Height = 128;
+                    XDrawOffset = -32;
+                    YDrawOffset = -96;
+                    ObjectSprite.TexturePortion = new Rectangle(96, 128, ObjectSprite.Width, ObjectSprite.Height);
                     break;
             }
         }
