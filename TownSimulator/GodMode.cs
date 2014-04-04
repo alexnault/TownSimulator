@@ -74,65 +74,72 @@ namespace TownSimulator
 
 
                 tilesToDraw = new Dictionary<Tile, Color>();
-               
+
+                GameObject objToDraw = null;
+                bool draw = false;
 
                 //Handle mouse click on map
                 switch (_state)
                 {
                     case ObjectToAdd.Tree:
 
-                        tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
-                        if (leftDown && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new TownSimulator.Scenery.Tree());
-                        }
+                        objToDraw = new TownSimulator.Scenery.Tree();
+
+                        //tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
+                        if (leftDown && !selectedTile.IsSolid) draw = true;
+                        //{
+                        //    //selectedTile.AddObject(new TownSimulator.Scenery.Tree());
+                        //}
                         break;
 
                     case ObjectToAdd.Woodcutter:
+                        objToDraw = new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town);
 
-                        tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
-                        if (leftClicked && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town));
-                        }
+
+                        if (leftClicked && !selectedTile.IsSolid) draw = true;
+
                         break;
 
                     case ObjectToAdd.WoodPile:
-                        tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
-                        if (leftClicked && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new TownSimulator.Items.WoodPile());
-                        }
+                        
+                        objToDraw = new TownSimulator.Items.WoodPile();
+
+                        if (leftClicked && !selectedTile.IsSolid) draw = true;
+
                         break;
                     case ObjectToAdd.Rock:
-                        tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
-                        if (leftDown && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
-                        } 
+
+                        objToDraw = new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true };
+
+                        if (leftDown && !selectedTile.IsSolid) draw = true;
+
                         break;
                     case ObjectToAdd.House:
 
-                        //TODO non optimal, TilesUsedToPlaceObject est caller 2 fois
-                        Buildings.House house = new Buildings.House();
 
-                        Point size = house.GetTileSize();
-                        List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
-                        if (tiles != null)
-                        {
-                            foreach (Tile t in tiles)
-                            {
-                                tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
-                            }
-                           
+                        objToDraw = new Buildings.House();
 
-                            if (leftClicked)
-                            {
-                                selectedTile.AddObject(new Buildings.House());
-                            }
-                        }
+                        if (leftClicked) draw = true;
                         
                         break;
+                }
+
+                if(objToDraw != null)
+                {
+                    Point size = objToDraw.GetTileSize();
+                    List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                    if(tiles != null)
+                    {
+                        foreach (Tile t in tiles)
+                        {
+                            tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                        }
+                    }
+                }
+
+                if (draw)
+                {
+                    selectedTile.AddObject(objToDraw);
                 }
 
             }

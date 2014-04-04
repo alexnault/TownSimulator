@@ -23,14 +23,12 @@ namespace TileEngine
         public List<Point> Path { get; protected set; }
         public Direction CurrentDirection { get; private set; }
 
-
         public Actor(int movingTimeMS = 100)
             :base()
         {
             lastGameTime = new TimeSpan();
             MovingTime = TimeSpan.FromMilliseconds(movingTimeMS);
         }
-
 
         public override void Update(GameTime gameTime)
         {
@@ -54,9 +52,10 @@ namespace TileEngine
                 if (!TileMap.Tiles[nextPoint.X, nextPoint.Y].IsSolid)
                 {
                     SetFacingDirection(nextPoint);
-                    Position = new Point(nextPoint.X, nextPoint.Y);
-                    //TileMap.Tiles[Position.X, Position.Y].RemoveObject(this);
-                    //TileMap.Tiles[Path[0].X, Path[0].X].AddObject(this);
+                    
+                    TileMap.Tiles[Path[0].X, Path[0].Y].AddObject(this);
+                    TileMap.Tiles[Position.X, Position.Y].RemoveObject(this);
+                    
                     Path.Remove(nextPoint);
 
                     if (Path.Count == 0)

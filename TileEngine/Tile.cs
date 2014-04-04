@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 
 namespace TileEngine
 {
     public class Tile
     {
+        ReaderWriterLockSlim crewLock;
 
         private bool _isSolid;
         private List<GameObject> _objects;
@@ -19,6 +21,7 @@ namespace TileEngine
         {
             get
             {
+                crewLock.EnterReadLock();
                 bool isItSolid = _isSolid;
                 foreach (GameObject obj in _objects)
                 {
@@ -28,6 +31,7 @@ namespace TileEngine
                         break;
                     }
                 }
+                crewLock.ExitReadLock();
                 return isItSolid;
             }
         }
@@ -35,6 +39,8 @@ namespace TileEngine
 
         public Tile(int textureID, int posX, int posY, bool isSolid = false)
         {
+            crewLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
+
             _isSolid = isSolid;
             _objects = new List<GameObject>();
 
@@ -47,51 +53,79 @@ namespace TileEngine
 
         public T GetFirstObject<T>() where T : GameObject
         {
+            crewLock.EnterReadLock();
+            T obj = null;
             foreach (GameObject go in _objects)
             {
                 if (go.GetType() == typeof(T))
-                    return (T)go;
+                {
+                    obj = (T)go;
+                    break;
+                }
             }
-            return null;
+            
+            crewLock.ExitReadLock();
+            return obj;
         }
 
         public bool ContainsObject<T>(int nb = 1) where T : GameObject
         {
+            crewLock.EnterReadLock();
+            bool contains = false;
             int count = 0;
             foreach (GameObject go in _objects)
             {
                 if (go.GetType() == typeof(T))
                 {
                     count++;
-                    if (count == nb) return true;
+                    
+                    if (count == nb)
+                    {
+                        contains = true;
+                        break;
+                    }
                 }
             }
-            return false;
+            
+            crewLock.ExitReadLock();
+            return contains;
         }
 
         public void Update(GameTime gameTime)
         {
-            foreach (GameObject obj in _objects)
+            crewLock.EnterWriteLock();
+            foreach (GameObject obj in _objects.ToList())
             {
                 obj.Update(gameTime);
             }
+            crewLock.ExitWriteLock();
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
+            crewLock.EnterReadLock();
             foreach (GameObject obj in _objects)
             {
                 obj.Draw(spriteBatch);
             }
+            crewLock.ExitReadLock();
         }
+
+        //public void AddObject(GameObject obj)
+        //{
+           
+           
+        //}
 
         public void AddObject(GameObject obj)
         {
             AddObject(obj, true);
         }
 
+
         private void AddObject(GameObject obj, bool isMainTile)
         {
+            crewLock.EnterWriteLock();
             if (obj.IsBig && isMainTile)
             {
                 PlaceBigObjectCentered(obj);
@@ -101,7 +135,8 @@ namespace TileEngine
                 _objects.Add(obj);
             }
 
-            obj.Position = Position;            
+            obj.Position = Position;
+            crewLock.ExitWriteLock();     
         }
         
         private bool PlaceBigObjectCentered(GameObject gameObject)
@@ -150,7 +185,9 @@ namespace TileEngine
         }
         public void RemoveObject(GameObject obj)
         {
+            crewLock.EnterWriteLock();
             _objects.Remove(obj);
+            crewLock.ExitWriteLock();
         }
     }
 }
