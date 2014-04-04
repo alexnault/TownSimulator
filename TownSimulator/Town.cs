@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,7 +33,7 @@ namespace TownSimulator
             }
         }
 
-        public void Update(Microsoft.Xna.Framework.GameTime gametime)
+        public void Update(GameTime gametime)
         {
             for (int i = 0; i < NbVillagers; i++)
             {

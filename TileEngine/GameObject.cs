@@ -19,91 +19,30 @@ namespace TileEngine
 
         [System.Xml.Serialization.XmlAttribute]
         public bool IsSolid { get; set; }
+
+        //TODO: Change the name
+        public bool IsBig { get; set; }
         
         public GameObject()
         {
             IsSolid = false;
+            IsBig = false;
             Position = new Point(0, 0);
         }
 
-        public static bool PlaceBigObjectCentered(GameObject gameObject, Tile bottomCenter)
+        /// <summary>
+        /// Get the Width and Height of the object in tiles.
+        /// </summary>
+        /// <returns>A point using the X as width in tiles and Y as height in Tiles.</returns>
+        public Point GetTileSize()
         {
-            if (gameObject.ObjectSprite == null) return false;
-
-            bool objectPlaced = false;
-
-            int overflowX = gameObject.ObjectSprite.Width - Engine.TileWidth;
-            int overflowY = gameObject.ObjectSprite.Height - Engine.TileHeight;
+            int overflowX = ObjectSprite.Width - Engine.TileWidth;
+            int overflowY = ObjectSprite.Height - Engine.TileHeight;
 
             int nbTilesWide = (int)Math.Ceiling((double)overflowX / (double)Engine.TileWidth) + 1;
             int nbTilesHigh = (int)Math.Ceiling((double)overflowY / (double)Engine.TileHeight) + 1;
 
-            List<Tile> tiles = GetTileArea(bottomCenter.Position, nbTilesWide, nbTilesHigh);
-            if (tiles != null)
-            {
-                //TODO etre sur que personne touche au TileMap avant que la boucle finisse? Mutex?
-                //Aussi etre sur que les tiles ont toutes ete remplis par les Objects house 
-
-                /////////////////////////////////////////////////////////////////////
-                //Devrait etre atomique / mutex pour que personne n'ajoute rien au tilemap pendant
-
-                foreach (Tile t in tiles)
-                {
-                    if (t.IsSolid) return false;
-                }
-
-                tiles.Remove(bottomCenter);
-
-                foreach (Tile t in tiles)
-                    t.AddObject(gameObject);
-
-                bottomCenter.AddObject(gameObject);
-
-                //////////////////////////////////////////////////////////////////////
-
-                //Set the offset
-                int xOffset = Engine.TileWidth - ((Engine.TileWidth * nbTilesWide - gameObject.ObjectSprite.Width) / 2);
-                int yOffset = (Engine.TileHeight * nbTilesHigh - gameObject.ObjectSprite.Height) + Engine.TileHeight;
-
-                gameObject.XDrawOffset = -xOffset;
-                gameObject.YDrawOffset = -yOffset;
-
-                objectPlaced = true;
-            }
-
-            return objectPlaced;
-        }
-
-        /// <summary>
-        /// Get the tiles from the bottom center going outward.
-        /// </summary>
-        /// <param name="bottomCenter"></param>
-        /// <param name="width">Number of tile wide.</param>
-        /// <param name="height">Number of tile high.</param>
-        /// <returns></returns>
-        public static List<Tile> GetTileArea(Point bottomCenter, int width, int height)
-        {
-            List<Tile> tiles = new List<Tile>();
-
-            for (int x = -(width / 2); x <= (width / 2); x++)
-            {
-                for (int y = -(height - 1); y <= 0; y++)
-                {
-                    int posX = bottomCenter.X + x;
-                    int posY = bottomCenter.Y + y;
-
-                    if (posX < 0 ||
-                        posY < 0 ||
-                        posX >= TileMap.Width ||
-                        posY >= TileMap.Height)
-                    {
-                        return null;
-                    }
-
-                    tiles.Add(TileMap.Tiles[posX, posY]);
-                }
-            }
-            return tiles;
+            return new Point(nbTilesWide, nbTilesHigh);
         }
 
         public virtual void Update(GameTime gameTime)
@@ -118,8 +57,13 @@ namespace TileEngine
         {
             if (ObjectSprite != null)
             {
-                ObjectSprite.Draw(spriteBatch, Position.X * Engine.TileWidth + XDrawOffset, Position.Y * Engine.TileHeight + YDrawOffset);
+                Vector2 posPixels = new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
+
+                DrawingUtils.DrawRectangle(new Rectangle((int)posPixels.X, (int)posPixels.Y, Engine.TileWidth, Engine.TileHeight), Color.Blue);
+                ObjectSprite.Draw(spriteBatch, (int)posPixels.X + XDrawOffset, (int)posPixels.Y + YDrawOffset);
             }
+
+
         }
 
     }

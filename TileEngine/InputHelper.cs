@@ -47,9 +47,19 @@ namespace TileEngine
         {
             return (newMouseState.LeftButton == ButtonState.Pressed && oldMouseState.LeftButton == ButtonState.Released);
         }
+
+        public static bool LeftMouseButtonDown()
+        {
+            return (newMouseState.LeftButton == ButtonState.Pressed);
+        }
+
         public static bool RightMouseButtonClicked()
         {
             return (newMouseState.RightButton == ButtonState.Pressed && oldMouseState.RightButton == ButtonState.Released);
+        }
+        public static bool RightMouseButtonDown()
+        {
+            return (newMouseState.RightButton == ButtonState.Pressed);
         }
 
         public static bool IsMouseOn(Rectangle rect)

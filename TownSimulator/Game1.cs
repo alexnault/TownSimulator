@@ -99,7 +99,7 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
-            TextureManager.Add(Content.Load<Texture2D>("Sprites/lumberjack_sheet_small"), 3);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/lumberjack_sheet"), 3);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/woodpile"), 4);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/trees.png"), 5);      
             TextureManager.Add(Content.Load<Texture2D>("Sprites/rock"), 6);

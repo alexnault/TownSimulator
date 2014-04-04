@@ -14,6 +14,7 @@ namespace TownSimulator.Buildings
         {
             ObjectSprite = new Sprite(7, 0, 0, 69, 77);
             IsSolid = true;
+            IsBig = true;
         }        
     }
 }

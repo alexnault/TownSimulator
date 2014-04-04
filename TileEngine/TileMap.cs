@@ -160,6 +160,41 @@ namespace TileEngine
             //spriteBatch.End();
         }
 
+        
+
+
+        /// <summary>
+        /// Get the tiles from the bottom center going outward.
+        /// </summary>
+        /// <param name="bottomCenter"></param>
+        /// <param name="width">Number of tile wide.</param>
+        /// <param name="height">Number of tile high.</param>
+        /// <returns></returns>
+        public static List<Tile> GetTileArea(Point bottomCenter, int width, int height)
+        {
+            List<Tile> tiles = new List<Tile>();
+
+            for (int x = -(width / 2); x <= (width / 2); x++)
+            {
+                for (int y = -(height - 1); y <= 0; y++)
+                {
+                    int posX = bottomCenter.X + x;
+                    int posY = bottomCenter.Y + y;
+
+                    if (posX < 0 ||
+                        posY < 0 ||
+                        posX >= Width ||
+                        posY >= Height)
+                    {
+                        return null;
+                    }
+
+                    tiles.Add(Tiles[posX, posY]);
+                }
+            }
+            return tiles;
+        }
+
 
         public static T FindClosest<T>(Point origin, int maxDistance = 30) where T : GameObject
         {

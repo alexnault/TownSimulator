@@ -65,11 +65,13 @@ namespace TownSimulator
             Point tilePos = Engine.ConvertPositionToCell(InputHelper.MousePosition + camera.Position);
             Tile selectedTile;
 
-            if (tilePos.X > 0 && tilePos.X < TileMap.Width && tilePos.Y > 0 && tilePos.Y < TileMap.Height)
+            if (tilePos.X >= 0 && tilePos.X < TileMap.Width && tilePos.Y >= 0 && tilePos.Y < TileMap.Height)
             {
                 selectedTile = TileMap.Tiles[tilePos.X, tilePos.Y];
 
                 bool leftClicked = InputHelper.LeftMouseButtonClicked() && InputHelper.IsMouseOn(mapRect);
+                bool leftDown = InputHelper.LeftMouseButtonDown() && InputHelper.IsMouseOn(mapRect);
+
 
                 tilesToDraw = new Dictionary<Tile, Color>();
                
@@ -80,7 +82,7 @@ namespace TownSimulator
                     case ObjectToAdd.Tree:
 
                         tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
-                        if (leftClicked && !selectedTile.IsSolid)
+                        if (leftDown && !selectedTile.IsSolid)
                         {
                             selectedTile.AddObject(new TownSimulator.Scenery.Tree());
                         }
@@ -104,7 +106,7 @@ namespace TownSimulator
                         break;
                     case ObjectToAdd.Rock:
                         tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
-                        if (leftClicked && !selectedTile.IsSolid)
+                        if (leftDown && !selectedTile.IsSolid)
                         {
                             selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
                         } 
@@ -114,7 +116,8 @@ namespace TownSimulator
                         //TODO non optimal, TilesUsedToPlaceObject est caller 2 fois
                         Buildings.House house = new Buildings.House();
 
-                        List<Tile> tiles = GameObject.GetTileArea(selectedTile.Position, 3, 3);
+                        Point size = house.GetTileSize();
+                        List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
                         if (tiles != null)
                         {
                             foreach (Tile t in tiles)
@@ -125,7 +128,7 @@ namespace TownSimulator
 
                             if (leftClicked)
                             {
-                                GameObject.PlaceBigObjectCentered(new Buildings.House(), selectedTile);                                
+                                selectedTile.AddObject(new Buildings.House());
                             }
                         }
                         

@@ -48,6 +48,7 @@
     <Compile Include="GameObject.cs" />
     <Compile Include="Pathfinding\Node.cs" />
     <Compile Include="Pathfinding\Pathfinding.cs" />
+    <Compile Include="SerializerUtils.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -56,7 +57,7 @@
     <Compile Include="Old TileEngine Files\TileLayer_OLD.cs" />
     <Compile Include="Old TileEngine Files\TileMap_OLD.cs" />
     <Compile Include="TileMap.cs" />
-    <Compile Include="Utils.cs" />
+    <Compile Include="DrawingUtils.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
