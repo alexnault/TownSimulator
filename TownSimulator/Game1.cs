@@ -51,8 +51,8 @@ namespace TownSimulator
         private void GenerateMap()
         {
             //Static generation of the tile map
-            int w = 10;
-            int h = 20;
+            int w = 30;
+            int h = 30;
             int[,] textIndexes = new int[w, h];
 
             for (int i = 0; i < w; i++)

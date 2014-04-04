@@ -6,12 +6,12 @@ using TileEngine;
 
 namespace TownSimulator.Buildings
 {
-    class LumberMill : GameObject
+    public class LumberMill : Building
     {
         public LumberMill() : base()
         {
             IsSolid = true;
-            ObjectSprite = new Sprite(4); // TODO Need proper sprite
+            ObjectSprite = new Sprite(7, Position.X, Position.Y, 95, 94); // TODO Need proper sprite
         }
     }
 }

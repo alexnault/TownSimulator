@@ -170,13 +170,8 @@ namespace TileEngine
                 //////////////////////////////////////////////////////////////////////
 
                 //Set the offset
-                //int xOffset = Engine.TileWidth - ((Engine.TileWidth * nbTilesWide - gameObject.ObjectSprite.Width) / 2);
-                int xOffset = (gameObject.ObjectSprite.Width - Engine.TileWidth) / 2;
-
-                int yOffset = (Engine.TileHeight * size.Y - gameObject.ObjectSprite.Height) + Engine.TileHeight;
-
-                gameObject.XDrawOffset = -xOffset;
-                gameObject.YDrawOffset = -yOffset;
+                gameObject.XDrawOffset = -((gameObject.ObjectSprite.Width - Engine.TileWidth) / 2);
+                gameObject.YDrawOffset = -(gameObject.ObjectSprite.Height - Engine.TileHeight);
 
                 objectPlaced = true;
             }

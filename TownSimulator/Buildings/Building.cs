@@ -7,12 +7,12 @@ using TileEngine;
 
 namespace TownSimulator.Buildings
 {
-    public class House : GameObject
+    public class Building : GameObject
     {
-        public House()
+        public Building()
             :base()
         {
-            ObjectSprite = new Sprite(7, 0, 0, 69, 77);
+            ObjectSprite = new Sprite(7, Position.X, Position.Y, 95, 94);
             IsSolid = true;
             IsBig = true;
         }        

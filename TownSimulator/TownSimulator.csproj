@@ -38,10 +38,10 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Buildings\Building.cs" />
     <Compile Include="Buildings\LumberMill.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GodMode.cs" />
-    <Compile Include="Buildings\Building.cs" />
     <Compile Include="Items\Item.cs" />
     <Compile Include="Items\WoodPile.cs" />
     <Compile Include="Program.cs" />
