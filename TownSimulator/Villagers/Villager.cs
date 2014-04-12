@@ -1,14 +1,28 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using TileEngine;
 using TownSimulator.Items;
 
 namespace TownSimulator.Villagers
 {
+    public enum EnvironmentEvent
+    {
+        Manual,
+        PathBlocked,
+        DestinationReached,
+        TreeGrowed,
+        TreeCutted,
+        WoodPickedUp,
+        WoodStored,
+    };
+
     public abstract class Villager : TileEngine.Actor
     {
+        private const int _INITIAL_NB_DECISIONS = 1;
 
         public string FirstName { get; private set; }
 
@@ -25,7 +39,8 @@ namespace TownSimulator.Villagers
 
         protected Town HomeTown { get; set; }
 
-        public Semaphore MakeDecision { get; set; }
+        private SemaphoreSlim _makeDecision { get; set; }
+        private Queue<EnvironmentEvent> _latestEvents { get; set; }
 
         public Villager(string firstname, string lastname, Town hometown)
             : base()
@@ -40,8 +55,12 @@ namespace TownSimulator.Villagers
             HomeTown = hometown;
             hometown.AddVillager(this);
 
+            _latestEvents = new Queue<EnvironmentEvent>();
+            for (int i = 0; i < _INITIAL_NB_DECISIONS; i++)
+                _latestEvents.Enqueue(EnvironmentEvent.Manual);
+
             // TODO MIGHT BE DANGEROUS BECAUSE IT IS DONE BEFORE WOODCUTTER CONSTR.
-            MakeDecision = new Semaphore(1, 1);
+            _makeDecision = new SemaphoreSlim(_INITIAL_NB_DECISIONS);
             thread = new Thread(new ThreadStart(Start));
             thread.Priority = ThreadPriority.Lowest;
             thread.Start();
@@ -54,14 +73,31 @@ namespace TownSimulator.Villagers
 
         abstract protected void Run();
 
+        public EnvironmentEvent Wait()
+        {
+            _makeDecision.Wait();
+            return _latestEvents.Dequeue();
+        }
+
+        public void Warn(EnvironmentEvent _event)
+        {
+            _latestEvents.Enqueue(_event);
+            _makeDecision.Release();
+        }
+
+        protected void GoTo(Point to)
+        {
+            Path = Pathfinding.DoAStar(to, Position);
+        }
+
         protected override void PathBlocked()
         {
-            MakeDecision.Release();
+            Warn(EnvironmentEvent.PathBlocked);
         }
 
         protected override void DestinationReached()
         {
-            MakeDecision.Release();
+            Warn(EnvironmentEvent.DestinationReached);
         }
     }
 }

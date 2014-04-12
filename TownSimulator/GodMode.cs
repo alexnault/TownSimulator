@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TileEngine;
+using TownSimulator.Villagers;
 
 namespace TownSimulator
 {
@@ -57,7 +58,7 @@ namespace TownSimulator
             else if (InputHelper.IsNewKeyPressed(Keys.S))
             {
                 foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
-                    v.Value.MakeDecision.Release();
+                    v.Value.Warn(EnvironmentEvent.Manual);
             }
            
 
@@ -88,6 +89,8 @@ namespace TownSimulator
                         if (leftDown && !selectedTile.IsSolid)
                         {
                             selectedTile.AddObject(new TownSimulator.Scenery.Tree());
+                            foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
+                                v.Value.Warn(EnvironmentEvent.TreeGrowed);
                         }
 
                         break;
@@ -188,9 +191,6 @@ namespace TownSimulator
                     DrawingUtils.DrawRectangle(new Rectangle(t.Key.Position.X * Engine.TileWidth, t.Key.Position.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight), t.Value);
                 }
             }
-
-
-
         }
     }
 }

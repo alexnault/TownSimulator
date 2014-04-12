@@ -11,19 +11,18 @@ namespace TownSimulator.Scenery
 {
     class Tree : GameObject
     {
-        
-        //public bool SomeoneIsCuttingIt;
+        public Woodcutter Slayer { get; private set; }
+        public int Health { get; set; }
 
-        public Woodcutter Slayer;
-        public Semaphore _mutex;
-
+        private Semaphore _mutex;
         private static Random _rand = new Random();
 
         public Tree()
         {
             IsSolid = true;
+            Health = 100;
+
             _mutex = new Semaphore(1, 1);
-            //SomeoneIsCuttingIt = false;
 
             ObjectSprite = new Sprite(5);
             int spriteType = _rand.Next(0, 4);
@@ -66,6 +65,18 @@ namespace TownSimulator.Scenery
             if (Slayer == null)
                 Slayer = slayer;
             _mutex.Release();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (Slayer != null)
+            {
+                Health--;
+                if (Health == 0)
+                {
+                    Slayer.Warn(EnvironmentEvent.TreeCutted);
+                }
+            }
         }
     }
 }
