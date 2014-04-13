@@ -27,14 +27,17 @@ namespace TownSimulator.Villagers
 
     class Woodcutter : Villager
     {
-        private WoodcutterState CurrentState;
-        private WoodcutterTask CurrentTask;
+        private WoodcutterState _currentState;
+        private WoodcutterTask _currentTask;
+
+        public WoodcutterState CurrentState { get {return _currentState;} }
+        public WoodcutterTask CurrentTask { get { return _currentTask; } }
 
         public Woodcutter(string firstname, string lastname, Town hometown)
             : base(firstname, lastname, hometown)
         {
-            CurrentState = WoodcutterState.Idle;
-            CurrentTask = WoodcutterTask.None;
+            _currentState = WoodcutterState.Idle;
+            _currentTask = WoodcutterTask.None;
             //Position = new Point(0, 1);
             IsBig = false;
 
@@ -54,9 +57,9 @@ namespace TownSimulator.Villagers
                 // Wait until its my turn
                 HomeTown.AITurn.WaitOne();
 
-                CurrentState = WoodcutterState.Thinking;
+                _currentState = WoodcutterState.Thinking;
 
-                switch(CurrentTask)
+                switch(_currentTask)
                 {
                     case (WoodcutterTask.None):
                     {
@@ -67,8 +70,8 @@ namespace TownSimulator.Villagers
                         Tree tree = FindUnusedTree();
                         if (tree != null)
                         {
-                            CurrentTask = WoodcutterTask.GoingToTree;
-                            CurrentState = WoodcutterState.Walking;
+                            _currentTask = WoodcutterTask.GoingToTree;
+                            _currentState = WoodcutterState.Walking;
                             GoTo(tree.Position);
                         }
                         break;
@@ -80,14 +83,14 @@ namespace TownSimulator.Villagers
                         {
                             if (IsNextTo(Position, tree.Position))
                             {
-                                CurrentState = WoodcutterState.Cutting;
-                                CurrentTask = WoodcutterTask.PickUpWood;
+                                _currentState = WoodcutterState.Cutting;
+                                _currentTask = WoodcutterTask.PickUpWood;
                                 tree.Consort(this);
                                 SetFacingDirection(tree.Position);
                             }
                             else // keep going to tree
                             {
-                                CurrentState = WoodcutterState.Walking;
+                                _currentState = WoodcutterState.Walking;
                                 GoTo(tree.Position);
                             }
                         }
@@ -100,8 +103,8 @@ namespace TownSimulator.Villagers
                             Tree tree = FindMyTree();
                             TileMap.Tiles[tree.Position.X, tree.Position.Y].RemoveObject(tree);
 
-                            CurrentTask = WoodcutterTask.GoingToLumberMill;
-                            CurrentState = WoodcutterState.Walking;
+                            _currentTask = WoodcutterTask.GoingToLumberMill;
+                            _currentState = WoodcutterState.Walking;
 
                             Warn(EnvironmentEvent.WoodPickedUp);
                         }
@@ -115,13 +118,13 @@ namespace TownSimulator.Villagers
                             if (IsNextTo(Position, lumbermill.Position))
                             {
                                 lumbermill.StoreWood();
-                                CurrentTask = WoodcutterTask.None;
+                                _currentTask = WoodcutterTask.None;
                                 Warn(EnvironmentEvent.WoodStored);
                             }
                             else
                             {
-                                CurrentTask = WoodcutterTask.GoingToLumberMill;
-                                CurrentState = WoodcutterState.Walking;
+                                _currentTask = WoodcutterTask.GoingToLumberMill;
+                                _currentState = WoodcutterState.Walking;
                                 GoTo(lumbermill.Position);
                             }
                         }

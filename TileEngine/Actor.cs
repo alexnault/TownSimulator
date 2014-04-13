@@ -51,10 +51,11 @@ namespace TileEngine
 
                 if (!TileMap.Tiles[nextPoint.X, nextPoint.Y].IsSolid)
                 {
+                    Point oldPos = new Point(Position.X, Position.Y);
                     SetFacingDirection(nextPoint);
-                    
-                    TileMap.Tiles[Path[0].X, Path[0].Y].AddObject(this);
-                    TileMap.Tiles[Position.X, Position.Y].RemoveObject(this);
+
+                    TileMap.Tiles[nextPoint.X, nextPoint.Y].AddObject(this);
+                    TileMap.Tiles[oldPos.X, oldPos.Y].RemoveObject(this);
                     
                     Path.Remove(nextPoint);
 

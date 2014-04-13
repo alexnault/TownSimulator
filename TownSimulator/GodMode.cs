@@ -11,17 +11,19 @@ namespace TownSimulator
 {
     public static class GodMode
     {
-        public enum ObjectToAdd
+        public enum ClickState
         {
             Tree,
             Woodcutter,
             WoodPile,
             Rock,
             House,
-            LumberMill
+            LumberMill,
+            Selecting
         }
         private static Dictionary<Tile, Color> tilesToDraw;
-        private static ObjectToAdd _state;
+        private static ClickState _state;
+        private static Villager _selectedUnit;
 
         public static void Update(GameTime gameTime, Camera camera, Town town)
         {
@@ -33,27 +35,31 @@ namespace TownSimulator
         {
             if (InputHelper.IsNewKeyPressed(Keys.T))
             {
-                _state = ObjectToAdd.Tree;
+                _state = ClickState.Tree;
             }
             else if (InputHelper.IsNewKeyPressed(Keys.W))
             {
-                _state = ObjectToAdd.WoodPile;
+                _state = ClickState.WoodPile;
             }
             else if (InputHelper.IsNewKeyPressed(Keys.V))
             {
-                _state = ObjectToAdd.Woodcutter;
+                _state = ClickState.Woodcutter;
             }
             else if (InputHelper.IsNewKeyPressed(Keys.R))
             {
-                _state = ObjectToAdd.Rock;
+                _state = ClickState.Rock;
             }
             else if (InputHelper.IsNewKeyPressed(Keys.H))
             {
-                _state = ObjectToAdd.House;
+                _state = ClickState.House;
             }
             else if (InputHelper.IsNewKeyPressed(Keys.L))
             {
-                _state = ObjectToAdd.LumberMill;
+                _state = ClickState.LumberMill;
+            }
+            else if (InputHelper.IsNewKeyPressed(Keys.I))
+            {
+                _state = ClickState.Selecting;
             }
             else if (InputHelper.IsNewKeyPressed(Keys.S))
             {
@@ -83,99 +89,109 @@ namespace TownSimulator
                 //Handle mouse click on map
                 switch (_state)
                 {
-                    case ObjectToAdd.Tree:
-
-                        tilesToDraw.Add(selectedTile, Color.White);
-                        if (leftDown && !selectedTile.IsSolid)
+                    case ClickState.Tree:
                         {
-                            selectedTile.AddObject(new TownSimulator.Scenery.Tree());
-                            foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
-                                v.Value.Warn(EnvironmentEvent.TreeGrowed);
-                        }
-
-                        break;
-
-                    case ObjectToAdd.Woodcutter:
-
-                        tilesToDraw.Add(selectedTile, Color.White);
-                        if (leftClicked && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town));
-                        }
-
-                        break;
-
-                    case ObjectToAdd.WoodPile:
-                       
-                        tilesToDraw.Add(selectedTile, Color.White);
-                        if (leftClicked && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new TownSimulator.Items.WoodPile());
-                        }
-
-                        break;
-                    case ObjectToAdd.Rock:
-
-                        tilesToDraw.Add(selectedTile, Color.White);
-                        if (leftDown && !selectedTile.IsSolid)
-                        {
-                            selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
-                        }
-
-                        break;
-                    case ObjectToAdd.House:
-                        
-                        Buildings.Building house = new Buildings.Building();
-                                                    
-                        Point size = house.GetTileSize();
-                        List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
-                        if (tiles != null)
-                        {
-                            foreach (Tile t in tiles)
+                            tilesToDraw.Add(selectedTile, Color.White);
+                            if (leftDown && !selectedTile.IsSolid)
                             {
-                                tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                selectedTile.AddObject(new TownSimulator.Scenery.Tree());
+                                foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
+                                    v.Value.Warn(EnvironmentEvent.TreeGrowed);
                             }
 
-                            if(leftClicked && !selectedTile.IsSolid)
-                            {
-                                selectedTile.AddObject(house);
-                            }
+                            break;
                         }
-                        
-                        
-                        break;
-
-                    case ObjectToAdd.LumberMill:
-
-                        Buildings.LumberMill lm = new Buildings.LumberMill();
-
-                        size = lm.GetTileSize();
-                        tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
-                        if (tiles != null)
+                    case ClickState.Woodcutter:
                         {
-                            foreach (Tile t in tiles)
+                            tilesToDraw.Add(selectedTile, Color.White);
+                            if (leftClicked && !selectedTile.IsSolid)
                             {
-                                tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town));
                             }
 
-                            if(leftClicked && !selectedTile.IsSolid)
-                            {
-                                selectedTile.AddObject(lm);
-                            }
+                            break;
                         }
+                    case ClickState.WoodPile:
+                        { 
+                            tilesToDraw.Add(selectedTile, Color.White);
+                            if (leftClicked && !selectedTile.IsSolid)
+                            {
+                                selectedTile.AddObject(new TownSimulator.Items.WoodPile());
+                            }
 
-                        break;
+                            break;
+                        }
+                    case ClickState.Rock:
+                        {
+                            tilesToDraw.Add(selectedTile, Color.White);
+                            if (leftDown && !selectedTile.IsSolid)
+                            {
+                                selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                            }
+
+                            break;
+                        }
+                    case ClickState.House:
+                        {
+                            Buildings.Building house = new Buildings.Building();
+
+                            Point size = house.GetTileSize();
+                            List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                            if (tiles != null)
+                            {
+                                foreach (Tile t in tiles)
+                                {
+                                    tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                }
+
+                                if (leftClicked && !selectedTile.IsSolid)
+                                {
+                                    selectedTile.AddObject(house);
+                                }
+                            }
+
+
+                            break;
+                        }
+                    case ClickState.LumberMill:
+                        {
+                            Buildings.LumberMill lm = new Buildings.LumberMill();
+
+                            Point size = lm.GetTileSize();
+                            List<Tile>tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                            if (tiles != null)
+                            {
+                                foreach (Tile t in tiles)
+                                {
+                                    tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                }
+
+                                if (leftClicked && !selectedTile.IsSolid)
+                                {
+                                    selectedTile.AddObject(lm);
+                                }
+                            }
+
+                            break;
+                        }
+                    case ClickState.Selecting:
+                        {
+
+                            Villager v = selectedTile.GetFirstObject<Villager>(true);
+                                                                                  
+                            if (v != null)
+                            {
+                                //v.ObjectSprite.DrawingColor = Color.Gray;
+                                if (leftClicked)
+                                {
+                                    _selectedUnit = v;
+                                }                                
+                            }
+
+                            break;
+                        }
                 }
-
-               
-
-                //if (draw)
-                //{
-                //    selectedTile.AddObject(objToDraw);
-                //}
-
             }
-
         }
 
         //TODO remove this, it is not thread safe
@@ -184,11 +200,48 @@ namespace TownSimulator
             //Write current item to screen
             DrawingUtils.DrawMessage(_state.ToString());
 
+            DrawSelectedUnit();           
+
             if (tilesToDraw != null && tilesToDraw.Count > 0)
             {
                 foreach (KeyValuePair<Tile, Color> t in tilesToDraw)
                 {
                     DrawingUtils.DrawRectangle(new Rectangle(t.Key.Position.X * Engine.TileWidth, t.Key.Position.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight), t.Value);
+                }
+            }
+        }
+
+        private static void DrawSelectedUnit()
+        {
+            if (_selectedUnit != null)
+            {
+
+                switch(_selectedUnit.GetType().Name)
+                {
+
+                    case "Woodcutter":
+
+                        int height = 20;
+
+                        DrawingUtils.DrawMessage("Name : " + _selectedUnit.FirstName + " " + _selectedUnit.LastName, new Vector2(350, 0), Color.Red);                       
+                        DrawingUtils.DrawMessage("State : " + ((Woodcutter)_selectedUnit).CurrentState.ToString(), new Vector2(350, height * 1), Color.Red);
+                        DrawingUtils.DrawMessage("Task : " + ((Woodcutter)_selectedUnit).CurrentTask.ToString(), new Vector2(350, height * 2), Color.Red);
+                       
+                        string nextPath = "Next : None";
+                        if (_selectedUnit.Path != null && _selectedUnit.Path.Count > 0)
+                        {
+                            int count = _selectedUnit.Path.Count;
+                            nextPath = 
+                                string.Format(
+                                "Next : [{0} , {1}] ; To : [{2} , {3}]",
+                                _selectedUnit.Path[0].X,
+                                _selectedUnit.Path[0].Y,
+                                _selectedUnit.Path[count - 1].X,
+                                _selectedUnit.Path[count - 1].Y);                            
+                        }
+                        DrawingUtils.DrawMessage(nextPath, new Vector2(350, height * 3), Color.Red);
+
+                        break;
                 }
             }
         }

@@ -15,6 +15,8 @@ namespace TileEngine
         public int Width { get; set; }
         public int Height { get; set; }
         public int TextureID { get; set; }
+
+        public Color DrawingColor { get; set; }
         public Rectangle TexturePortion { get; set; }
                 
         public Sprite(int textureID, int posX = 0, int posY = 0, int width = 32, int height = 32)
@@ -24,6 +26,7 @@ namespace TileEngine
             Width = width;
             Height = height;
             TexturePortion = new Rectangle(0, 0, Width, Height);
+            DrawingColor = Color.White;
         }
         
         public void Update(GameTime gameTime)
@@ -49,7 +52,7 @@ namespace TileEngine
                             TextureManager.Get(TextureID),
                             new Rectangle(x, y, Width, Height),
                             TexturePortion,
-                            Color.White,
+                            DrawingColor,
                             0,
                             new Vector2(0, 0),
                             SpriteEffects.None,

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using System.Xml;
 
 namespace TileEngine
 {
@@ -51,13 +52,15 @@ namespace TileEngine
 
         
 
-        public T GetFirstObject<T>() where T : GameObject
+        public T GetFirstObject<T>(bool includeChilds = false) where T : GameObject
         {
             crewLock.EnterReadLock();
             T obj = null;
             foreach (GameObject go in _objects)
             {
-                if (go.GetType() == typeof(T))
+                
+                if (go.GetType() == typeof(T) ||
+                    (includeChilds && go.GetType().IsSubclassOf(typeof(T))))
                 {
                     obj = (T)go;
                     break;
@@ -183,6 +186,64 @@ namespace TileEngine
             crewLock.EnterWriteLock();
             _objects.Remove(obj);
             crewLock.ExitWriteLock();
+        }
+
+
+        public XmlElement GetTileXml(XmlDocument doc)
+        {
+            XmlElement tile = doc.CreateElement("Tile");
+
+            tile.SetAttribute("IsSolid", _isSolid.ToString());
+            tile.SetAttribute("TextureID", GroundTextureID.ToString());
+            tile.SetAttribute("Y", Position.Y.ToString());
+            tile.SetAttribute("X", Position.X.ToString());
+
+            foreach(GameObject gObj in _objects)
+            {
+                if (!gObj.IsBig)
+                {
+                    XmlElement obj = doc.CreateElement("GameObject");
+                    obj.SetAttribute("Type", gObj.GetType().AssemblyQualifiedName.ToString());
+
+                    if(gObj.ObjectSprite != null)
+                    {
+                        XmlElement sprite = doc.CreateElement("Sprite");
+                        sprite.SetAttribute("TextureID", gObj.ObjectSprite.TextureID.ToString());
+                        obj.AppendChild(sprite);
+                    }
+                    tile.AppendChild(obj);
+                }
+            }
+
+
+            return tile;
+
+        }
+
+        public static Tile LoadTileFromXml(XmlNode node)
+        {
+
+            Tile t;
+            int tID = int.Parse(node.Attributes["TextureID"].Value);
+            int x = int.Parse(node.Attributes["X"].Value);
+            int y = int.Parse(node.Attributes["Y"].Value);
+            bool isSolid = bool.Parse(node.Attributes["IsSolid"].Value);
+
+
+            t = new Tile(tID, x, y, isSolid);
+
+            foreach(XmlNode child in node.ChildNodes)
+            {
+
+                Type type = Type.GetType(child.Attributes["Type"].Value);
+
+                GameObject obj = (GameObject)type.GetMethod("LoadFromXml", System.Reflection.BindingFlags.Static | System.Reflection.BindingFlags.FlattenHierarchy).Invoke(null, new object[] { child });
+
+                t.AddObject(obj);
+            }
+
+
+            return t;
         }
     }
 }

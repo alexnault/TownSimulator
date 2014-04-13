@@ -89,8 +89,20 @@ namespace TileEngine
 
         public static void DrawMessage(string message)
         {
+            DrawMessage(message, Color.Red);
+        }
+
+        public static void DrawMessage(string message, Color color)
+        {
+            DrawMessage(message, new Vector2(0, 0), color);
+        }
+
+
+
+        public static void DrawMessage(string message, Vector2 topLeftPos, Color color)
+        {
             if (Font != null && _initialized == true)
-                _spriteBatch.DrawString(Font, message, new Vector2(0, 0), Color.Red);
+                _spriteBatch.DrawString(Font, message, topLeftPos, color);
         }
     }
 }
