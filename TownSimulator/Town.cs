@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading;
+using TileEngine;
+using TownSimulator.Buildings;
 using TownSimulator.Villagers;
 
 namespace TownSimulator
@@ -17,20 +19,31 @@ namespace TownSimulator
 
         public Semaphore AITurn;
 
+        public List<Building> Buildings { get; set; }
+
         public Town(uint initNbVillagers)
         {
             NbVillagers = 0;
 
             AITurn = new Semaphore(1, 1);
-            
+
+            LumberMill lumberMill = new LumberMill();
+            House house = new House();
+
+            Buildings = new List<Building>() { lumberMill, house };
+            TileMap.Tiles[7, 8].AddObject(lumberMill);
+            TileMap.Tiles[10, 18].AddObject(house);
+
             //Villagers = new Villager[nbVillagers];
             Villagers = new Dictionary<int, Villager>();
             for (int i = 0; i < initNbVillagers; i++)
             {
                 // Automaticly added to this town
-                new Woodcutter("Bob", "Gratton", this);
+                TileMap.Tiles[0, 0].AddObject(new Woodcutter("Bob", "Gratton", this));
                 //Villagers[i] = new Woodcutter("Bob", "Gratton", this);
             }
+
+            TileMap.Tiles[0, 0].AddObject(new Carrier("Bob", "Gratton", this, lumberMill));
         }
 
         public void Update(GameTime gametime)
