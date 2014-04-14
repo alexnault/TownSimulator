@@ -30,6 +30,13 @@ namespace TownSimulator.Villagers
         public WoodcutterState CurrentState { get; private set; }
         public WoodcutterTask CurrentTask { get; private set; }
 
+        public Woodcutter(Town hometown)
+            :this(NameGenerator.GetFirstname(), NameGenerator.GetLastname(), hometown)
+        {
+            
+        }
+
+
         public Woodcutter(string firstname, string lastname, Town hometown)
             : base(firstname, lastname, hometown)
         {

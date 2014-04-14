@@ -36,9 +36,9 @@ namespace TileEngine
         /// </summary>
         /// <param name="rect">The rectangle we want to draw.</param>
         /// <param name="couleur">The color of the Rectangle</param>
-        public static void DrawRectangle(Rectangle rect, Color color)
+        public static void DrawRectangle(Rectangle rect, Color color, bool forceDraw = false)
         {
-            if (DrawingRectangle && _initialized)
+            if ((DrawingRectangle || forceDraw) && _initialized)
             {
                 //Top line
                 _spriteBatch.Draw(

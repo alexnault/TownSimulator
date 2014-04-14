@@ -37,6 +37,15 @@ namespace TileEngine
             }
         }
 
+        public bool IsEmpty
+        {
+            get
+            {
+                return (_objects == null || _objects.Count == 0);
+            }
+
+        }
+
 
         public Tile(int textureID, int posX, int posY, bool isSolid = false)
         {

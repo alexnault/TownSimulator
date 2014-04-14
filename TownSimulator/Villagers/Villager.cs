@@ -22,6 +22,7 @@ namespace TownSimulator.Villagers
 
     public abstract class Villager : TileEngine.Actor
     {
+
         private const int _INITIAL_NB_DECISIONS = 1;
 
         public string FirstName { get; private set; }
@@ -41,6 +42,13 @@ namespace TownSimulator.Villagers
 
         private SemaphoreSlim _makeDecision { get; set; }
         private Queue<EnvironmentEvent> _latestEvents { get; set; }
+
+
+        public Villager(Town town)
+            : this(NameGenerator.GetFirstname(), NameGenerator.GetLastname(), town )
+        {
+        }
+
 
         public Villager(string firstname, string lastname, Town hometown)
             : base()

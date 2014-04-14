@@ -51,6 +51,7 @@
     <Compile Include="Scenery\Tree.cs" />
     <Compile Include="Town.cs" />
     <Compile Include="Villagers\Carrier.cs" />
+    <Compile Include="Villagers\NameGenerator.cs" />
     <Compile Include="Villagers\Villager.cs" />
     <Compile Include="Villagers\Woodcutter.cs" />
   </ItemGroup>

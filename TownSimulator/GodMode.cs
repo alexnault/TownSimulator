@@ -101,12 +101,7 @@ namespace TownSimulator
                 //Handle selection
                 if (rightClicked)
                 {
-                    Villager v = selectedTile.GetFirstObject<Villager>(true);
-
-                    if (v != null)
-                    {
-                        _selectedUnit = v;
-                    }
+                    _selectedUnit = selectedTile.GetFirstObject<Villager>(true);
                 }
 
 
@@ -130,7 +125,7 @@ namespace TownSimulator
                             _tilesToDraw.Add(selectedTile, Color.White);
                             if (leftClicked && !selectedTile.IsSolid)
                             {
-                                selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town));
+                                selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter(town));
                             }
 
                             break;
@@ -246,6 +241,15 @@ namespace TownSimulator
                     Point lastPos = _selectedUnit.Path[count - 1];
 
                     nextPath = string.Format("Next : [{0} , {1}] ; To : [{2} , {3}]", nextPos.X, nextPos.Y, lastPos.X, lastPos.Y);
+
+                    //Draw the path of the selected unit
+                    foreach(Point p in _selectedUnit.Path)
+                    {
+                        DrawingUtils.DrawRectangle(
+                            new Rectangle(p.X * Engine.TileWidth, p.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight),
+                            Color.Brown, true);
+                    }
+
                 }
                 elements.Add(nextPath);
 

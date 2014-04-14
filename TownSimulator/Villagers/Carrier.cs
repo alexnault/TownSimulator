@@ -37,6 +37,13 @@ namespace TownSimulator.Villagers
 
         public int LoadSize { get; private set; }
 
+        public Carrier(Town hometown, LumberMill workplace)
+            :this(NameGenerator.GetFirstname(), NameGenerator.GetLastname(), hometown, workplace)
+        {
+
+
+        }
+
         public Carrier(string firstname, string lastname, Town hometown, LumberMill workplace)
             : base(firstname, lastname, hometown)
         {

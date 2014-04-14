@@ -380,7 +380,7 @@ namespace TileEngine
                 
                 tiles = GetTileArea(new Point(xPos, yPos), size);
 
-            } while (tiles == null || !tiles.All(t => !t.IsSolid));
+            } while (tiles == null || !tiles.All(t => !t.IsSolid && t.IsEmpty));
 
 #if DEBUG
 

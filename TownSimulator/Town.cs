@@ -28,51 +28,64 @@ namespace TownSimulator
             AITurn = new Semaphore(1, 1);
 
             Buildings = new List<Building>();
-            GenerateTown(initNbVillagers);
+            Villagers = new Dictionary<int, Villager>();
+
+            GenerateTown();
         }
 
-        private void GenerateTown(uint initNbVillagers)
+        private void GenerateTown()
         {
+            GenerateBuildings();
+            GenerateVillagers();
+        }
 
-            LumberMill lumberMill = new LumberMill(this);
-            TileMap.PlaceGameObjectRandomly(lumberMill);
+        private void GenerateVillagers()
+        {
+            Random rand = new Random();
+
+            int nbWoodcutter = rand.Next(1, 4);
+            for (int i = 0; i < nbWoodcutter; i++)
+            {
+                TileMap.PlaceGameObjectRandomly(new Woodcutter(this));
+            }
+
+            //Place a Carrier for each LumberMill there is in the Town
+            foreach (Building b in Buildings)
+            {
+                if (b is LumberMill)
+                {
+                    TileMap.PlaceGameObjectRandomly(
+                          new Carrier(
+                              this,
+                              (LumberMill)b)
+                          );
+                }
+            }
+        }
+
+        private void GenerateBuildings()
+        {
+            Random rand = new Random();
+
+            int nbLM = rand.Next(1, 3);
+            for (int i = 0; i < nbLM; i++)
+            {
+                LumberMill lumberMill = new LumberMill(this);
+                TileMap.PlaceGameObjectRandomly(lumberMill);
+
+                TileMap.PlaceGameObjectRandomly(
+                new Carrier(
+                    this,
+                    lumberMill)
+                );
+            }
+
 
             House house = new House(this);
             TileMap.PlaceGameObjectRandomly(house);
 
             ConstructionSite constructionSite = new ConstructionSite(this);
             TileMap.PlaceGameObjectRandomly(constructionSite);
-
-            //TileMap.Tiles[7, 8].AddObject(lumberMill);
-            //TileMap.Tiles[10, 18].AddObject(new House(this));
-            //TileMap.Tiles[20, 5].AddObject(new ConstructionSite(this));
-
-            //Villagers = new Villager[nbVillagers];
-            Villagers = new Dictionary<int, Villager>();
-            for (int i = 0; i < initNbVillagers; i++)
-            {
-                TileMap.PlaceGameObjectRandomly(new Woodcutter("Bob", "Gratton", this));
-                // Automaticly added to this town
-                //TileMap.Tiles[0, 0].AddObject(new Woodcutter("Bob", "Gratton", this));
-                //Villagers[i] = new Woodcutter("Bob", "Gratton", this);
-            }
-
-            TileMap.PlaceGameObjectRandomly(
-                new Carrier(
-                    "The", "Carrier",
-                    this,
-                    lumberMill)
-                );
-
-            //(LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill))
-
-            //TileMap.Tiles[0, 0].AddObject(
-            //    new Carrier(
-            //        "Bob", "Gratton",
-            //        this,
-            //        (LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill))
-            //    )
-            //);
         }
 
         
