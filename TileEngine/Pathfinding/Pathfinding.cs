@@ -119,10 +119,25 @@ namespace TileEngine
             return null;
         }
 
+
+      
         public static T FindClosest<T>(Point from) where T : GameObject
+        {
+            return Find<T>(from, 1);
+        }
+
+        /// <summary>
+        /// Find the X th closest element.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="from"></param>
+        /// <param name="position"></param>
+        /// <returns></returns>
+        public static T Find<T>(Point from, int position) where T : GameObject
         {
             int nbElements = TileMap.Width * TileMap.Height;
             int nbSolidItems = 0;
+            int nbFound = 0;
 
             List<DijkstraNode> nodes = new List<DijkstraNode>();
             for(int i = 0; i < nbElements; i++)
@@ -138,6 +153,9 @@ namespace TileEngine
 
                 if (!IsWalkable(new Point(x, y))) nbSolidItems++;
             }
+            
+            nodes.ForEach(n => n.SetNeighbors(nodes));
+
             
             DijkstraNode start = nodes.FirstOrDefault(x => x.Position == from);
             start.Distance = 0;
@@ -156,27 +174,13 @@ namespace TileEngine
                 
                 if (nodes.Find(o => o == u).Distance == int.MaxValue) break;
 
-                //Get Neighbors
-                //TODO : Improve it?
-                List<DijkstraNode> neighbors = new List<DijkstraNode>();
-                DijkstraNode leftNeighbor = nodes.FirstOrDefault(o => o.Position == new Point(u.Position.X - 1, u.Position.Y));
-                if(leftNeighbor != null) neighbors.Add(leftNeighbor);
-
-                DijkstraNode rightNeighbor = nodes.FirstOrDefault(o => o.Position == new Point(u.Position.X + 1, u.Position.Y));
-                if(rightNeighbor != null) neighbors.Add(rightNeighbor);
-
-                DijkstraNode topNeighbor = nodes.FirstOrDefault(o => o.Position == new Point(u.Position.X, u.Position.Y - 1));
-                if(topNeighbor != null) neighbors.Add(topNeighbor);
-
-                DijkstraNode bottomNeighbor = nodes.FirstOrDefault(o => o.Position == new Point(u.Position.X, u.Position.Y + 1));
-                if(bottomNeighbor != null) neighbors.Add(bottomNeighbor);
-
-
-                foreach (DijkstraNode v in neighbors)
+                foreach (DijkstraNode v in u.Neighbors)
                 {
                     if (TileMap.Tiles[v.Position.X, v.Position.Y].ContainsObject<T>())
                     {
-                        return TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>();
+                        nbFound++;
+                        if(position == nbFound)
+                            return TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>();
                     }
 
                     int alt = u.Distance + 1;
@@ -192,6 +196,10 @@ namespace TileEngine
             return null;
 
         }
+
+       
+
+        
 
         private static int CalculateHeuristic(AStarNode current, AStarNode target)
         {

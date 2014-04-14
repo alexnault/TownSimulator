@@ -133,7 +133,7 @@ namespace TownSimulator.Villagers
             do
             {
                 i++; // Find next tree
-                tree = Pathfinding.FindClosest<Tree>(Position);
+                tree = Pathfinding.Find<Tree>(Position, i);
                 if (tree == null)
                     return null; // No unused tree
             } while (tree.Slayer != null);
@@ -147,7 +147,7 @@ namespace TownSimulator.Villagers
             do
             {
                 i++;
-                tree = Pathfinding.FindClosest<Tree>(Position);
+                tree = Pathfinding.Find<Tree>(Position, i);
                 if (tree == null)
                     return null;
             } while (tree.Slayer != this);
