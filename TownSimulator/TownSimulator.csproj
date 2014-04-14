@@ -39,6 +39,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
+    <Compile Include="Buildings\House.cs" />
     <Compile Include="Buildings\LumberMill.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="GodMode.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenery\Tree.cs" />
     <Compile Include="Town.cs" />
+    <Compile Include="Villagers\Carrier.cs" />
     <Compile Include="Villagers\Villager.cs" />
     <Compile Include="Villagers\Woodcutter.cs" />
   </ItemGroup>
@@ -68,6 +70,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Sprites\carrier_sheet_small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Sprites\house1.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

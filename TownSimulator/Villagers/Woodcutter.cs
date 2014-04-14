@@ -27,41 +27,30 @@ namespace TownSimulator.Villagers
 
     class Woodcutter : Villager
     {
-        private WoodcutterState _currentState;
-        private WoodcutterTask _currentTask;
-
-        public WoodcutterState CurrentState { get {return _currentState;} }
-        public WoodcutterTask CurrentTask { get { return _currentTask; } }
+        public WoodcutterState CurrentState { get; private set; }
+        public WoodcutterTask CurrentTask { get; private set; }
 
         public Woodcutter(string firstname, string lastname, Town hometown)
             : base(firstname, lastname, hometown)
         {
-            _currentState = WoodcutterState.Idle;
-            _currentTask = WoodcutterTask.None;
+            CurrentState = WoodcutterState.Idle;
+            CurrentTask = WoodcutterTask.None;
             //Position = new Point(0, 1);
             IsBig = false;
 
             ObjectSprite = new TileEngine.Sprite(3, Position.X, Position.Y, 32, 32);
-            
+
             //XDrawOffset = 0;
             //YDrawOffset = 0;   
         }
 
-        protected override void Run()
+        protected override void MakeDecision(EnvironmentEvent latestEvent)
         {
-            while (true) // While the Woodcutter lives
+            CurrentState = WoodcutterState.Thinking;
+
+            switch (CurrentTask)
             {
-                // Decision making process
-                // Wait for main thread to warn me about making a decision
-                EnvironmentEvent latestEvent = Wait();
-                // Wait until its my turn
-                HomeTown.AITurn.WaitOne();
-
-                _currentState = WoodcutterState.Thinking;
-
-                switch(_currentTask)
-                {
-                    case (WoodcutterTask.None):
+                case (WoodcutterTask.None):
                     {
                         // TODO other behaviors
                         // if hungry, go eat
@@ -70,47 +59,47 @@ namespace TownSimulator.Villagers
                         Tree tree = FindUnusedTree();
                         if (tree != null)
                         {
-                            _currentTask = WoodcutterTask.GoingToTree;
-                            _currentState = WoodcutterState.Walking;
+                            CurrentTask = WoodcutterTask.GoingToTree;
+                            CurrentState = WoodcutterState.Walking;
                             GoTo(tree.Position);
                         }
                         break;
                     }
-                    case (WoodcutterTask.GoingToTree):
+                case (WoodcutterTask.GoingToTree):
                     {
                         Tree tree = FindUnusedTree();
                         if (tree != null)
                         {
                             if (Position.IsNextTo(tree.Position))
                             {
-                                _currentState = WoodcutterState.Cutting;
-                                _currentTask = WoodcutterTask.PickUpWood;
+                                CurrentState = WoodcutterState.Cutting;
+                                CurrentTask = WoodcutterTask.PickUpWood;
                                 tree.Consort(this);
                                 SetFacingDirection(tree.Position);
                             }
                             else // keep going to tree
                             {
-                                _currentState = WoodcutterState.Walking;
+                                CurrentState = WoodcutterState.Walking;
                                 GoTo(tree.Position);
                             }
                         }
                         break;
                     }
-                    case (WoodcutterTask.PickUpWood):
+                case (WoodcutterTask.PickUpWood):
                     {
                         if (latestEvent == EnvironmentEvent.TreeCutted)
                         {
                             Tree tree = FindMyTree();
                             TileMap.Tiles[tree.Position.X, tree.Position.Y].RemoveObject(tree);
 
-                            _currentTask = WoodcutterTask.GoingToLumberMill;
-                            _currentState = WoodcutterState.Walking;
+                            CurrentTask = WoodcutterTask.GoingToLumberMill;
+                            CurrentState = WoodcutterState.Walking;
 
                             Warn(EnvironmentEvent.WoodPickedUp);
                         }
                         break;
                     }
-                    case (WoodcutterTask.GoingToLumberMill):
+                case (WoodcutterTask.GoingToLumberMill):
                     {
                         LumberMill lumbermill = TileMap.FindClosest<LumberMill>(Position);
                         if (lumbermill != null)
@@ -118,24 +107,22 @@ namespace TownSimulator.Villagers
                             if (Position.IsNextTo(lumbermill.Position))
                             {
                                 lumbermill.StoreWood();
-                                _currentTask = WoodcutterTask.None;
+                                CurrentTask = WoodcutterTask.None;
                                 Warn(EnvironmentEvent.WoodStored);
                             }
                             else
                             {
-                                _currentTask = WoodcutterTask.GoingToLumberMill;
-                                _currentState = WoodcutterState.Walking;
+                                CurrentTask = WoodcutterTask.GoingToLumberMill;
+                                CurrentState = WoodcutterState.Walking;
                                 GoTo(lumbermill.Position);
                             }
                         }
                         break;
                     }
-                    default:
+                default:
                     {
                         break;
                     }
-                }
-                HomeTown.AITurn.Release();
             }
         }
 
@@ -143,12 +130,13 @@ namespace TownSimulator.Villagers
         {
             Tree tree;
             int i = 0;
-            do {
+            do
+            {
                 i++; // Find next tree
                 tree = TileMap.Find<Tree>(Position, i);
                 if (tree == null)
                     return null; // No unused tree
-            } while(tree.Slayer != null);
+            } while (tree.Slayer != null);
             return tree;
         }
 

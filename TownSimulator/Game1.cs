@@ -41,13 +41,11 @@ namespace TownSimulator
 
             camera = new Camera();
             GenerateMap();
-
-            string path = "test.xml";
+            town = new Town(1);
+			//string path = "test.xml";
 
             //TileMap.SaveToXML(path);
             //TileMap.LoadFromXML(path);
-
-            town = new Town(3);
             TextureManager.Initialize();
             DrawingUtils.Initialize(spriteBatch, camera);
 
@@ -88,9 +86,7 @@ namespace TownSimulator
             //TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
             
             //GameObject.PlaceBigObjectCentered(new Buildings.LumberMill(), 
-            TileMap.Tiles[7, 8].AddObject(new Buildings.LumberMill());
-
-
+            
             TileMap.Tiles[5, 1].AddObject(new Scenery.Tree());
             TileMap.Tiles[7, 3].AddObject(new Scenery.Tree());
             TileMap.Tiles[2, 7].AddObject(new Scenery.Tree());
@@ -114,6 +110,8 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Sprites/house1"), 7);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/lumbermill"), 8);
             TextureManager.Add(Content.Load<Texture2D>("texture1px"), 10);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/carrier_sheet_small"), 11);
+            
 
             DrawingUtils.Font = Content.Load<SpriteFont>("Fonts/font1");
               

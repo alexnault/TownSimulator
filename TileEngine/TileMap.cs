@@ -358,7 +358,7 @@ namespace TileEngine
         }
 
 
-        public static T FindClosest<T>(Point origin, int maxDistance = 30) where T : GameObject
+        public static T FindClosest<T>(Point origin, int maxDistance = 50) where T : GameObject
         {
             return Find<T>(origin, 1, maxDistance);
         }
@@ -366,7 +366,7 @@ namespace TileEngine
         // Original idea from
         // Could be optimized or completly remaded
         // http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
-        public static T Find<T>(Point origin, int position, int maxDistance = 30) where T : GameObject
+        public static T Find<T>(Point origin, int position, int maxDistance = 50) where T : GameObject
         {
             if (position <= 0 || maxDistance <= 0)
                 throw new ArgumentException();
