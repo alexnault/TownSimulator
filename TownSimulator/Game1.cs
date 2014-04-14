@@ -44,6 +44,8 @@ namespace TownSimulator
             town = new Town(1);
 			//string path = "test.xml";
 
+            GodMode.ShowCommands();
+
             //TileMap.SaveToXML(path);
             //TileMap.LoadFromXML(path);
             TextureManager.Initialize();

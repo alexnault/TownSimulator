@@ -19,9 +19,9 @@ namespace TownSimulator
             WoodPile,
             Rock,
             House,
-            LumberMill            
+            LumberMill
         }
-        private static Dictionary<Tile, Color> _tilesToDraw;
+        private static Dictionary<Tile, Color> tilesToDraw;
         private static ClickState _state;
         private static Villager _selectedUnit;
 
@@ -30,18 +30,18 @@ namespace TownSimulator
             HandleKeyboard(town);
             HandleMouse(camera, town);
         }
-        
+
         private static void HandleKeyboard(Town town)
         {
             if (InputHelper.IsNewKeyPressed(Keys.T))
             {
                 _state = ClickState.Tree;
             }
-            else if (InputHelper.IsNewKeyPressed(Keys.W))
+            /*else if (InputHelper.IsNewKeyPressed(Keys.W))
             {
                 _state = ClickState.WoodPile;
-            }
-            else if (InputHelper.IsNewKeyPressed(Keys.V))
+            }*/
+            else if (InputHelper.IsNewKeyPressed(Keys.W))
             {
                 _state = ClickState.Woodcutter;
             }
@@ -61,8 +61,25 @@ namespace TownSimulator
             {
                 foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
                     v.Value.Warn(EnvironmentEvent.Manual);
-            }           
+            }
 
+        }
+
+        public static void ShowCommands()
+        {
+            Console.Write(
+            "===============GOD MODE===============\n" +
+            "Press one of the following keys and\n" +
+            "click on the map to spaw a GameObject\n" +
+            "T = Tree;\n" +
+            "W = Woodcutter;\n" +
+            "R = Rock;\n" +
+            "H = House;\n" +
+            "L = LumberMill;\n" +
+            "\n" +
+            "Pressing S will warn all Villagers so\n" +
+            "they can make a decision."
+            );
         }
 
         private static void HandleMouse(Camera camera, Town town)
@@ -79,8 +96,8 @@ namespace TownSimulator
                 bool leftClicked = InputHelper.LeftMouseButtonClicked() && InputHelper.IsMouseOn(mapRect);
                 bool rightClicked = InputHelper.RightMouseButtonClicked() && InputHelper.IsMouseOn(mapRect);
                 bool leftDown = InputHelper.LeftMouseButtonDown() && InputHelper.IsMouseOn(mapRect);
-                
-                _tilesToDraw = new Dictionary<Tile, Color>();
+
+                tilesToDraw = new Dictionary<Tile, Color>();
 
 
                 //Handle selection
@@ -92,15 +109,15 @@ namespace TownSimulator
                     {
                         _selectedUnit = v;
                     }
-                }   
+                }
 
-                
+
                 //Handle mouse click on map
                 switch (_state)
                 {
                     case ClickState.Tree:
                         {
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                            tilesToDraw.Add(selectedTile, Color.White);
                             if (leftDown && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Scenery.Tree());
@@ -112,7 +129,7 @@ namespace TownSimulator
                         }
                     case ClickState.Woodcutter:
                         {
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                            tilesToDraw.Add(selectedTile, Color.White);
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town));
@@ -121,8 +138,8 @@ namespace TownSimulator
                             break;
                         }
                     case ClickState.WoodPile:
-                        { 
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                        {
+                            tilesToDraw.Add(selectedTile, Color.White);
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Items.WoodPile());
@@ -132,7 +149,7 @@ namespace TownSimulator
                         }
                     case ClickState.Rock:
                         {
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                            tilesToDraw.Add(selectedTile, Color.White);
                             if (leftDown && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
@@ -150,7 +167,7 @@ namespace TownSimulator
                             {
                                 foreach (Tile t in tiles)
                                 {
-                                    _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                    tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
                                 }
 
                                 if (leftClicked && !selectedTile.IsSolid)
@@ -167,12 +184,12 @@ namespace TownSimulator
                             LumberMill lm = new LumberMill(town);
 
                             Point size = lm.GetTileSize();
-                            List<Tile>tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                            List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
                             if (tiles != null)
                             {
                                 foreach (Tile t in tiles)
                                 {
-                                    _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                    tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
                                 }
 
                                 if (leftClicked && !selectedTile.IsSolid)
@@ -186,21 +203,21 @@ namespace TownSimulator
                 }
 
 
-               
+
             }
         }
 
-        //Not thread safe, but only used in one spot
+        //TODO remove this, it is not thread safe
         public static void Draw()
         {
             //Write current item to screen
             DrawingUtils.DrawMessage(_state.ToString());
 
-            DrawSelectedUnitInfos();           
+            DrawSelectedUnitInfos();
 
-            if (_tilesToDraw != null && _tilesToDraw.Count > 0)
+            if (tilesToDraw != null && tilesToDraw.Count > 0)
             {
-                foreach (KeyValuePair<Tile, Color> t in _tilesToDraw)
+                foreach (KeyValuePair<Tile, Color> t in tilesToDraw)
                 {
                     DrawingUtils.DrawRectangle(new Rectangle(t.Key.Position.X * Engine.TileWidth, t.Key.Position.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight), t.Value);
                 }
@@ -211,10 +228,10 @@ namespace TownSimulator
         {
             if (_selectedUnit != null)
             {
-                List<string> elements = new List<string>();                
+                List<string> elements = new List<string>();
 
                 elements.Add("Name : " + _selectedUnit.FirstName + " " + _selectedUnit.LastName);
-               
+
                 //Custom properties for each type of villager
                 if (_selectedUnit.GetType() == typeof(Woodcutter))
                 {
@@ -239,9 +256,12 @@ namespace TownSimulator
                 }
                 elements.Add(nextPath);
 
+
+
+
                 int height = 20;
                 int x = 350;
-                for(int i = 0; i < elements.Count ; i++)
+                for (int i = 0; i < elements.Count; i++)
                 {
                     DrawingUtils.DrawMessage(elements[i], new Vector2(x, height * i), Color.Red);
                 }
