@@ -45,7 +45,7 @@ namespace TownSimulator
         {
             Random rand = new Random();
 
-            int nbLM = rand.Next(1, 3);
+            int nbLM = 1;// rand.Next(1, 3);
             for (int i = 0; i < nbLM; i++)
             {
                 LumberMill lm = new LumberMill(this);
