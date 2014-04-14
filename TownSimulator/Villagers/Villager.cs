@@ -66,6 +66,12 @@ namespace TownSimulator.Villagers
             thread.Start();
         }
 
+        ~Villager()
+        {
+            thread.Abort();
+            thread.Join();
+        }
+
         virtual protected void Start()
         {
             Run();
