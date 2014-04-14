@@ -111,17 +111,11 @@ namespace TownSimulator
         {
             Villagers.Add(NbVillagers, villager);
             NbVillagers++;
-
-            Console.WriteLine(villager.GetType() + " added.");
-
         }
 
         public void AddBuilding(Building building)
         {
             Buildings.Add(building);
-
-            Console.WriteLine(building.GetType() + " added.");
-
         }
     }
 }
