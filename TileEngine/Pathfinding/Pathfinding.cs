@@ -139,7 +139,7 @@ namespace TileEngine
             for(int i = 0; i < nbElements; i++)
             {
                 int x = i % TileMap.Width;
-                int y = (int)Math.Floor((double)(i / TileMap.Height));
+                int y = (int)Math.Floor((double)(i / TileMap.Width));
 
                 nodes.Add( new DijkstraNode()
                     {

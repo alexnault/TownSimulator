@@ -23,7 +23,7 @@ namespace TileEngine
         public List<Point> Path { get; protected set; }
         public Direction CurrentDirection { get; private set; }
 
-        public Actor(int movingTimeMS = 100)
+        public Actor(int movingTimeMS = 300)
             :base()
         {
             lastGameTime = new TimeSpan();

@@ -48,10 +48,10 @@ namespace TownSimulator
             {
                 _state = ClickState.House;
             }
-            else if (InputHelper.IsNewKeyPressed(Keys.L))
-            {
-                _state = ClickState.LumberMill;
-            }
+            //else if (InputHelper.IsNewKeyPressed(Keys.L))
+            //{
+            //    _state = ClickState.LumberMill;
+            //}
             else if (InputHelper.IsNewKeyPressed(Keys.S))
             {
                 foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
@@ -70,7 +70,7 @@ namespace TownSimulator
             "W = Woodcutter;\n" +
             "R = Rock;\n" +
             "H = House;\n" +
-            "L = LumberMill;\n" +
+            //"L = LumberMill;\n" +
             "\n" +
             "Pressing S will warn all Villagers so\n" +
             "they can make a decision.\n" +
