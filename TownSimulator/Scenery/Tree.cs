@@ -24,6 +24,7 @@ namespace TownSimulator.Scenery
         private const float MAX_ANGLE = 0.045f;
         private TimeSpan lastGameTime;
         private TimeSpan windTime = TimeSpan.FromMilliseconds(50);
+        private float _windStrength;
 
         public Tree()
         {
@@ -32,6 +33,7 @@ namespace TownSimulator.Scenery
             _angle = 0;
             _windDirection = _rand.Next(0, 2);
             _acceleration = 0;
+            _windStrength = 1;
 
             _mutex = new Semaphore(1, 1);
 
@@ -113,7 +115,7 @@ namespace TownSimulator.Scenery
                 Vector2 posPixels = new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
 
                 DrawingUtils.DrawRectangle(new Rectangle((int)posPixels.X, (int)posPixels.Y, Engine.TileWidth, Engine.TileHeight), Color.Blue);
-                ObjectSprite.Draw(spriteBatch, (int)posPixels.X + XDrawOffset, (int)posPixels.Y + YDrawOffset, _angle, 48, 128);
+                ObjectSprite.Draw(spriteBatch, (int)posPixels.X + XDrawOffset, (int)posPixels.Y + YDrawOffset, _angle, 48, 125);
 
             }
         }
@@ -122,12 +124,20 @@ namespace TownSimulator.Scenery
         {
             if (lastGameTime > windTime)
             {
-                _acceleration = (MAX_ANGLE - Math.Abs(_angle)) / 16;
+                float factor = (MAX_ANGLE - Math.Abs(_angle));
+
+                _acceleration = factor * (_windStrength) / 16;
 
                 if (_angle >= MAX_ANGLE - 0.01)
+                {
                     _windDirection = 1;
+                    _windStrength = _rand.Next(1, 4);
+                }
                 else if (_angle <= -MAX_ANGLE + 0.01)
+                {
                     _windDirection = 0;
+                    _windStrength = _rand.Next(1, 4);
+                }
 
                 if (_windDirection == 0)
                     _angle += _acceleration;
