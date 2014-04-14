@@ -72,20 +72,20 @@ namespace TownSimulator
             {
                 LumberMill lumberMill = new LumberMill(this);
                 TileMap.PlaceGameObjectRandomly(lumberMill);
-
-                TileMap.PlaceGameObjectRandomly(
-                new Carrier(
-                    this,
-                    lumberMill)
-                );
+                TileMap.PlaceGameObjectRandomly(new Carrier( this,  lumberMill) );
             }
 
+            int nbHouse = rand.Next(0, 3);
+            for (int i = 0; i < nbHouse; i++)
+            {
+                TileMap.PlaceGameObjectRandomly(new House(this));
+            }
 
-            House house = new House(this);
-            TileMap.PlaceGameObjectRandomly(house);
-
-            ConstructionSite constructionSite = new ConstructionSite(this);
-            TileMap.PlaceGameObjectRandomly(constructionSite);
+            int nbBuildSite = rand.Next(1, 2);
+            for (int i = 0; i < nbBuildSite; i++)
+            {
+                TileMap.PlaceGameObjectRandomly(new ConstructionSite(this));
+            }
         }
 
         

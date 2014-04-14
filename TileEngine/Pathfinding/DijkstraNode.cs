@@ -20,7 +20,7 @@ namespace TileEngine
             Point left = new Point(Position.X - 1, Position.Y);
             if (left.X >= 0)
             {
-                int pos = left.Y * TileMap.Height + left.X;
+                int pos = left.Y * TileMap.Width + left.X;
                 DijkstraNode leftNeighbor = nodes[pos];
                 if (leftNeighbor != null) Neighbors.Add(leftNeighbor);
             }
@@ -28,7 +28,7 @@ namespace TileEngine
             Point right = new Point(Position.X + 1, Position.Y);
             if (right.X < TileMap.Width)
             {
-                int pos = right.Y * TileMap.Height + right.X;
+                int pos = right.Y * TileMap.Width + right.X;
                 DijkstraNode rightNeighbor = nodes[pos];
                 if (rightNeighbor != null) Neighbors.Add(rightNeighbor);
             }
@@ -36,7 +36,7 @@ namespace TileEngine
             Point top = new Point(Position.X, Position.Y - 1);
             if (top.Y >= 0)
             {
-                int pos = top.Y * TileMap.Height + top.X;
+                int pos = top.Y * TileMap.Width + top.X;
                 DijkstraNode topNeighbor = nodes[pos];
                 if (topNeighbor != null) Neighbors.Add(topNeighbor);
             }
@@ -45,7 +45,7 @@ namespace TileEngine
             Point bottom = new Point(Position.X, Position.Y + 1);
             if (bottom.Y < TileMap.Height)
             {
-                int pos = bottom.Y * TileMap.Height + bottom.X;
+                int pos = bottom.Y * TileMap.Width + bottom.X;
                 DijkstraNode bottomNeighbor = nodes[pos];
                 if (bottomNeighbor != null) Neighbors.Add(bottomNeighbor);
             }

@@ -62,8 +62,10 @@ namespace TownSimulator
         private void GenerateMap()
         {
             //Static generation of the tile map
-            int w = 30;
-            int h = 30;
+            Random rand = new Random();
+
+            int w = rand.Next(20, 40);
+            int h = rand.Next(20, 40);
             int[,] textIndexes = new int[w, h];
 
             for (int i = 0; i < w; i++)
@@ -73,37 +75,19 @@ namespace TownSimulator
             TileMap.Initialize(textIndexes);
 
 
-            //GameObject[] solidObjects = new GameObject[h - 1];
-            //for (int i = 0; i < h - 1; i++)
-            //{
-            //    solidObjects[i] = new GameObject()
-            //    {
-            //        IsSolid = true,
-            //        ObjectSprite = new Sprite(6)
-            //    };
-            //}
-
-            //for (int y = 0; y < h - 1; y++)
-            //{
-            //    Tile t = TileMap.Tiles[1, y];
-            //   // solidObjects[y].Position = new Point(1, y);
-            //    t.AddObject(solidObjects[y]);
-            //}
-
-            //TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
-            
-            //GameObject.PlaceBigObjectCentered(new Buildings.LumberMill(), 
-
-
-            Random rand = new Random();
+            //Generate Trees and rocks
             int nbTrees = rand.Next(5, 25);
-
             for (int i = 0; i < nbTrees; i++ )
             {
                 TileMap.PlaceGameObjectRandomly(new Scenery.Tree());
             }
-        }
 
+            int nbRocks = rand.Next(0, 10);
+            for (int i = 0; i < nbRocks; i++)
+            {
+                TileMap.PlaceGameObjectRandomly(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+            }
+        }
 
         protected override void LoadContent()
         {
