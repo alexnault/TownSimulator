@@ -46,7 +46,7 @@ namespace TileEngine
 
         /// <summary>
         /// Get the Width and Height of the object in tiles.
-        /// N
+        /// Note: Returns only a size of 1 if the object is not big.
         /// </summary>
         /// <returns>A point using the X as width in tiles and Y as height in Tiles.</returns>
         public Size GetTileSize()
