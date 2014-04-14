@@ -40,7 +40,7 @@ namespace TileEngine
         }
 
 
-        public void Draw(SpriteBatch spriteBatch, int x, int y)
+        public void Draw(SpriteBatch spriteBatch, int x, int y, float rotation = 0, int originX = 0, int originY = 0)
         {
             float z = 0.0f; //Note: 0.0f = front, 1.0f = back.
             z = 1.0f - ((float)(y + Height) / (float)(TileMap.Height * Engine.TileHeight));
@@ -50,11 +50,11 @@ namespace TileEngine
 
             spriteBatch.Draw(
                             TextureManager.Get(TextureID),
-                            new Rectangle(x, y, Width, Height),
+                            new Rectangle(x + originX, y + originY, Width, Height),
                             TexturePortion,
                             DrawingColor,
-                            0,
-                            new Vector2(0, 0),
+                            rotation,
+                            new Vector2(originX, originY),
                             SpriteEffects.None,
                             z);
         }

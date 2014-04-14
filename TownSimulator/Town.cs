@@ -27,12 +27,10 @@ namespace TownSimulator
 
             AITurn = new Semaphore(1, 1);
 
-            LumberMill lumberMill = new LumberMill();
-            House house = new House();
-
-            Buildings = new List<Building>() { lumberMill, house };
-            TileMap.Tiles[7, 8].AddObject(lumberMill);
-            TileMap.Tiles[10, 18].AddObject(house);
+            Buildings = new List<Building>();
+            TileMap.Tiles[7, 8].AddObject(new LumberMill(this));
+            TileMap.Tiles[10, 18].AddObject(new House(this));
+            TileMap.Tiles[20, 5].AddObject(new ConstructionSite(this));
 
             //Villagers = new Villager[nbVillagers];
             Villagers = new Dictionary<int, Villager>();
@@ -43,7 +41,13 @@ namespace TownSimulator
                 //Villagers[i] = new Woodcutter("Bob", "Gratton", this);
             }
 
-            TileMap.Tiles[0, 0].AddObject(new Carrier("Bob", "Gratton", this, lumberMill));
+            TileMap.Tiles[0, 0].AddObject(
+                new Carrier(
+                    "Bob", "Gratton",
+                    this,
+                    (LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill))
+                )
+            );
         }
 
         public void Update(GameTime gametime)
@@ -68,6 +72,11 @@ namespace TownSimulator
         {
             Villagers.Add(NbVillagers, villager);
             NbVillagers++;
+        }
+
+        public void AddBuilding(Building building)
+        {
+            Buildings.Add(building);
         }
     }
 }
