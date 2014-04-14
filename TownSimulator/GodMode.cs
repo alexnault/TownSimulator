@@ -145,18 +145,23 @@ namespace TownSimulator
                             House house = new House(town);
 
                             Point size = house.GetTileSize();
-                            List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
-                            if (tiles != null)
+                            if (DrawingUtils.DrawingRectangle)
                             {
-                                foreach (Tile t in tiles)
+                                List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                                if (tiles != null)
                                 {
-                                    _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
-                                }
+                                    foreach (Tile t in tiles)
+                                    {
+                                        _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                    }
 
-                                if (leftClicked && !selectedTile.IsSolid)
-                                {
-                                    selectedTile.AddObject(house);
+
                                 }
+                            }
+
+                            if (leftClicked && !selectedTile.IsSolid)
+                            {
+                                selectedTile.AddObject(house);
                             }
 
 
@@ -198,7 +203,7 @@ namespace TownSimulator
 
             DrawSelectedUnitInfos();           
 
-            if (_tilesToDraw != null && _tilesToDraw.Count > 0)
+            if (DrawingUtils.DrawingRectangle && _tilesToDraw != null && _tilesToDraw.Count > 0)
             {
                 foreach (KeyValuePair<Tile, Color> t in _tilesToDraw)
                 {
@@ -223,7 +228,7 @@ namespace TownSimulator
                 }
                 else
                 {
-
+                    elements.Add("Task : " + ((Carrier)_selectedUnit).CurrentTask.ToString());
 
                 }
 
@@ -231,6 +236,11 @@ namespace TownSimulator
                 string nextPath = "Next : None";
                 if (_selectedUnit.Path != null && _selectedUnit.Path.Count > 0)
                 {
+                    //foreach (Point p in _selectedUnit.Path)
+                    //{
+                    //    TileMap.GetTile(p).GroundTextureID = 1;
+                    //}
+
                     int count = _selectedUnit.Path.Count;
                     Point nextPos = _selectedUnit.Path[0];
                     Point lastPos = _selectedUnit.Path[count - 1];

@@ -31,7 +31,7 @@ namespace TownSimulator.Villagers
         public const int MAX_LOAD_SIZE = 3;
 
         //private WoodcutterState CurrentState;
-        private CarrierTask CurrentTask;
+        public CarrierTask CurrentTask { get; private set; }
 
         public LumberMill Workplace { get; set; }
 
@@ -68,24 +68,25 @@ namespace TownSimulator.Villagers
                         CurrentTask = CarrierTask.PickUpWood;
                         Workplace.Consort(this);
                         SetFacingDirection(Workplace.Position);
+                        Warn(EnvironmentEvent.DestinationReached);
                     }
                     else // keep going to lumberMill
                     {
-                        GoTo(Workplace.Position);
+                       GoTo(Workplace.Position);
                     }
                     break;
                 }
                 case (CarrierTask.PickUpWood):
                 {
-                    if (latestEvent == EnvironmentEvent.WoodStored)
-                    {
-                        if (Workplace.CheckWood() == MAX_LOAD_SIZE)
+                    //if (latestEvent == EnvironmentEvent.WoodStored)
+                    //{
+                        if (Workplace.CheckWood() >= MAX_LOAD_SIZE)
                         {
                             LoadSize = Workplace.DiscardWood(MAX_LOAD_SIZE);
                             CurrentTask = CarrierTask.GoingToConstructionSite;
                             Warn(EnvironmentEvent.WoodPickedUp);
                         }
-                    }
+                    //}
                     break;
                 }
                 case (CarrierTask.GoingToConstructionSite):

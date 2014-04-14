@@ -10,7 +10,7 @@ namespace TileEngine
     {
 
 
-        public static List<Point> DoAStar(Point from, Point to)
+        public static List<Point> DoAStar(Point to, Point from)
         {
             int tileAcross = TileMap.Width;
             int tileDown = TileMap.Height;
@@ -25,12 +25,9 @@ namespace TileEngine
                     squares[x, y] = new AStarNode(x, y);
                 }
             }
-
-            //Node origin = squares[from.X, from.Y];
-            //Node destination = squares[to.X, to.Y];
-
-            AStarNode origin = squares[from.X, from.Y];
-            AStarNode destination = squares[to.X, to.Y];
+            
+            AStarNode origin = squares[to.X, to.Y];
+            AStarNode destination = squares[from.X, from.Y];
 
             List<AStarNode> openList = new List<AStarNode>();
             List<AStarNode> closedList = new List<AStarNode>();

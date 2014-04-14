@@ -18,13 +18,13 @@ namespace TileEngine
         private static bool _initialized = false;
 
         public static SpriteFont Font {get; set; }
-        public static bool Drawing { get; set; }
+        public static bool DrawingRectangle { get; set; }
 
 
 
         public static void Initialize(SpriteBatch spriteBatch, Camera camera)
         {
-            Drawing = true;
+            DrawingRectangle = true;
             _textureID = 10;
             _spriteBatch = spriteBatch;
             _camera = camera;
@@ -38,7 +38,7 @@ namespace TileEngine
         /// <param name="couleur">The color of the Rectangle</param>
         public static void DrawRectangle(Rectangle rect, Color color)
         {
-            if (Drawing && _initialized)
+            if (DrawingRectangle && _initialized)
             {
                 //Top line
                 _spriteBatch.Draw(

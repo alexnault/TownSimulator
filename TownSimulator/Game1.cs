@@ -47,7 +47,12 @@ namespace TownSimulator
             //TileMap.SaveToXML(path);
             //TileMap.LoadFromXML(path);
             TextureManager.Initialize();
+
             DrawingUtils.Initialize(spriteBatch, camera);
+
+#if !DEBUG
+            DrawingUtils.DrawingRectangle = false;
+#endif
 
             base.Initialize();
         }

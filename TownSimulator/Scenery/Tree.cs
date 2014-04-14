@@ -75,12 +75,19 @@ namespace TownSimulator.Scenery
             }
         }
 
-        public void Consort(Woodcutter slayer)
+        public bool Consort(Woodcutter slayer)
         {
+            bool isSlayer = false;
+
             _mutex.WaitOne(); // FCFS
             if (Slayer == null)
+            {
                 Slayer = slayer;
+                isSlayer = true;
+            }
             _mutex.Release();
+
+            return isSlayer;
         }
 
         public override void Update(GameTime gameTime)

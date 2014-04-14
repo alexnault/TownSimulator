@@ -72,10 +72,16 @@ namespace TownSimulator.Villagers
                         {
                             if (Position.IsNextTo(tree.Position))
                             {
-                                CurrentState = WoodcutterState.Cutting;
-                                CurrentTask = WoodcutterTask.PickUpWood;
-                                tree.Consort(this);
-                                SetFacingDirection(tree.Position);
+                                if(tree.Consort(this))
+                                {
+                                    CurrentState = WoodcutterState.Cutting;
+                                    CurrentTask = WoodcutterTask.PickUpWood;
+                                    SetFacingDirection(tree.Position);
+                                }
+                                else
+                                {
+                                    Warn(EnvironmentEvent.DestinationReached);
+                                }                                
                             }
                             else // keep going to tree
                             {
