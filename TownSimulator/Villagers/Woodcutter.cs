@@ -101,7 +101,7 @@ namespace TownSimulator.Villagers
                     }
                 case (WoodcutterTask.GoingToLumberMill):
                     {
-                        LumberMill lumbermill = TileMap.FindClosest<LumberMill>(Position);
+                        LumberMill lumbermill = Pathfinding.FindClosest<LumberMill>(Position);
                         if (lumbermill != null)
                         {
                             if (Position.IsNextTo(lumbermill.Position))
@@ -133,7 +133,7 @@ namespace TownSimulator.Villagers
             do
             {
                 i++; // Find next tree
-                tree = TileMap.Find<Tree>(Position, i);
+                tree = Pathfinding.FindClosest<Tree>(Position);
                 if (tree == null)
                     return null; // No unused tree
             } while (tree.Slayer != null);
@@ -147,7 +147,7 @@ namespace TownSimulator.Villagers
             do
             {
                 i++;
-                tree = TileMap.Find<Tree>(Position, i);
+                tree = Pathfinding.FindClosest<Tree>(Position);
                 if (tree == null)
                     return null;
             } while (tree.Slayer != this);

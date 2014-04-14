@@ -46,7 +46,8 @@
     <Compile Include="Old TileEngine Files\CollisionLayer.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameObject.cs" />
-    <Compile Include="Pathfinding\Node.cs" />
+    <Compile Include="Pathfinding\DijkstraNode.cs" />
+    <Compile Include="Pathfinding\AStarNode.cs" />
     <Compile Include="Pathfinding\Pathfinding.cs" />
     <Compile Include="SerializerUtils.cs" />
     <Compile Include="Sprite.cs" />

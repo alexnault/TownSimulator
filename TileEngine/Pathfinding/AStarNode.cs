@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TileEngine
 {
-    public class Node
+    public class AStarNode
     {
 
         public int H;  //Nombre de points totaux calculer avec seulement un chemin de nodes verticales/horizontales
@@ -15,19 +15,19 @@ namespace TileEngine
         public int F;  //Points par case utilisé pour le choix de la meilleur case (Plus petit = meilleur). Calcul : F = G + H  
 
         public Point Position { get; private set; }
-        public Node ParentNode { get; set; }
+        public AStarNode ParentNode { get; set; }
 
-        public Node()
+        public AStarNode()
             : this(0, 0)
         {
         }
 
-        public Node(Vector2 pos)
+        public AStarNode(Vector2 pos)
             : this((int)pos.X, (int)pos.Y)
         {
         }
 
-        public Node(int x, int y)
+        public AStarNode(int x, int y)
         {
             this.G = 0;
             this.H = 0;

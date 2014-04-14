@@ -18,8 +18,7 @@ namespace TownSimulator
             WoodPile,
             Rock,
             House,
-            LumberMill,
-            Selecting
+            LumberMill            
         }
         private static Dictionary<Tile, Color> tilesToDraw;
         private static ClickState _state;
@@ -57,16 +56,11 @@ namespace TownSimulator
             {
                 _state = ClickState.LumberMill;
             }
-            else if (InputHelper.IsNewKeyPressed(Keys.I))
-            {
-                _state = ClickState.Selecting;
-            }
             else if (InputHelper.IsNewKeyPressed(Keys.S))
             {
                 foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
                     v.Value.Warn(EnvironmentEvent.Manual);
-            }
-           
+            }           
 
         }
 
@@ -82,9 +76,23 @@ namespace TownSimulator
                 selectedTile = TileMap.Tiles[tilePos.X, tilePos.Y];
 
                 bool leftClicked = InputHelper.LeftMouseButtonClicked() && InputHelper.IsMouseOn(mapRect);
+                bool rightClicked = InputHelper.RightMouseButtonClicked() && InputHelper.IsMouseOn(mapRect);
                 bool leftDown = InputHelper.LeftMouseButtonDown() && InputHelper.IsMouseOn(mapRect);
                 
                 tilesToDraw = new Dictionary<Tile, Color>();
+
+
+                //Handle selection
+                if (rightClicked)
+                {
+                    Villager v = selectedTile.GetFirstObject<Villager>(true);
+
+                    if (v != null)
+                    {
+                        _selectedUnit = v;
+                    }
+                }   
+
                 
                 //Handle mouse click on map
                 switch (_state)
@@ -174,23 +182,10 @@ namespace TownSimulator
 
                             break;
                         }
-                    case ClickState.Selecting:
-                        {
-
-                            Villager v = selectedTile.GetFirstObject<Villager>(true);
-                                                                                  
-                            if (v != null)
-                            {
-                                //v.ObjectSprite.DrawingColor = Color.Gray;
-                                if (leftClicked)
-                                {
-                                    _selectedUnit = v;
-                                }                                
-                            }
-
-                            break;
-                        }
                 }
+
+
+               
             }
         }
 

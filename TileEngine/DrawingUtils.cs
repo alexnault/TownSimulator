@@ -97,12 +97,17 @@ namespace TileEngine
             DrawMessage(message, new Vector2(0, 0), color);
         }
 
-
-
-        public static void DrawMessage(string message, Vector2 topLeftPos, Color color)
+        public static void DrawMessage(string message, Vector2 topLeftPos, Color color, bool followCamera = true)
         {
             if (Font != null && _initialized == true)
-                _spriteBatch.DrawString(Font, message, topLeftPos, color);
+            {
+                Vector2 position = topLeftPos;
+
+                if (followCamera) 
+                    position += _camera.Position;
+
+                _spriteBatch.DrawString(Font, message, position, color);
+            }
         }
     }
 }

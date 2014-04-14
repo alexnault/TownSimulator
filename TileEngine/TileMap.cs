@@ -21,6 +21,11 @@ namespace TileEngine
         }
         public static Tile[,] Tiles { get; private set; }
 
+        public static Tile GetTile (Point p)
+        {
+            return Tiles[p.X, p.Y];
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -358,80 +363,80 @@ namespace TileEngine
         }
 
 
-        public static T FindClosest<T>(Point origin, int maxDistance = 50) where T : GameObject
-        {
-            return Find<T>(origin, 1, maxDistance);
-        }
+        //public static T FindClosest<T>(Point origin, int maxDistance = 50) where T : GameObject
+        //{
+        //    return Find<T>(origin, 1, maxDistance);
+        //}
 
-        // Original idea from
-        // Could be optimized or completly remaded
-        // http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
-        public static T Find<T>(Point origin, int position, int maxDistance = 50) where T : GameObject
-        {
-            if (position <= 0 || maxDistance <= 0)
-                throw new ArgumentException();
+        //// Original idea from
+        //// Could be optimized or completly remaded
+        //// http://stackoverflow.com/questions/3330181/algorithm-for-finding-nearest-object-on-2d-grid
+        //public static T Find<T>(Point origin, int position, int maxDistance = 50) where T : GameObject
+        //{
+        //    if (position <= 0 || maxDistance <= 0)
+        //        throw new ArgumentException();
 
-            int minX = 0;
-            int minY = 0;
-            int maxX = Width - 1;
-            int maxY = Height - 1;
+        //    int minX = 0;
+        //    int minY = 0;
+        //    int maxX = Width - 1;
+        //    int maxY = Height - 1;
 
-            int count = 0;
+        //    int count = 0;
 
-            origin.X = (int)MathHelper.Clamp(origin.X, minX, maxX);
-            origin.Y = (int)MathHelper.Clamp(origin.Y, minY, maxY);
-            T originT = Tiles[origin.X, origin.Y].GetFirstObject<T>();
-            if (originT != null) return originT;
+        //    origin.X = (int)MathHelper.Clamp(origin.X, minX, maxX);
+        //    origin.Y = (int)MathHelper.Clamp(origin.Y, minY, maxY);
+        //    T originT = Tiles[origin.X, origin.Y].GetFirstObject<T>();
+        //    if (originT != null) return originT;
 
-            for (int d = 1; d < maxDistance; d++)
-            {
-                for (int i = 0; i < d + 1; i++)
-                {
-                    Point point1 = new Point(origin.X - d + i, origin.Y - i);
-                    point1.X = (int)MathHelper.Clamp(point1.X, minX, maxX);
-                    point1.Y = (int)MathHelper.Clamp(point1.Y, minY, maxY);
-                    T t1 = Tiles[point1.X, point1.Y].GetFirstObject<T>();
-                    if (t1 != null)
-                    {
-                        count++;
-                        if (position == count) return t1;
-                    }
+        //    for (int d = 1; d < maxDistance; d++)
+        //    {
+        //        for (int i = 0; i < d + 1; i++)
+        //        {
+        //            Point point1 = new Point(origin.X - d + i, origin.Y - i);
+        //            point1.X = (int)MathHelper.Clamp(point1.X, minX, maxX);
+        //            point1.Y = (int)MathHelper.Clamp(point1.Y, minY, maxY);
+        //            T t1 = Tiles[point1.X, point1.Y].GetFirstObject<T>();
+        //            if (t1 != null)
+        //            {
+        //                count++;
+        //                if (position == count) return t1;
+        //            }
 
-                    Point point2 = new Point(origin.X + d - i, origin.Y + i);
-                    point2.X = (int)MathHelper.Clamp(point2.X, minX, maxX);
-                    point2.Y = (int)MathHelper.Clamp(point2.Y, minY, maxY);
-                    T t2 = Tiles[point2.X, point2.Y].GetFirstObject<T>();
-                    if (t2 != null)
-                    {
-                        count++;
-                        if (position == count) return t2;
-                    }
-                }
+        //            Point point2 = new Point(origin.X + d - i, origin.Y + i);
+        //            point2.X = (int)MathHelper.Clamp(point2.X, minX, maxX);
+        //            point2.Y = (int)MathHelper.Clamp(point2.Y, minY, maxY);
+        //            T t2 = Tiles[point2.X, point2.Y].GetFirstObject<T>();
+        //            if (t2 != null)
+        //            {
+        //                count++;
+        //                if (position == count) return t2;
+        //            }
+        //        }
 
-                for (int i = 1; i < d; i++)
-                {
-                    Point point1 = new Point(origin.X - i, origin.Y + d - i);
-                    point1.X = (int)MathHelper.Clamp(point1.X, minX, maxX);
-                    point1.Y = (int)MathHelper.Clamp(point1.Y, minY, maxY);
-                    T t1 = Tiles[point1.X, point1.Y].GetFirstObject<T>();
-                    if (t1 != null)
-                    {
-                        count++;
-                        if (position == count) return t1;
-                    }
+        //        for (int i = 1; i < d; i++)
+        //        {
+        //            Point point1 = new Point(origin.X - i, origin.Y + d - i);
+        //            point1.X = (int)MathHelper.Clamp(point1.X, minX, maxX);
+        //            point1.Y = (int)MathHelper.Clamp(point1.Y, minY, maxY);
+        //            T t1 = Tiles[point1.X, point1.Y].GetFirstObject<T>();
+        //            if (t1 != null)
+        //            {
+        //                count++;
+        //                if (position == count) return t1;
+        //            }
 
-                    Point point2 = new Point(origin.X + d - i, origin.Y - i);
-                    point2.X = (int)MathHelper.Clamp(point2.X, minX, maxX);
-                    point2.Y = (int)MathHelper.Clamp(point2.Y, minY, maxY);
-                    T t2 = Tiles[point2.X, point2.Y].GetFirstObject<T>();
-                    if (t2 != null)
-                    {
-                        count++;
-                        if (position == count) return t2;
-                    }
-                }
-            }
-            return null;
-        }
+        //            Point point2 = new Point(origin.X + d - i, origin.Y - i);
+        //            point2.X = (int)MathHelper.Clamp(point2.X, minX, maxX);
+        //            point2.Y = (int)MathHelper.Clamp(point2.Y, minY, maxY);
+        //            T t2 = Tiles[point2.X, point2.Y].GetFirstObject<T>();
+        //            if (t2 != null)
+        //            {
+        //                count++;
+        //                if (position == count) return t2;
+        //            }
+        //        }
+        //    }
+        //    return null;
+        //}
     }
 }
