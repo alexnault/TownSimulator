@@ -65,7 +65,7 @@ namespace TownSimulator
             Console.Write(
             "===============GOD MODE===============\n" +
             "Press one of the following keys and\n" +
-            "click on the map to spaw a GameObject\n" +
+            "click on the map to spawn a GameObject\n" +
             "T = Tree;\n" +
             "W = Woodcutter;\n" +
             "R = Rock;\n" +
@@ -73,7 +73,10 @@ namespace TownSimulator
             "L = LumberMill;\n" +
             "\n" +
             "Pressing S will warn all Villagers so\n" +
-            "they can make a decision."
+            "they can make a decision.\n" +
+            "\n" +
+            "Move camera = Arrow keys\n" + 
+            "Right-click on villager to see its status.\n"
             );
         }
 
@@ -146,10 +149,10 @@ namespace TownSimulator
                         {
                             House house = new House(town);
 
-                            Point size = house.GetTileSize();
+                            Size size = house.GetTileSize();
                             if (DrawingUtils.DrawingRectangle)
                             {
-                                List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                                List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size);
                                 if (tiles != null)
                                 {
                                     foreach (Tile t in tiles)
@@ -171,8 +174,8 @@ namespace TownSimulator
                         {
                             LumberMill lm = new LumberMill(town);
 
-                            Point size = lm.GetTileSize();
-                            List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
+                            Size size = lm.GetTileSize();
+                            List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.Width, size.Height);
                             if (tiles != null)
                             {
                                 foreach (Tile t in tiles)

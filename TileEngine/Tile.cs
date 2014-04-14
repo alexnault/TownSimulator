@@ -148,8 +148,8 @@ namespace TileEngine
 
             bool objectPlaced = false;
 
-            Point size = gameObject.GetTileSize();
-            List<Tile> tiles = TileMap.GetTileArea(Position, size.X, size.Y);
+            Size size = gameObject.GetTileSize();
+            List<Tile> tiles = TileMap.GetTileArea(Position, size.Width, size.Height);
             if (tiles != null)
             {
                 //TODO etre sur que personne touche au TileMap avant que la boucle finisse? Mutex?

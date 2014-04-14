@@ -46,17 +46,28 @@ namespace TileEngine
 
         /// <summary>
         /// Get the Width and Height of the object in tiles.
+        /// N
         /// </summary>
         /// <returns>A point using the X as width in tiles and Y as height in Tiles.</returns>
-        public Point GetTileSize()
+        public Size GetTileSize()
         {
-            int overflowX = ObjectSprite.Width - Engine.TileWidth;
-            int overflowY = ObjectSprite.Height - Engine.TileHeight;
+            Size size;
+            if(IsBig)
+            {
+                int overflowX = ObjectSprite.Width - Engine.TileWidth;
+                int overflowY = ObjectSprite.Height - Engine.TileHeight;
 
-            int nbTilesWide = (int)Math.Ceiling((double)overflowX / (double)Engine.TileWidth) + 1;
-            int nbTilesHigh = (int)Math.Ceiling((double)overflowY / (double)Engine.TileHeight) + 1;
+                int nbTilesWide = (int)Math.Ceiling((double)overflowX / (double)Engine.TileWidth) + 1;
+                int nbTilesHigh = (int)Math.Ceiling((double)overflowY / (double)Engine.TileHeight) + 1;
+                size = new Size(nbTilesWide, nbTilesHigh);
+            }
+            else
+            {
+                size = new Size(1, 1);
+            }
+            
 
-            return new Point(nbTilesWide, nbTilesHigh);
+            return size;
         }
 
         public virtual void Update(GameTime gameTime)

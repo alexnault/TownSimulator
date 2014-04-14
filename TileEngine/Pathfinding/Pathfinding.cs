@@ -9,7 +9,7 @@ namespace TileEngine
     public static class Pathfinding
     {
 
-
+        // Source : http://www.policyalmanac.org/games/aStarTutorial.htm
         public static List<Point> DoAStar(Point to, Point from)
         {
             int tileAcross = TileMap.Width;
@@ -26,6 +26,7 @@ namespace TileEngine
                 }
             }
             
+            //TODO: There is a bug that I can't find that requires to switch the positions
             AStarNode origin = squares[to.X, to.Y];
             AStarNode destination = squares[from.X, from.Y];
 
@@ -118,13 +119,17 @@ namespace TileEngine
 
 
 
+
+        //Source : http://en.wikipedia.org/wiki/Pathfinding
+        //TODO: Still needs improvement 
+
         /// <summary>
-        /// Find the X th closest element.
+        /// Find the closest element or the chosen type from the from point. 
         /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="from"></param>
-        /// <param name="position"></param>
-        /// <returns></returns>
+        /// <typeparam name="T">Type of the object we are looking for.</typeparam>
+        /// <param name="from">The position we're starting from.</param>
+        /// <param name="validate">A lambda operation to validate if the object found is good. If the lamdba operation fails, the algorithm will look for another one. Note : Won't be tested if null.</param>
+        /// <returns>Return the closest object found. If none are found, returns null.</returns>
         public static T FindClosest<T>(Point from, Func<T, bool> validate = null) where T : GameObject
         {
             int nbElements = TileMap.Width * TileMap.Height;
@@ -144,9 +149,6 @@ namespace TileEngine
 
                 if (!IsWalkable(new Point(x, y))) nbSolidItems++;
             }
-            
-            //nodes.ForEach(n => n.SetNeighbors(nodes));
-
             
             DijkstraNode start = nodes.FirstOrDefault(x => x.Position == from);
             start.Distance = 0;
@@ -194,11 +196,6 @@ namespace TileEngine
             return null;
 
         }
-
-       
-
-        
-
         private static int CalculateHeuristic(AStarNode current, AStarNode target)
         {
             return (int)(Math.Abs(current.Position.X - target.Position.X) + Math.Abs(current.Position.Y - target.Position.Y));

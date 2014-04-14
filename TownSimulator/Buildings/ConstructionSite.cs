@@ -24,7 +24,7 @@ namespace TownSimulator.Buildings
 
             _mutex = new Semaphore(1, 1);
 
-            ObjectSprite = new Sprite(8, Position.X, Position.Y, 95, 94);
+            ObjectSprite = new Sprite(12, Position.X, Position.Y, 96, 96);
         }
 
         public int AddWood(int amount)
@@ -38,12 +38,13 @@ namespace TownSimulator.Buildings
         }
 
         public override void Draw(SpriteBatch spriteBatch)
-        {
+        {            
             DrawingUtils.DrawMessage(
                 WoodCount.ToString(),
                 new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset),
                 Color.GreenYellow,
                 false);
+
             base.Draw(spriteBatch);
         }
     }

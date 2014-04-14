@@ -93,20 +93,20 @@ namespace TownSimulator
             //TileMap.Tiles[7, 8].AddObject( new Items.WoodPile() );
             
             //GameObject.PlaceBigObjectCentered(new Buildings.LumberMill(), 
-            
-            TileMap.Tiles[5, 1].AddObject(new Scenery.Tree());
-            TileMap.Tiles[7, 3].AddObject(new Scenery.Tree());
-            TileMap.Tiles[2, 7].AddObject(new Scenery.Tree());
-            TileMap.Tiles[7, 12].AddObject(new Scenery.Tree());
-            TileMap.Tiles[3, 18].AddObject(new Scenery.Tree());
-            TileMap.Tiles[9, 15].AddObject(new Scenery.Tree());
+
+
+            Random rand = new Random();
+            int nbTrees = rand.Next(5, 25);
+
+            for (int i = 0; i < nbTrees; i++ )
+            {
+                TileMap.PlaceGameObjectRandomly(new Scenery.Tree());
+            }
         }
 
 
         protected override void LoadContent()
         {
-            
-
             TextureManager.Add(Content.Load<Texture2D>("Tiles/grass_small"), 0);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/rock"), 1);
             TextureManager.Add(Content.Load<Texture2D>("Tiles/wood_small"), 2);
@@ -118,7 +118,7 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("Sprites/lumbermill"), 8);
             TextureManager.Add(Content.Load<Texture2D>("texture1px"), 10);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/carrier_sheet_small"), 11);
-            
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/buildsite"), 12);
 
             DrawingUtils.Font = Content.Load<SpriteFont>("Fonts/font1");
               

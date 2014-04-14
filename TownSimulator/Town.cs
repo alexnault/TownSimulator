@@ -28,27 +28,54 @@ namespace TownSimulator
             AITurn = new Semaphore(1, 1);
 
             Buildings = new List<Building>();
-            TileMap.Tiles[7, 8].AddObject(new LumberMill(this));
-            TileMap.Tiles[10, 18].AddObject(new House(this));
-            TileMap.Tiles[20, 5].AddObject(new ConstructionSite(this));
+            GenerateTown(initNbVillagers);
+        }
+
+        private void GenerateTown(uint initNbVillagers)
+        {
+
+            LumberMill lumberMill = new LumberMill(this);
+            TileMap.PlaceGameObjectRandomly(lumberMill);
+
+            House house = new House(this);
+            TileMap.PlaceGameObjectRandomly(house);
+
+            ConstructionSite constructionSite = new ConstructionSite(this);
+            TileMap.PlaceGameObjectRandomly(constructionSite);
+
+            //TileMap.Tiles[7, 8].AddObject(lumberMill);
+            //TileMap.Tiles[10, 18].AddObject(new House(this));
+            //TileMap.Tiles[20, 5].AddObject(new ConstructionSite(this));
 
             //Villagers = new Villager[nbVillagers];
             Villagers = new Dictionary<int, Villager>();
             for (int i = 0; i < initNbVillagers; i++)
             {
+                TileMap.PlaceGameObjectRandomly(new Woodcutter("Bob", "Gratton", this));
                 // Automaticly added to this town
-                TileMap.Tiles[0, 0].AddObject(new Woodcutter("Bob", "Gratton", this));
+                //TileMap.Tiles[0, 0].AddObject(new Woodcutter("Bob", "Gratton", this));
                 //Villagers[i] = new Woodcutter("Bob", "Gratton", this);
             }
 
-            TileMap.Tiles[0, 0].AddObject(
+            TileMap.PlaceGameObjectRandomly(
                 new Carrier(
-                    "Bob", "Gratton",
+                    "The", "Carrier",
                     this,
-                    (LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill))
-                )
-            );
+                    lumberMill)
+                );
+
+            //(LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill))
+
+            //TileMap.Tiles[0, 0].AddObject(
+            //    new Carrier(
+            //        "Bob", "Gratton",
+            //        this,
+            //        (LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill))
+            //    )
+            //);
         }
+
+        
 
         public void Update(GameTime gametime)
         {

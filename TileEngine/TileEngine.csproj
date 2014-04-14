@@ -49,6 +49,7 @@
     <Compile Include="Pathfinding\DijkstraNode.cs" />
     <Compile Include="Pathfinding\AStarNode.cs" />
     <Compile Include="Pathfinding\Pathfinding.cs" />
+    <Compile Include="Size.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="InputHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

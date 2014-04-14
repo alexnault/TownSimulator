@@ -328,22 +328,25 @@ namespace TileEngine
         }
 
         
-
+        public static List<Tile> GetTileArea(Point bottomCenter, Size size)
+        {
+            return GetTileArea(bottomCenter, size.Width, size.Height);
+        }
 
         /// <summary>
         /// Get the tiles from the bottom center going outward.
         /// </summary>
         /// <param name="bottomCenter"></param>
-        /// <param name="width">Number of tile wide.</param>
-        /// <param name="height">Number of tile high.</param>
+        /// <param name="objWidth">Number of tile wide.</param>
+        /// <param name="objHeight">Number of tile high.</param>
         /// <returns></returns>
-        public static List<Tile> GetTileArea(Point bottomCenter, int width, int height)
+        public static List<Tile> GetTileArea(Point bottomCenter, int objWidth, int objHeight)
         {
             List<Tile> tiles = new List<Tile>();
 
-            for (int x = -(width / 2); x <= (width / 2); x++)
+            for (int x = -(objWidth / 2); x <= (objWidth / 2); x++)
             {
-                for (int y = -(height - 1); y <= 0; y++)
+                for (int y = -(objHeight - 1); y <= 0; y++)
                 {
                     int posX = bottomCenter.X + x;
                     int posY = bottomCenter.Y + y;
@@ -360,6 +363,42 @@ namespace TileEngine
                 }
             }
             return tiles;
+        }
+
+        public static void PlaceGameObjectRandomly(GameObject obj)
+        {
+            Random rand = new Random();
+            int xPos = 0;
+            int yPos = 0;
+            List<Tile> tiles;
+            Size size = obj.GetTileSize();
+            do
+            {
+                xPos = rand.Next(Width - 1);
+                yPos = rand.Next(Height - 1);
+
+                
+                tiles = GetTileArea(new Point(xPos, yPos), size);
+
+            } while (tiles == null || !tiles.All(t => !t.IsSolid));
+
+#if DEBUG
+
+            Tiles[xPos, yPos].GroundTextureID = 1;
+
+            Console.WriteLine(
+                string.Format("{0} built on [{1} ; {2}]. {3} wide, {4} high.",
+                obj.GetType(),
+                xPos,
+                yPos,
+                size.Width,
+                size.Height));
+
+#endif
+
+           
+
+            Tiles[xPos, yPos].AddObject(obj);
         }
 
 
