@@ -81,7 +81,7 @@ namespace TownSimulator.Villagers
                         Tree tree = FindUnusedTree();
                         if (tree != null)
                         {
-                            if (IsNextTo(Position, tree.Position))
+                            if (Position.IsNextTo(tree.Position))
                             {
                                 _currentState = WoodcutterState.Cutting;
                                 _currentTask = WoodcutterTask.PickUpWood;
@@ -115,7 +115,7 @@ namespace TownSimulator.Villagers
                         LumberMill lumbermill = TileMap.FindClosest<LumberMill>(Position);
                         if (lumbermill != null)
                         {
-                            if (IsNextTo(Position, lumbermill.Position))
+                            if (Position.IsNextTo(lumbermill.Position))
                             {
                                 lumbermill.StoreWood();
                                 _currentTask = WoodcutterTask.None;
@@ -137,18 +137,6 @@ namespace TownSimulator.Villagers
                 }
                 HomeTown.AITurn.Release();
             }
-        }
-
-        // TODO put in engine
-        protected bool IsNextTo(Point p1, Point p2)
-        {
-            if ((p2.X == p1.X) && (p2.Y == p1.Y))
-                return true;
-            if (p2.Y == p1.Y && (p2.X == p1.X + 1 || p2.X == p1.X - 1))
-                return true;
-            if (p2.X == p1.X && (p2.Y == p1.Y + 1 || p2.Y == p1.Y - 1))
-                return true;
-            return false;
         }
 
         protected Tree FindUnusedTree()

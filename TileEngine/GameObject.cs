@@ -4,20 +4,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace TileEngine
 {
     public class GameObject
     {
         public Point Position { get; set; }
-
-        [System.Xml.Serialization.XmlAttribute]
         public Sprite ObjectSprite { get; set; }
 
         public int XDrawOffset { get; set; }
         public int YDrawOffset { get; set; }
-
-        [System.Xml.Serialization.XmlAttribute]
         public bool IsSolid { get; set; }
 
         //TODO: Change the name
@@ -28,6 +25,23 @@ namespace TileEngine
             IsSolid = false;
             IsBig = false;
             Position = new Point(0, 0);
+        }
+
+
+        public static GameObject LoadFromXml(XmlNode node)
+        {
+            GameObject gObj = new GameObject();
+                        
+            if(node.ChildNodes.Count > 0)
+            {
+                XmlNode sprite = node.ChildNodes[0];
+                int textureID = int.Parse(sprite.Attributes["TextureID"].Value);
+
+                gObj.ObjectSprite = new Sprite(textureID);
+
+            }
+
+            return gObj;
         }
 
         /// <summary>

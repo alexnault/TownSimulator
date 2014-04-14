@@ -41,6 +41,12 @@ namespace TownSimulator
 
             camera = new Camera();
             GenerateMap();
+
+            string path = "test.xml";
+
+            //TileMap.SaveToXML(path);
+            //TileMap.LoadFromXML(path);
+
             town = new Town(3);
             TextureManager.Initialize();
             DrawingUtils.Initialize(spriteBatch, camera);

@@ -14,7 +14,7 @@ namespace TileEngine
         public const int TileHeight = 32;
 
 
-        public static Point ConvertPositionToCell(Vector2 position)
+        public static Point ConvertPositionToCell(this Vector2 position)
         {
             return new Point(
                 (int)(position.X / TileWidth),
@@ -22,7 +22,7 @@ namespace TileEngine
                 );
         }
 
-        public static Rectangle CreateRectForCell(Point cell)
+        public static Rectangle CreateRectForCell(this Point cell)
         {
             return new Rectangle(
                 cell.X * TileWidth,
@@ -31,12 +31,22 @@ namespace TileEngine
                 TileHeight);
         }
 
-        public static Vector2 ConvertCellToPosition(Point cell)
+        public static Vector2 ConvertCellToPosition(this Point cell)
         {
             return new Vector2(
                 cell.X * TileWidth + TileWidth,
                 cell.Y * TileHeight + TileHeight);
 
         }
+
+        public static bool IsNextTo(this Point p1, Point p2)
+        {
+            int deltaX = Math.Abs(p1.X - p2.X);
+            int deltaY = Math.Abs(p1.Y - p2.Y);
+
+            return (deltaX == 1 && deltaY == 0 || deltaX == 0 && deltaY == 1);
+
+        }
+
     }
 }

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Xml;
 
 namespace TileEngine
 {
@@ -41,6 +42,167 @@ namespace TileEngine
                 }
             }
 
+        }
+
+
+        public static void LoadFromXML(string filePath)
+        {
+            
+            XmlDocument doc = new XmlDocument();
+            doc.Load(filePath);
+
+            // setup the tile array
+            XmlNode tiles = doc.GetElementsByTagName("Tiles")[0];
+            int w = int.Parse(tiles.Attributes["Width"].Value);
+            int h = int.Parse(tiles.Attributes["Height"].Value);
+
+            Tiles = new Tile[w, h];
+
+            // Add the tiles
+            XmlNodeList tileList = doc.GetElementsByTagName("Tile");
+            foreach(XmlNode node in tileList)
+            {
+                Tile t = Tile.LoadTileFromXml(node);
+
+                Tiles[t.Position.X, t.Position.Y] = t;
+            }
+
+
+
+
+
+
+            //int currentRow = 0;
+
+            //using(XmlReader reader = XmlReader.Create(filePath))
+            //{
+            //    reader.MoveToContent();
+            //    while(reader.Read())
+            //    {
+            //        if(reader.IsStartElement())
+            //        {
+            //            switch(reader.Name.ToUpper())
+            //            {
+            //                case "TILEMAP":
+            //                    break;
+
+            //                case "TILES":
+            //                    string width = reader.GetAttribute("Width");
+            //                    string height = reader.GetAttribute("Height");
+
+            //                    int w = int.Parse(width);
+            //                    int h = int.Parse(height);
+
+            //                    Tiles = new Tile[w, h];
+
+            //                    break;
+
+                                
+            //                case "ROW":
+
+            //                    string y = reader.GetAttribute("Y");
+            //                    currentRow = int.Parse(y);
+
+            //                    break;
+
+            //                case "TILE":
+
+            //                    string tID = reader.GetAttribute("TextureID");
+            //                    int x = int.Parse(reader.GetAttribute("X"));
+                                
+            //                    //Tiles[x, currentRow] = new Tile(int.Parse(tID), x, currentRow);
+            //                    Tiles[x, currentRow] = new Tile(1, x, currentRow);
+
+
+            //                    break;
+
+            //                case "GameObject":
+
+
+            //                    break;
+            //            }
+
+
+            //        }
+            //    }
+            //}
+        }
+
+
+        public static void SaveToXML(string filePath)
+        {
+            XmlDocument doc = new XmlDocument();
+
+            doc.AppendChild(doc.CreateNode(XmlNodeType.XmlDeclaration, "", ""));
+
+            XmlElement tileMap = doc.CreateElement("TileMap");            
+
+            XmlElement tiles = doc.CreateElement("Tiles");
+            tiles.SetAttribute("Height", Height.ToString());
+            tiles.SetAttribute("Width", Width.ToString());
+
+            for (int y = 0; y < Height; y++)
+            {
+                XmlElement row = doc.CreateElement("Row");
+                row.SetAttribute("Y", y.ToString());
+
+                for (int x = 0; x < Width; x++)
+                {
+                    row.AppendChild(Tiles[x, y].GetTileXml(doc));
+                }
+                tiles.AppendChild(row);
+            }
+            
+            tileMap.AppendChild(tiles);
+            doc.AppendChild(tileMap);
+
+            
+            doc.Save(filePath);
+
+            //using (XmlWriter writer = XmlWriter.Create(filePath))
+            //{
+            //    writer.WriteStartDocument();
+
+            //    writer.WriteStartElement("TileMap");
+            //    writer.WriteStartElement("Tiles");
+            //    writer.WriteAttributeString("Height", Height.ToString());
+            //    writer.WriteAttributeString("Width", Width.ToString());
+
+
+            //    for (int y = 0; y < Height; y++)
+            //    {
+            //        writer.WriteStartElement("Row");
+            //        writer.WriteAttributeString("Y", y.ToString());
+
+            //        for (int x = 0; x < Width; x++)
+            //        {
+            //            Tile t = Tiles[x, y];
+
+            //            writer.WriteStartElement("Tile"); 
+                        
+            //            writer.WriteAttributeString("TextureID", t.GroundTextureID.ToString());
+            //            //writer.WriteAttributeString("Y", y.ToString());
+            //            writer.WriteAttributeString("X", x.ToString());
+
+
+            //            //TODO ADD the game objects, do a save in the Tile object?
+            //            //foreach(GameObject go in )
+
+            //            //Tile end
+            //            writer.WriteEndElement();
+            //        }
+            //        //Row end
+            //        writer.WriteEndElement();
+            //    }
+            //    //Tiles End
+            //    writer.WriteEndElement();
+
+            //    //TileMap End
+            //    writer.WriteEndElement();
+
+            //    //writer.Flush();
+            //    writer.WriteEndDocument();
+            //}
         }
 
         //public static void IntializeFromFile(string filePath)

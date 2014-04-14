@@ -74,7 +74,7 @@ namespace TownSimulator
         {
             Rectangle mapRect = new Rectangle(0, 0, TileMap.Width * Engine.TileWidth, TileMap.Height * Engine.TileHeight);
 
-            Point tilePos = Engine.ConvertPositionToCell(InputHelper.MousePosition + camera.Position);
+            Point tilePos = (InputHelper.MousePosition + camera.Position).ConvertPositionToCell();
             Tile selectedTile;
 
             if (tilePos.X >= 0 && tilePos.X < TileMap.Width && tilePos.Y >= 0 && tilePos.Y < TileMap.Height)
