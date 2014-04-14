@@ -200,7 +200,7 @@ namespace TownSimulator
             //Write current item to screen
             DrawingUtils.DrawMessage(_state.ToString());
 
-            DrawSelectedUnit();           
+            DrawSelectedUnitInfos();           
 
             if (tilesToDraw != null && tilesToDraw.Count > 0)
             {
@@ -211,37 +211,46 @@ namespace TownSimulator
             }
         }
 
-        private static void DrawSelectedUnit()
+        private static void DrawSelectedUnitInfos()
         {
             if (_selectedUnit != null)
             {
+                List<string> elements = new List<string>();                
 
-                switch(_selectedUnit.GetType().Name)
+                elements.Add("Name : " + _selectedUnit.FirstName + " " + _selectedUnit.LastName);
+               
+                //Custom properties for each type of villager
+                if (_selectedUnit.GetType() == typeof(Woodcutter))
+                {
+                    elements.Add("State : " + ((Woodcutter)_selectedUnit).CurrentState.ToString());
+                    elements.Add("Task : " + ((Woodcutter)_selectedUnit).CurrentTask.ToString());
+                }
+                else
                 {
 
-                    case "Woodcutter":
 
-                        int height = 20;
+                }
 
-                        DrawingUtils.DrawMessage("Name : " + _selectedUnit.FirstName + " " + _selectedUnit.LastName, new Vector2(350, 0), Color.Red);                       
-                        DrawingUtils.DrawMessage("State : " + ((Woodcutter)_selectedUnit).CurrentState.ToString(), new Vector2(350, height * 1), Color.Red);
-                        DrawingUtils.DrawMessage("Task : " + ((Woodcutter)_selectedUnit).CurrentTask.ToString(), new Vector2(350, height * 2), Color.Red);
-                       
-                        string nextPath = "Next : None";
-                        if (_selectedUnit.Path != null && _selectedUnit.Path.Count > 0)
-                        {
-                            int count = _selectedUnit.Path.Count;
-                            nextPath = 
-                                string.Format(
-                                "Next : [{0} , {1}] ; To : [{2} , {3}]",
-                                _selectedUnit.Path[0].X,
-                                _selectedUnit.Path[0].Y,
-                                _selectedUnit.Path[count - 1].X,
-                                _selectedUnit.Path[count - 1].Y);                            
-                        }
-                        DrawingUtils.DrawMessage(nextPath, new Vector2(350, height * 3), Color.Red);
+                //Add the path of the Villager
+                string nextPath = "Next : None";
+                if (_selectedUnit.Path != null && _selectedUnit.Path.Count > 0)
+                {
+                    int count = _selectedUnit.Path.Count;
+                    Point nextPos = _selectedUnit.Path[0];
+                    Point lastPos = _selectedUnit.Path[count - 1];
 
-                        break;
+                    nextPath = string.Format("Next : [{0} , {1}] ; To : [{2} , {3}]", nextPos.X, nextPos.Y, lastPos.X, lastPos.Y);
+                }
+                elements.Add(nextPath);
+
+
+
+
+                int height = 20;
+                int x = 350;
+                for(int i = 0; i < elements.Count ; i++)
+                {
+                    DrawingUtils.DrawMessage(elements[i], new Vector2(x, height * i), Color.Red);
                 }
             }
         }
