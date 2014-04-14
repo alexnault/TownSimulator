@@ -20,7 +20,7 @@ namespace TownSimulator
             House,
             LumberMill            
         }
-        private static Dictionary<Tile, Color> tilesToDraw;
+        private static Dictionary<Tile, Color> _tilesToDraw;
         private static ClickState _state;
         private static Villager _selectedUnit;
 
@@ -79,7 +79,7 @@ namespace TownSimulator
                 bool rightClicked = InputHelper.RightMouseButtonClicked() && InputHelper.IsMouseOn(mapRect);
                 bool leftDown = InputHelper.LeftMouseButtonDown() && InputHelper.IsMouseOn(mapRect);
                 
-                tilesToDraw = new Dictionary<Tile, Color>();
+                _tilesToDraw = new Dictionary<Tile, Color>();
 
 
                 //Handle selection
@@ -99,7 +99,7 @@ namespace TownSimulator
                 {
                     case ClickState.Tree:
                         {
-                            tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, Color.White);
                             if (leftDown && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Scenery.Tree());
@@ -111,7 +111,7 @@ namespace TownSimulator
                         }
                     case ClickState.Woodcutter:
                         {
-                            tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, Color.White);
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter("The", "Woodcutter", town));
@@ -121,7 +121,7 @@ namespace TownSimulator
                         }
                     case ClickState.WoodPile:
                         { 
-                            tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, Color.White);
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Items.WoodPile());
@@ -131,7 +131,7 @@ namespace TownSimulator
                         }
                     case ClickState.Rock:
                         {
-                            tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, Color.White);
                             if (leftDown && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
@@ -149,7 +149,7 @@ namespace TownSimulator
                             {
                                 foreach (Tile t in tiles)
                                 {
-                                    tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                    _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
                                 }
 
                                 if (leftClicked && !selectedTile.IsSolid)
@@ -171,7 +171,7 @@ namespace TownSimulator
                             {
                                 foreach (Tile t in tiles)
                                 {
-                                    tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                                    _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
                                 }
 
                                 if (leftClicked && !selectedTile.IsSolid)
@@ -189,7 +189,7 @@ namespace TownSimulator
             }
         }
 
-        //TODO remove this, it is not thread safe
+        //Not thread safe, but only used in one spot
         public static void Draw()
         {
             //Write current item to screen
@@ -197,9 +197,9 @@ namespace TownSimulator
 
             DrawSelectedUnitInfos();           
 
-            if (tilesToDraw != null && tilesToDraw.Count > 0)
+            if (_tilesToDraw != null && _tilesToDraw.Count > 0)
             {
-                foreach (KeyValuePair<Tile, Color> t in tilesToDraw)
+                foreach (KeyValuePair<Tile, Color> t in _tilesToDraw)
                 {
                     DrawingUtils.DrawRectangle(new Rectangle(t.Key.Position.X * Engine.TileWidth, t.Key.Position.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight), t.Value);
                 }
@@ -237,9 +237,6 @@ namespace TownSimulator
                     nextPath = string.Format("Next : [{0} , {1}] ; To : [{2} , {3}]", nextPos.X, nextPos.Y, lastPos.X, lastPos.Y);
                 }
                 elements.Add(nextPath);
-
-
-
 
                 int height = 20;
                 int x = 350;
