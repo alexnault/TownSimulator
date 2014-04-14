@@ -9,7 +9,7 @@ namespace TownSimulator.Buildings
 {
     public class House : Building
     {
-        public House() : base()
+        public House(Town town) : base(town)
         {
             IsSolid = true;
 

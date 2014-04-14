@@ -79,9 +79,9 @@ namespace TownSimulator.Villagers
                 // Wait for main thread to warn me about making a decision
                 EnvironmentEvent latestEvent = Wait();
                 // Wait until its my turn
-                HomeTown.AITurn.WaitOne();
+                //HomeTown.AITurn.WaitOne();
                 MakeDecision(latestEvent);
-                HomeTown.AITurn.Release();
+                //HomeTown.AITurn.Release();
             }
         }
 

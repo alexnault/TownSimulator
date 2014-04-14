@@ -22,29 +22,30 @@ namespace TownSimulator.Villagers
         None,
         GoingToConstructionSite,
         PickUpWood,
-        GoingToLumberMill
+        GoingToLumberMill,
+        DropWood
     };
 
     class Carrier : Villager
     {
+        public const int MAX_LOAD_SIZE = 3;
+
         //private WoodcutterState CurrentState;
         private CarrierTask CurrentTask;
 
         public LumberMill Workplace { get; set; }
 
+        public int LoadSize { get; private set; }
+
         public Carrier(string firstname, string lastname, Town hometown, LumberMill workplace)
             : base(firstname, lastname, hometown)
         {
             CurrentTask = CarrierTask.None;
-            //Position = new Point(0, 1);
             IsBig = false;
 
             ObjectSprite = new TileEngine.Sprite(11, Position.X, Position.Y, 32, 32);
 
             Workplace = workplace;
-
-            //XDrawOffset = 0;
-            //YDrawOffset = 0;   
         }
 
         protected override void MakeDecision(EnvironmentEvent latestEvent)
@@ -60,50 +61,56 @@ namespace TownSimulator.Villagers
                     GoTo(Workplace.Position);
                     break;
                 }
+                case (CarrierTask.GoingToLumberMill):
+                {
+                    if (Position.IsNextTo(Workplace.Position))
+                    {
+                        CurrentTask = CarrierTask.PickUpWood;
+                        Workplace.Consort(this);
+                        SetFacingDirection(Workplace.Position);
+                    }
+                    else // keep going to lumberMill
+                    {
+                        GoTo(Workplace.Position);
+                    }
+                    break;
+                }
+                case (CarrierTask.PickUpWood):
+                {
+                    if (latestEvent == EnvironmentEvent.WoodStored)
+                    {
+                        if (Workplace.CheckWood() == MAX_LOAD_SIZE)
+                        {
+                            LoadSize = Workplace.DiscardWood(MAX_LOAD_SIZE);
+                            CurrentTask = CarrierTask.GoingToConstructionSite;
+                            Warn(EnvironmentEvent.WoodPickedUp);
+                        }
+                    }
+                    break;
+                }
+                case (CarrierTask.GoingToConstructionSite):
+                {
+                    ConstructionSite cs = Pathfinding.FindClosest<ConstructionSite>(Position);
+                    if (cs != null)
+                    {
+                        if (Position.IsNextTo(cs.Position))
+                        {
+                            LoadSize -= cs.AddWood(LoadSize);
+                            CurrentTask = CarrierTask.None;
+                            Warn(EnvironmentEvent.WoodStored);
+                        }
+                        else // keep going to house
+                        {
+                            GoTo(cs.Position);
+                        }
+                    }
+                    break;
+                }
                 default:
                 {
                     break;
                 }
             }
         }
-
-        // TODO put in engine
-        /*protected bool IsNextTo(Point p1, Point p2)
-        {
-            if ((p2.X == p1.X) && (p2.Y == p1.Y))
-                return true;
-            if (p2.Y == p1.Y && (p2.X == p1.X + 1 || p2.X == p1.X - 1))
-                return true;
-            if (p2.X == p1.X && (p2.Y == p1.Y + 1 || p2.Y == p1.Y - 1))
-                return true;
-            return false;
-        }
-
-        protected Tree FindUnusedTree()
-        {
-            Tree tree;
-            int i = 0;
-            do {
-                i++; // Find next tree
-                tree = TileMap.Find<Tree>(Position, i);
-                if (tree == null)
-                    return null; // No unused tree
-            } while(tree.Slayer != null);
-            return tree;
-        }
-
-        protected Tree FindMyTree()
-        {
-            Tree tree;
-            int i = 0;
-            do
-            {
-                i++;
-                tree = TileMap.Find<Tree>(Position, i);
-                if (tree == null)
-                    return null;
-            } while (tree.Slayer != this);
-            return tree;
-        }*/
     }
 }

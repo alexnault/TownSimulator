@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using TileEngine;
+using TownSimulator.Buildings;
 using TownSimulator.Villagers;
 
 namespace TownSimulator
@@ -141,7 +142,7 @@ namespace TownSimulator
                         }
                     case ClickState.House:
                         {
-                            Buildings.Building house = new Buildings.Building();
+                            House house = new House(town);
 
                             Point size = house.GetTileSize();
                             List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
@@ -163,7 +164,7 @@ namespace TownSimulator
                         }
                     case ClickState.LumberMill:
                         {
-                            Buildings.LumberMill lm = new Buildings.LumberMill();
+                            LumberMill lm = new LumberMill(town);
 
                             Point size = lm.GetTileSize();
                             List<Tile>tiles = TileMap.GetTileArea(selectedTile.Position, size.X, size.Y);
