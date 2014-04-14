@@ -128,30 +128,12 @@ namespace TownSimulator.Villagers
 
         protected Tree FindUnusedTree()
         {
-            Tree tree;
-            int i = 0;
-            do
-            {
-                i++; // Find next tree
-                tree = Pathfinding.Find<Tree>(Position, i);
-                if (tree == null)
-                    return null; // No unused tree
-            } while (tree.Slayer != null);
-            return tree;
+            return Pathfinding.FindClosest<Tree>(Position, x => x.Slayer == null);
         }
 
         protected Tree FindMyTree()
         {
-            Tree tree;
-            int i = 0;
-            do
-            {
-                i++;
-                tree = Pathfinding.Find<Tree>(Position, i);
-                if (tree == null)
-                    return null;
-            } while (tree.Slayer != this);
-            return tree;
+            return Pathfinding.FindClosest<Tree>(Position, x => x.Slayer == this);
         }
     }
 }

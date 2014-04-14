@@ -120,11 +120,6 @@ namespace TileEngine
         }
 
 
-      
-        public static T FindClosest<T>(Point from) where T : GameObject
-        {
-            return Find<T>(from, 1);
-        }
 
         /// <summary>
         /// Find the X th closest element.
@@ -133,11 +128,10 @@ namespace TileEngine
         /// <param name="from"></param>
         /// <param name="position"></param>
         /// <returns></returns>
-        public static T Find<T>(Point from, int position) where T : GameObject
+        public static T FindClosest<T>(Point from, Func<T, bool> validate = null) where T : GameObject
         {
             int nbElements = TileMap.Width * TileMap.Height;
             int nbSolidItems = 0;
-            int nbFound = 0;
 
             List<DijkstraNode> nodes = new List<DijkstraNode>();
             for(int i = 0; i < nbElements; i++)
@@ -154,7 +148,7 @@ namespace TileEngine
                 if (!IsWalkable(new Point(x, y))) nbSolidItems++;
             }
             
-            nodes.ForEach(n => n.SetNeighbors(nodes));
+            //nodes.ForEach(n => n.SetNeighbors(nodes));
 
             
             DijkstraNode start = nodes.FirstOrDefault(x => x.Position == from);
@@ -165,22 +159,29 @@ namespace TileEngine
             while (Q.Count - nbSolidItems > 0)
             {
                 //TODO : Improve it?
-                DijkstraNode u = 
+                DijkstraNode u =
                     Q
                     .Where(x => IsWalkable(x.Position))   //Get all non-solid items
-                    .Aggregate((curmin, x) => (curmin == null || x.Distance < curmin.Distance ? x : curmin));   //Get the one with the smallest value
-                                        
+                    .MinBy(o => o.Distance);
+                    //What is better : MinBy or Aggregate?
+                    //.Aggregate((curmin, x) => (curmin == null || x.Distance < curmin.Distance ? x : curmin));   //Get the one with the smallest value
+
                 Q.Remove(u);
                 
-                if (nodes.Find(o => o == u).Distance == int.MaxValue) break;
+                if (u.Distance == int.MaxValue) break;
+
+                u.SetNeighbors(nodes);
 
                 foreach (DijkstraNode v in u.Neighbors)
                 {
                     if (TileMap.Tiles[v.Position.X, v.Position.Y].ContainsObject<T>())
                     {
-                        nbFound++;
-                        if(position == nbFound)
-                            return TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>();
+                        T obj = TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>();
+                        if (validate == null || 
+                            validate.Invoke(obj))
+                        {
+                            return obj;
+                        }                            
                     }
 
                     int alt = u.Distance + 1;
