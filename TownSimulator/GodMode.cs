@@ -245,9 +245,10 @@ namespace TownSimulator
                     //Draw the path of the selected unit
                     foreach(Point p in _selectedUnit.Path)
                     {
-                        DrawingUtils.DrawRectangle(
-                            new Rectangle(p.X * Engine.TileWidth, p.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight),
-                            Color.Brown, true);
+                        DrawingUtils.DrawDotOnTile(p, Color.Brown);
+                        //DrawingUtils.DrawRectangle(
+                        //    new Rectangle(p.X * Engine.TileWidth, p.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight),
+                        //    Color.Brown, true);
                     }
 
                 }

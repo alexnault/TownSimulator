@@ -126,6 +126,7 @@ namespace TownSimulator
             TextureManager.Add(Content.Load<Texture2D>("texture1px"), 10);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/carrier_sheet_small"), 11);
             TextureManager.Add(Content.Load<Texture2D>("Sprites/buildsite"), 12);
+            TextureManager.Add(Content.Load<Texture2D>("Sprites/dot"), 13);
 
             DrawingUtils.Font = Content.Load<SpriteFont>("Fonts/font1");
               

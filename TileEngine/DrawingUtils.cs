@@ -87,6 +87,32 @@ namespace TileEngine
            
         }
 
+        public static void DrawDotOnTile(Point tilePosition, Color color)
+        {
+            DrawOnTile(tilePosition, color, 13);
+        }
+
+        public static void DrawOnTile(Point tilePosition, int textureID)
+        {
+            DrawOnTile(tilePosition, Color.White, textureID);
+        }
+
+        public static void DrawOnTile(Point tilePosition, Color color, int textureID)
+        {
+            if ( _initialized)
+            {
+                _spriteBatch.Draw(
+                    TextureManager.Get(textureID),
+                    new Rectangle(tilePosition.X * Engine.TileWidth, tilePosition.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight),
+                    null,
+                    color,
+                    0,
+                    Vector2.Zero,
+                    SpriteEffects.None,
+                    0);
+            }
+        }
+
         public static void DrawMessage(string message)
         {
             DrawMessage(message, Color.Red);
