@@ -64,8 +64,8 @@ namespace TownSimulator
         
         private void GenerateMap(bool random)
         {
-            int mapWidth = 30;
-            int mapHeight = 20;
+            int mapWidth = 40;
+            int mapHeight = 23;
             if(random)
             {
                 Random rand = new Random();
@@ -108,6 +108,28 @@ namespace TownSimulator
                 TileMap.Tiles[7, 12].AddObject(new Scenery.Tree());
                 TileMap.Tiles[3, 18].AddObject(new Scenery.Tree());
                 TileMap.Tiles[9, 15].AddObject(new Scenery.Tree());
+
+                TileMap.Tiles[1, 4].AddObject(new Scenery.Tree());
+                TileMap.Tiles[2, 17].AddObject(new Scenery.Tree());
+                TileMap.Tiles[5, 8].AddObject(new Scenery.Tree());
+                TileMap.Tiles[8, 20].AddObject(new Scenery.Tree());
+                TileMap.Tiles[12, 21].AddObject(new Scenery.Tree());
+                TileMap.Tiles[15, 2].AddObject(new Scenery.Tree());
+                TileMap.Tiles[18, 1].AddObject(new Scenery.Tree());
+                TileMap.Tiles[20, 19].AddObject(new Scenery.Tree());
+                TileMap.Tiles[21, 3].AddObject(new Scenery.Tree());
+                TileMap.Tiles[25, 22].AddObject(new Scenery.Tree());
+                TileMap.Tiles[28, 20].AddObject(new Scenery.Tree());
+                TileMap.Tiles[29, 0].AddObject(new Scenery.Tree());
+                TileMap.Tiles[30, 4].AddObject(new Scenery.Tree());
+                TileMap.Tiles[31, 21].AddObject(new Scenery.Tree());
+                TileMap.Tiles[35, 21].AddObject(new Scenery.Tree());
+                TileMap.Tiles[36, 15].AddObject(new Scenery.Tree());
+                TileMap.Tiles[36, 6].AddObject(new Scenery.Tree());
+                TileMap.Tiles[38, 4].AddObject(new Scenery.Tree());
+                TileMap.Tiles[39, 13].AddObject(new Scenery.Tree());
+                TileMap.Tiles[39, 14].AddObject(new Scenery.Tree());
+                TileMap.Tiles[39, 20].AddObject(new Scenery.Tree());
 
             }
         }

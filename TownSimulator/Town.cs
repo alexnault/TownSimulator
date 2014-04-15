@@ -70,9 +70,18 @@ namespace TownSimulator
             }
             else
             {
-                TileMap.Tiles[7, 8].AddObject(new LumberMill(this));
-                TileMap.Tiles[10, 18].AddObject(new House(this));
-                TileMap.Tiles[20, 5].AddObject(new ConstructionSite(this));
+                TileMap.Tiles[18, 10].AddObject(new LumberMill(this));
+                TileMap.Tiles[15, 10].AddObject(new House(this));
+                TileMap.Tiles[21, 10].AddObject(new House(this));
+                TileMap.Tiles[16, 14].AddObject(new House(this));
+                TileMap.Tiles[22, 14].AddObject(new House(this));
+                TileMap.Tiles[29, 10].AddObject(new ConstructionSite(this));
+
+                // TODO refactor to Rock object
+                TileMap.Tiles[23, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[24, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[26, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[27, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
             }
         }
 
