@@ -40,8 +40,11 @@ namespace TownSimulator
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             camera = new Camera();
-            GenerateMap();
-            town = new Town();
+
+            bool generateRandomly = false;
+
+            GenerateMap(generateRandomly);
+            town = new Town(generateRandomly);
 			//string path = "test.xml";
 
             GodMode.ShowCommands();
@@ -59,33 +62,53 @@ namespace TownSimulator
             base.Initialize();
         }
         
-        private void GenerateMap()
+        private void GenerateMap(bool random)
         {
-            //Static generation of the tile map
-            Random rand = new Random();
+            int mapWidth = 30;
+            int mapHeight = 20;
+            if(random)
+            {
+                Random rand = new Random();
+                mapWidth = rand.Next(30, 42);
+                mapHeight = rand.Next(18, 23);
+            }
 
-            int w = rand.Next(30, 42);
-            int h = rand.Next(18, 23);
-            int[,] textIndexes = new int[w, h];
+            int[,] textIndexes = new int[mapWidth, mapHeight];
 
-            for (int i = 0; i < w; i++)
-                for (int j = 0; j < h; j++)
+            for (int i = 0; i < mapWidth; i++)
+                for (int j = 0; j < mapHeight; j++)
                     textIndexes[i, j] = 0;
-
             TileMap.Initialize(textIndexes);
 
 
-            //Generate Trees and rocks
-            int nbTrees = rand.Next(5, 25);
-            for (int i = 0; i < nbTrees; i++ )
-            {
-                TileMap.PlaceGameObjectRandomly(new Scenery.Tree());
-            }
 
-            int nbRocks = rand.Next(0, 10);
-            for (int i = 0; i < nbRocks; i++)
+            if (random)
             {
-                TileMap.PlaceGameObjectRandomly(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                //Static generation of the tile map
+                Random rand = new Random();
+
+                //Generate Trees and rocks
+                int nbTrees = rand.Next(5, 25);
+                for (int i = 0; i < nbTrees; i++)
+                {
+                    TileMap.PlaceGameObjectRandomly(new Scenery.Tree());
+                }
+
+                int nbRocks = rand.Next(0, 10);
+                for (int i = 0; i < nbRocks; i++)
+                {
+                    TileMap.PlaceGameObjectRandomly(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                }
+            }
+            else
+            {
+                TileMap.Tiles[5, 1].AddObject(new Scenery.Tree());
+                TileMap.Tiles[7, 3].AddObject(new Scenery.Tree());
+                TileMap.Tiles[2, 7].AddObject(new Scenery.Tree());
+                TileMap.Tiles[7, 12].AddObject(new Scenery.Tree());
+                TileMap.Tiles[3, 18].AddObject(new Scenery.Tree());
+                TileMap.Tiles[9, 15].AddObject(new Scenery.Tree());
+
             }
         }
 
