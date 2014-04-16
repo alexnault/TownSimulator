@@ -7,51 +7,45 @@ namespace TownSimulator.Villagers
 {
     public static class NameGenerator
     {
+        static private Random _rand = new Random();
+
+        static private string[] firstnames = new string[]{
+            "Bob",
+            "Robert",
+            "Jean",
+            "Philippe",
+            "Alex",
+            "Roger",
+            "Paul",
+            "Richard",
+            "Alfalfa",
+            "Don",
+            "Stephane",
+            "Ginette",
+            "Olga"
+        };
+
+        static string[] lastnames = new string[]{
+            "Gratton",
+            "Nault",
+            "Goulet",
+            "Doe",
+            "Joe",
+            "Johns",
+            "Schweizer",
+            "De la Fontaine",
+            "Juan",
+            "Poitras"
+        };
 
         public static string GetFirstname()
         {
-            string[] fNames = new string[]{
-                "Bob",
-                "Robert",
-                "Jean",
-                "Philippe",
-                "Alex",
-                "Roger",
-                "Paul",
-                "Richard",
-                "Alfalfa"
-            };
-
-            return GetRandomName(fNames);
+            return firstnames[_rand.Next(0, firstnames.Length - 1)];
         }
-
 
         public static string GetLastname()
         {
-            string[] lNames = new string[]{
-                "Gratton",
-                "Nault",
-                "Goulet",
-                "Doe",
-                "Joe",
-                "Johns",
-                "Schweizer"
-            };
-
-            return GetRandomName(lNames);
+            return lastnames[_rand.Next(0, lastnames.Length - 1)];
         }
-
-
-        private static string GetRandomName(string[] names)
-        {
-            Random rand = new Random();
-
-            return names[rand.Next(0, names.Length - 1)];
-        }
-
-
-
-
-
     }
 }

@@ -109,7 +109,11 @@ namespace TownSimulator
             }
             else
             {
-                TileMap.Tiles[0, 0].AddObject(new Woodcutter(this));
+                for(int i = 0; i < 5; i++)
+                {
+                    TileMap.Tiles[0, 0].AddObject(new Woodcutter(this));
+                }
+                
                 TileMap.Tiles[0, 0].AddObject(
                     new Carrier(
                         this,
