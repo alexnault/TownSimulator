@@ -67,11 +67,7 @@ namespace TownSimulator.Villagers
             for (int i = 0; i < _INITIAL_NB_DECISIONS; i++)
                 _latestEvents.Enqueue(EnvironmentEvent.Manual);
 
-            // TODO MIGHT BE DANGEROUS BECAUSE IT IS DONE BEFORE WOODCUTTER CONSTR.
             _makeDecision = new SemaphoreSlim(_INITIAL_NB_DECISIONS);
-            thread = new Thread(new ThreadStart(Start));
-            thread.Priority = ThreadPriority.Lowest;
-            thread.Start();
         }
 
         ~Villager()
@@ -80,9 +76,11 @@ namespace TownSimulator.Villagers
             thread.Join();
         }
 
-        virtual protected void Start()
+        protected void Start()
         {
-            Run();
+            thread = new Thread(new ThreadStart(Run));
+            thread.Priority = ThreadPriority.Lowest;
+            thread.Start();
         }
 
         protected void Run()

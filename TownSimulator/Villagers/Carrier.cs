@@ -53,6 +53,8 @@ namespace TownSimulator.Villagers
             ObjectSprite = new TileEngine.Sprite(11, Position.X, Position.Y, 32, 32);
 
             Workplace = workplace;
+
+            Start();
         }
 
         protected override void MakeDecision(EnvironmentEvent latestEvent)

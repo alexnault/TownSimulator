@@ -42,13 +42,12 @@ namespace TownSimulator.Villagers
         {
             CurrentState = WoodcutterState.Idle;
             CurrentTask = WoodcutterTask.None;
-            //Position = new Point(0, 1);
+
             IsBig = false;
 
             ObjectSprite = new TileEngine.Sprite(3, Position.X, Position.Y, 32, 32);
-
-            //XDrawOffset = 0;
-            //YDrawOffset = 0;   
+ 
+            Start();
         }
 
         protected override void MakeDecision(EnvironmentEvent latestEvent)
