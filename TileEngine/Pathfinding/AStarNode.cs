@@ -17,16 +17,6 @@ namespace TileEngine
         public Point Position { get; private set; }
         public AStarNode ParentNode { get; set; }
 
-        public AStarNode()
-            : this(0, 0)
-        {
-        }
-
-        public AStarNode(Vector2 pos)
-            : this((int)pos.X, (int)pos.Y)
-        {
-        }
-
         public AStarNode(int x, int y)
         {
             this.G = 0;

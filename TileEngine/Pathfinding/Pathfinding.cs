@@ -78,7 +78,7 @@ namespace TileEngine
                 // Add current to closed list              
                 closedList.Add(current);
 
-                // Remove current from openlist.
+                // Remove current from openlist
                 openList.Remove(current);
 
                 //Grab surrounding squares 
@@ -122,6 +122,8 @@ namespace TileEngine
 
         //Source : http://en.wikipedia.org/wiki/Pathfinding
         //TODO: Still needs improvement 
+        //A good way to improve both this algorithm and the a* one, would be to load the Nodes when the map is created,
+        //and keep them either in TileMap or in each tile. Or something like that.
 
         /// <summary>
         /// Find the closest element or the chosen type from the from point. 
@@ -155,15 +157,24 @@ namespace TileEngine
 
             List<DijkstraNode> Q = nodes.ToList();
 
+            //We don't want to check the solid items in the path, but want to keep them 
+            //because we may be looking for them.
             while (Q.Count - nbSolidItems > 0)
             {
-                //TODO : Improve it?
+               //TODO : Improve it?
                 DijkstraNode u =
-                    Q
-                    .Where(x => IsWalkable(x.Position))   //Get all non-solid items
-                    .MinBy(o => o.Distance);
-                    //What is better : MinBy or Aggregate?
-                    //.Aggregate((curmin, x) => (curmin == null || x.Distance < curmin.Distance ? x : curmin));   //Get the one with the smallest value
+                     Q.Where(x => IsWalkable(x.Position))   //Get all non-solid items
+                     .MinBy(o => o.Distance);
+                //What is better : MinBy or Aggregate?
+                //.Aggregate((curmin, x) => (curmin == null || x.Distance < curmin.Distance ? x : curmin));   //Get the one with the smallest value
+
+                //DijkstraNode u = Q[0];
+                //for (int i = 1; i < Q.Count; i++)
+                //{ 
+                //    DijkstraNode n = Q[i];
+                //    if(IsWalkable(n.Position) && n.Distance < u.Distance)
+                //        u = n;
+                //}
 
                 Q.Remove(u);
                 
