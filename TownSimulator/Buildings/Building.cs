@@ -23,6 +23,10 @@ namespace TownSimulator.Buildings
         protected int WoodCount { get; set; }
         protected int StoneCount { get; set; }
 
+        ////////////////////
+        protected int ProcessedWoodCount { get; set; }
+        ////////////////////
+
         protected Semaphore _mutex { get; set; }
 
         public Building(Town town, bool inConstruction = true)
@@ -77,6 +81,7 @@ namespace TownSimulator.Buildings
             _mutex.Release();
             return amountDropped;
         }
+
 
         public override void Draw(SpriteBatch spriteBatch)
         {

@@ -18,7 +18,7 @@ namespace TownSimulator
             Woodcutter,
             Rock,
             House,
-            LumberMill
+            //LumberMill
         }
         private static Dictionary<Tile, Color> _tilesToDraw;
         private static ClickState _state;
@@ -142,6 +142,7 @@ namespace TownSimulator
                         }
                     case ClickState.House:
                         {
+                            //Problem
                             House house = new House(town);
 
                             Size size = house.GetTileSize();
@@ -165,44 +166,48 @@ namespace TownSimulator
 
                             break;
                         }
-                    case ClickState.LumberMill:
-                        {
-                            LumberMill lm = new LumberMill(town);
+                    //case ClickState.LumberMill:
+                    //    {
+                    //        //Problem
+                    //        LumberMill lm = new LumberMill(town);
 
-                            Size size = lm.GetTileSize();
-                            List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.Width, size.Height);
-                            if (tiles != null)
-                            {
-                                foreach (Tile t in tiles)
-                                {
-                                    _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
-                                }
+                    //        Size size = lm.GetTileSize();
+                    //        List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size.Width, size.Height);
+                    //        if (tiles != null)
+                    //        {
+                    //            foreach (Tile t in tiles)
+                    //            {
+                    //                _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
+                    //            }
 
-                                if (leftClicked && !selectedTile.IsSolid)
-                                {
-                                    selectedTile.AddObject(lm);
-                                }
-                            }
+                    //            if (leftClicked && !selectedTile.IsSolid)
+                    //            {
+                    //                selectedTile.AddObject(lm);
+                    //            }
+                    //        }
 
-                            break;
-                        }
+                    //        break;
+                    //    }
                 }
             }
         }
 
-        //TODO remove this, it is not thread safe
+        //TODO Not finished, can still crashed if begin was not called
         public static void Draw()
         {
-            //Write current item to screen
-            DrawingUtils.DrawMessage(_state.ToString());
+            //Draw the GUI
 
+            //Write current click state to screen
+            DrawingUtils.DrawFullRectangle(new Rectangle(0, 0, 210, 30), new Color(Color.Black, 150), true);            
+            DrawingUtils.DrawMessage("Current : " + _state.ToString(), Color.Orange);
             DrawSelectedUnitInfos();
 
-            if (DrawingUtils.DrawingRectangle && _tilesToDraw != null && _tilesToDraw.Count > 0)
+            //Draw the mouse over tiles
+            if (_tilesToDraw != null && _tilesToDraw.Count > 0)
             {
                 foreach (KeyValuePair<Tile, Color> t in _tilesToDraw)
                 {
-                    DrawingUtils.DrawRectangle(new Rectangle(t.Key.Position.X * Engine.TileWidth, t.Key.Position.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight), t.Value);
+                    DrawingUtils.DrawRectangle(new Rectangle(t.Key.Position.X * Engine.TileWidth, t.Key.Position.Y * Engine.TileHeight, Engine.TileWidth, Engine.TileHeight), t.Value, true);
                 }
             }
         }
@@ -258,13 +263,18 @@ namespace TownSimulator
                 elements.Add(nextPath);
 
 
-
+               
                 //Draw all the messages
-                int height = 20;
-                int x = 350;
+                //TODO: change to the real line height in the SpriteFont
+                int lineHeight = 20;
+                int rectWidth = 350;
+                int x = Engine.ScreenWidth - rectWidth;
+
+                DrawingUtils.DrawFullRectangle(new Rectangle(x - 10, 0, rectWidth + 10, lineHeight * elements.Count + 10), new Color(Color.Black, 150), true);
+
                 for (int i = 0; i < elements.Count; i++)
                 {
-                    DrawingUtils.DrawMessage(elements[i], new Vector2(x, height * i), Color.Red);
+                    DrawingUtils.DrawMessage(elements[i], new Vector2(x, lineHeight * i), Color.Orange);
                 }
             }
         }

@@ -14,7 +14,9 @@ namespace TileEngine
         ReaderWriterLockSlim crewLock;
 
         private bool _isSolid;
+        //private List<Tuple<GameObject, bool>> _objects;
         private List<GameObject> _objects;
+
 
         public Point Position { get; private set; }
         public int GroundTextureID { get; set; }
@@ -24,9 +26,10 @@ namespace TileEngine
             {
                 crewLock.EnterReadLock();
                 bool isItSolid = _isSolid;
-                foreach (GameObject obj in _objects)
+                foreach (var obj in _objects)
                 {
-                    if (obj.IsSolid)
+                    //if (obj.Item1.IsSolid)
+                    if(obj.IsSolid)
                     {
                         isItSolid = true;
                         break;
@@ -52,22 +55,28 @@ namespace TileEngine
             crewLock = new ReaderWriterLockSlim(LockRecursionPolicy.SupportsRecursion);
 
             _isSolid = isSolid;
+            //_objects = new List<Tuple<GameObject, bool>>();
             _objects = new List<GameObject>();
-
+            
             GroundTextureID = textureID;
             Position = new Point(posX, posY);
         }
-
-
         
 
         public T GetFirstObject<T>(bool includeChilds = false) where T : GameObject
         {
             crewLock.EnterReadLock();
             T obj = null;
-            foreach (GameObject go in _objects)
+            foreach (var go in _objects)
             {
-                
+
+                //if (go.Item1.GetType() == typeof(T) ||
+                //    (includeChilds && go.GetType().IsSubclassOf(typeof(T))))
+                //{
+                //    obj = (T)go.Item1;
+                //    break;
+                //}
+
                 if (go.GetType() == typeof(T) ||
                     (includeChilds && go.GetType().IsSubclassOf(typeof(T))))
                 {
@@ -83,14 +92,15 @@ namespace TileEngine
         public bool ContainsObject<T>(int nb = 1) where T : GameObject
         {
             crewLock.EnterReadLock();
+
             bool contains = false;
             int count = 0;
-            foreach (GameObject go in _objects)
+            foreach (var go in _objects)
             {
+                //if (go.Item1.GetType() == typeof(T))
                 if (go.GetType() == typeof(T))
                 {
                     count++;
-                    
                     if (count == nb)
                     {
                         contains = true;
@@ -103,31 +113,8 @@ namespace TileEngine
             return contains;
         }
 
-        public void Update(GameTime gameTime)
-        {
-            crewLock.EnterWriteLock();
-            foreach (GameObject obj in _objects.ToList())
-            {
-                obj.Update(gameTime);
-            }
-            crewLock.ExitWriteLock();
-        }
+       
 
-        public void Draw(SpriteBatch spriteBatch)
-        {
-            crewLock.EnterReadLock();
-            foreach (GameObject obj in _objects)
-            {
-                obj.Draw(spriteBatch);
-            }
-            crewLock.ExitReadLock();
-        }
-
-        //public void AddObject(GameObject obj)
-        //{
-           
-           
-        //}
 
         public void AddObject(GameObject obj)
         {
@@ -135,20 +122,28 @@ namespace TileEngine
         }
 
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="isMainTile">If this tile is the main tile of the GameObject added.</param>
         private void AddObject(GameObject obj, bool isMainTile)
         {
             crewLock.EnterWriteLock();
+
             if (obj.IsBig && isMainTile)
             {
                 PlaceBigObjectCentered(obj);
             }
             else
             {
+                //_objects.Add(new Tuple<GameObject, bool>(obj, isMainTile));
                 _objects.Add(obj);
-            }
 
+            }
             obj.Position = Position;
-            crewLock.ExitWriteLock();     
+
+            crewLock.ExitWriteLock();
         }
         
         private bool PlaceBigObjectCentered(GameObject gameObject)
@@ -174,7 +169,7 @@ namespace TileEngine
 
                 //Set the offset
                 gameObject.XDrawOffset = -((gameObject.ObjectSprite.Width - Engine.TileWidth) / 2);
-                gameObject.YDrawOffset = -(gameObject.ObjectSprite.Height - Engine.TileHeight);
+                gameObject.YDrawOffset = -( gameObject.ObjectSprite.Height - Engine.TileHeight );
 
                 objectPlaced = true;
             }
@@ -185,7 +180,36 @@ namespace TileEngine
         {
             crewLock.EnterWriteLock();
             _objects.Remove(obj);
+
+            //_objects.RemoveAll(x => x.Item1 == obj);
+
             crewLock.ExitWriteLock();
+        }
+
+
+        public void Update(GameTime gameTime)
+        {
+            crewLock.EnterWriteLock();
+            foreach (var obj in _objects.ToList())
+            {
+                //if (obj.Item2)
+                    //obj.Item1.Update(gameTime);
+                obj.Update(gameTime);
+            }
+            crewLock.ExitWriteLock();
+        }
+
+        public void Draw(SpriteBatch spriteBatch)
+        {
+            crewLock.EnterReadLock();
+            foreach (var obj in _objects)
+            {
+                //if (obj.Item2)
+                    //obj.Item1.Draw(spriteBatch);
+                obj.Draw(spriteBatch);
+
+            }
+            crewLock.ExitReadLock();
         }
 
 
@@ -198,21 +222,24 @@ namespace TileEngine
             tile.SetAttribute("Y", Position.Y.ToString());
             tile.SetAttribute("X", Position.X.ToString());
 
-            foreach(GameObject gObj in _objects)
+            foreach(var gObj in _objects)
             {
-                if (!gObj.IsBig)
-                {
-                    XmlElement obj = doc.CreateElement("GameObject");
-                    obj.SetAttribute("Type", gObj.GetType().AssemblyQualifiedName.ToString());
+                ////if (!gObj.Item1.IsBig)
+                //if (!gObj.IsBig)
+                //{
+                //    XmlElement obj = doc.CreateElement("GameObject");
+                //    obj.SetAttribute("Type", gObj.GetType().AssemblyQualifiedName.ToString());
 
-                    if(gObj.ObjectSprite != null)
-                    {
-                        XmlElement sprite = doc.CreateElement("Sprite");
-                        sprite.SetAttribute("TextureID", gObj.ObjectSprite.TextureID.ToString());
-                        obj.AppendChild(sprite);
-                    }
-                    tile.AppendChild(obj);
-                }
+                //    //if (gObj.Item1.ObjectSprite != null)
+                //    if (gObj.ObjectSprite != null)
+                //    {
+                //        XmlElement sprite = doc.CreateElement("Sprite");
+                //        //sprite.SetAttribute("TextureID", gObj.Item1.ObjectSprite.TextureID.ToString());
+                //        sprite.SetAttribute("TextureID", gObj.ObjectSprite.TextureID.ToString());
+                //        obj.AppendChild(sprite);
+                //    }
+                //    tile.AppendChild(obj);
+                //}
             }
 
 

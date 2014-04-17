@@ -13,6 +13,9 @@ namespace TileEngine
         public const int TileWidth = 32;
         public const int TileHeight = 32;
 
+        //TODO: Move eventually in a settings struct/class?
+        public const int ScreenWidth = 1280;
+        public const int ScreenHeight = 720;
 
         public static Point ConvertPositionToCell(this Vector2 position)
         {

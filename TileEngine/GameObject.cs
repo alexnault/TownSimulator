@@ -22,15 +22,15 @@ namespace TileEngine
             {
                 _position = value;
                 if (ObjectSprite != null)
-
+                {
                     ObjectSprite.PixelPosition =
                         new Vector2(
                             value.X * Engine.TileWidth + XDrawOffset,
                             value.Y * Engine.TileHeight + YDrawOffset);
+                }
             }
         }
         public Sprite ObjectSprite { get; set; }
-
         public int XDrawOffset { get; set; }
         public int YDrawOffset { get; set; }
         public bool IsSolid { get; set; }
@@ -58,7 +58,6 @@ namespace TileEngine
                 int textureID = int.Parse(sprite.Attributes["TextureID"].Value);
 
                 gObj.ObjectSprite = new Sprite(textureID);
-
             }
 
             return gObj;
@@ -95,9 +94,7 @@ namespace TileEngine
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
-        {
-            
-
+        {           
             if (ObjectSprite != null)
             {
                 DrawingUtils.DrawRectangle(
@@ -109,8 +106,6 @@ namespace TileEngine
 
                 ObjectSprite.Draw(spriteBatch);
             }
-            
-
         }
 
     }

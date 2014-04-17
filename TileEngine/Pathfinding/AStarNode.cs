@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TileEngine
 {
-    public class AStarNode
+    class AStarNode
     {
 
         public int H;  //Nombre de points totaux calculer avec seulement un chemin de nodes verticales/horizontales

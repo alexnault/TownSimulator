@@ -128,10 +128,10 @@ namespace TownSimulator
 
         public void Update(GameTime gametime)
         {
-            for (int i = 0; i < NbVillagers; i++)
-            {
-                Villagers[i].Update(gametime);
-            }
+            //for (int i = 0; i < NbVillagers; i++)
+            //{
+            //    Villagers[i].Update(gametime);
+            //}
             // TODO update items, buildings, etc.
         }
 

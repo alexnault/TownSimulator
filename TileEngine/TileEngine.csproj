@@ -43,12 +43,12 @@
   <ItemGroup>
     <Compile Include="Camera.cs" />
     <Compile Include="Actor.cs" />
-    <Compile Include="Extensions.cs" />
     <Compile Include="Engine.cs" />
     <Compile Include="GameObject.cs" />
     <Compile Include="Pathfinding\DijkstraNode.cs" />
     <Compile Include="Pathfinding\AStarNode.cs" />
     <Compile Include="Pathfinding\Pathfinding.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="Size.cs" />
     <Compile Include="Sprite.cs" />
     <Compile Include="InputHelper.cs" />

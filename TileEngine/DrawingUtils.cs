@@ -9,8 +9,7 @@ using System.Text;
 namespace TileEngine
 {
 
-    //TODO remove this, it is not thread safe
-    public class DrawingUtils
+    public static class DrawingUtils
     {
         private static int _textureID;
         private static SpriteBatch _spriteBatch;
@@ -19,6 +18,9 @@ namespace TileEngine
 
         public static SpriteFont Font {get; set; }
         public static bool DrawingRectangle { get; set; }
+
+        private static float _GUI_Z_TEXT = 0;
+        private static float _GUI_Z_RECTANGLE = 0.000000001f;
 
 
 
@@ -29,6 +31,12 @@ namespace TileEngine
             _spriteBatch = spriteBatch;
             _camera = camera;
             _initialized = true;
+        }
+
+
+        public static float GetZDelta()
+        {
+            return (float)new Random().Next(1, 10000) / 1000000.0f;
         }
 
         /// <summary>
@@ -87,6 +95,26 @@ namespace TileEngine
            
         }
 
+
+
+
+        public static void DrawFullRectangle(Rectangle rect, Color color, bool forceDraw = false)
+        {
+            if ((DrawingRectangle || forceDraw) && _initialized)
+            {
+                _spriteBatch.Draw(
+                   TextureManager.Get(_textureID),
+                   new Rectangle(rect.X + (int)_camera.Position.X, rect.Y + (int)_camera.Position.Y, rect.Width, rect.Height),
+                   null,
+                   color,
+                   0,
+                   Vector2.Zero,
+                   SpriteEffects.None,
+                   _GUI_Z_RECTANGLE);
+            }
+
+        }
+
         public static void DrawDotOnTile(Point tilePosition, Color color)
         {
             DrawOnTile(tilePosition, color, 13);
@@ -109,7 +137,7 @@ namespace TileEngine
                     0,
                     Vector2.Zero,
                     SpriteEffects.None,
-                    0);
+                    0 + GetZDelta());
             }
         }
 
@@ -132,7 +160,7 @@ namespace TileEngine
                 if (followCamera) 
                     position += _camera.Position;
 
-                _spriteBatch.DrawString(Font, message, position, color);
+                _spriteBatch.DrawString(Font, message, position, color, 0, Vector2.Zero, 1, SpriteEffects.None, _GUI_Z_TEXT);
             }
         }
     }

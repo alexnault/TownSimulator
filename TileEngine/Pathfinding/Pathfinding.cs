@@ -162,19 +162,19 @@ namespace TileEngine
             while (Q.Count - nbSolidItems > 0)
             {
                //TODO : Improve it?
-                DijkstraNode u =
-                     Q.Where(x => IsWalkable(x.Position))   //Get all non-solid items
-                     .MinBy(o => o.Distance);
+                //DijkstraNode u =
+                //     Q.Where(x => IsWalkable(x.Position))   //Get all non-solid items
+                //     .MinBy(o => o.Distance);
                 //What is better : MinBy or Aggregate?
                 //.Aggregate((curmin, x) => (curmin == null || x.Distance < curmin.Distance ? x : curmin));   //Get the one with the smallest value
 
-                //DijkstraNode u = Q[0];
-                //for (int i = 1; i < Q.Count; i++)
-                //{ 
-                //    DijkstraNode n = Q[i];
-                //    if(IsWalkable(n.Position) && n.Distance < u.Distance)
-                //        u = n;
-                //}
+                DijkstraNode u = Q[0];
+                for (int i = 1; i < Q.Count; i++)
+                {
+                    DijkstraNode n = Q[i];
+                    if (IsWalkable(n.Position) && n.Distance < u.Distance)
+                        u = n;
+                }
 
                 Q.Remove(u);
                 

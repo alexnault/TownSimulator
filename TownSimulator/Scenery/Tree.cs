@@ -123,20 +123,6 @@ namespace TownSimulator.Scenery
             base.Update(gameTime);
         }
 
-        //public override void Draw(SpriteBatch spriteBatch)
-        //{
-        //    if (ObjectSprite != null)
-        //    {
-        //        //Vector2 posPixels = new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
-
-        //        //DrawingUtils.DrawRectangle(new Rectangle((int)posPixels.X, (int)posPixels.Y, Engine.TileWidth, Engine.TileHeight), Color.Blue);
-
-
-        //        //ObjectSprite.Draw(spriteBatch, (int)posPixels.X + XDrawOffset, (int)posPixels.Y + YDrawOffset, ObjectSprite.Rotation, 48, 125);
-
-        //    }
-        //}
-
         private void CalculateWind(GameTime gameTime)
         {
             if (lastGameTime > windTime)

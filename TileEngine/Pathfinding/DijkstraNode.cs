@@ -6,7 +6,7 @@ using System.Text;
 
 namespace TileEngine
 {
-    public class DijkstraNode
+    class DijkstraNode
     {
         public int Distance;
         public DijkstraNode Previous;

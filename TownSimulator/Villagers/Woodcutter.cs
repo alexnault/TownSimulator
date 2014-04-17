@@ -102,13 +102,16 @@ namespace TownSimulator.Villagers
                         if (latestEvent == EnvironmentEvent.TreeCutted)
                         {
                             Tree tree = FindMyTree();
-                            tree.Deconsort();
-                            TileMap.Tiles[tree.Position.X, tree.Position.Y].RemoveObject(tree);
+                            if (tree != null)
+                            {
+                                tree.Deconsort();
+                                TileMap.Tiles[tree.Position.X, tree.Position.Y].RemoveObject(tree);
 
-                            CurrentTask = WoodcutterTask.GoingToLumberMill;
-                            CurrentState = WoodcutterState.Walking;
+                                CurrentTask = WoodcutterTask.GoingToLumberMill;
+                                CurrentState = WoodcutterState.Walking;
 
-                            Warn(EnvironmentEvent.WoodPickedUp);
+                                Warn(EnvironmentEvent.WoodPickedUp);
+                            }
                         }
                         break;
                     }

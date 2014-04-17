@@ -31,7 +31,7 @@ namespace TileEngine
         public List<Point> Path { get; protected set; }
         public Direction CurrentDirection { get; private set; }
         
-        public Actor(int movingTimeMS = 300)
+        public Actor(int movingTimeMS = 150)
             :base()
         {
             _lastGameTime = new TimeSpan();
@@ -44,9 +44,6 @@ namespace TileEngine
 
         public override void Update(GameTime gameTime)
         {
-           
-           
-
             if (_lastGameTime > MovingTime)
             {
                 //Update animation

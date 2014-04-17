@@ -48,7 +48,7 @@ namespace TileEngine
             TexturePortion = new Rectangle(0, 0, Width, Height);
             DrawingColor = Color.White;
 
-            _zDelta = (float)new Random().Next(1, 10000) / 1000000.0f;
+            _zDelta = DrawingUtils.GetZDelta();
         }
 
         private void UpdateZIndex()
