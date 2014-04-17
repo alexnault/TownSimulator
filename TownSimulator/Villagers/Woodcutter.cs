@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace TownSimulator.Villagers
     {
         public WoodcutterState CurrentState { get; private set; }
         public WoodcutterTask CurrentTask { get; private set; }
+
+        public int WoodCount { get; private set; }
 
         public Woodcutter(Town hometown)
             :this(NameGenerator.GetFirstname(), NameGenerator.GetLastname(), hometown)
@@ -106,6 +109,7 @@ namespace TownSimulator.Villagers
                             {
                                 tree.Deconsort();
                                 TileMap.Tiles[tree.Position.X, tree.Position.Y].RemoveObject(tree);
+                                WoodCount++;
 
                                 CurrentTask = WoodcutterTask.GoingToLumberMill;
                                 CurrentState = WoodcutterState.Walking;
@@ -122,7 +126,7 @@ namespace TownSimulator.Villagers
                         {
                             if (Position.IsNextTo(lumbermill.Position))
                             {
-                                lumbermill.StoreWood();
+                                WoodCount -= lumbermill.StoreWood(WoodCount);
                                 CurrentTask = WoodcutterTask.None;
                                 Warn(EnvironmentEvent.WoodStored);
                             }
@@ -150,6 +154,17 @@ namespace TownSimulator.Villagers
         protected Tree FindMyTree()
         {
             return Pathfinding.FindClosest<Tree>(Position, x => x.Slayer == this);
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            DrawingUtils.DrawMessage(
+                WoodCount.ToString(),
+                new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset),
+                Color.GreenYellow,
+                false);
+
+            base.Draw(spriteBatch);
         }
     }
 }

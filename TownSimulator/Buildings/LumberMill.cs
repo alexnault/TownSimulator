@@ -42,13 +42,14 @@ namespace TownSimulator.Buildings
             return woodCount;
         }
 
-        public void StoreWood()
+        public int StoreWood(int amount)
         {
             _mutex.WaitOne(); // FCFS
-            WoodCount++;
+            WoodCount += amount; // Currently store all wood 
             if (Worker != null)
                 Worker.Warn(EnvironmentEvent.WoodStored);
             _mutex.Release();
+            return amount;
         }
 
         public int DiscardWood(int amount)
@@ -63,7 +64,7 @@ namespace TownSimulator.Buildings
         public override void Draw(SpriteBatch spriteBatch)
         {
             DrawingUtils.DrawMessage(
-                WoodCount.ToString(), 
+                WoodCount.ToString() + "/" + "inf.", 
                 new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset), 
                 Color.GreenYellow,
                 false);

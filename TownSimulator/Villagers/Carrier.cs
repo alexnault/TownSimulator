@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -89,15 +90,21 @@ namespace TownSimulator.Villagers
                 }
                 case (CarrierTask.PickUpWood):
                 {
-                    //if (latestEvent == EnvironmentEvent.WoodStored)
-                    //{
-                        if (Workplace.CheckWood() >= MAX_LOAD_SIZE)
+                    int woodAvailable = Workplace.CheckWood();
+                    int woodNeeded = MAX_LOAD_SIZE - LoadSize;
+                    if (woodAvailable >= woodNeeded)
+                    {
+                        LoadSize += Workplace.DiscardWood(woodNeeded);
+
+                        Building cs = Pathfinding.FindClosest<Building>(Position, (x => x.InConstruction && x.NeedWood()), true);
+                        if (cs != null)
                         {
-                            LoadSize = Workplace.DiscardWood(MAX_LOAD_SIZE);
                             CurrentTask = CarrierTask.GoingToConstructionSite;
-                            Warn(EnvironmentEvent.WoodPickedUp);
+                            GoTo(cs.Position);
                         }
-                    //}
+
+                        Warn(EnvironmentEvent.WoodPickedUp);
+                    }
                     break;
                 }
                 case (CarrierTask.GoingToConstructionSite):
@@ -134,6 +141,17 @@ namespace TownSimulator.Villagers
                     break;
                 }
             }
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            DrawingUtils.DrawMessage(
+                LoadSize.ToString(),
+                new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset),
+                Color.GreenYellow,
+                false);
+
+            base.Draw(spriteBatch);
         }
     }
 }

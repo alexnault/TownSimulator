@@ -147,11 +147,18 @@ namespace TownSimulator.Buildings
         {
             if (InConstruction)
             {
+                string msg = string.Empty;
+                if (!ResourcesSpent)
+                    msg = WoodCount.ToString() + "/" + NB_REQUIRED_WOOD.ToString();
+                else
+                    msg = "Building...";
+
                 DrawingUtils.DrawMessage(
-                WoodCount.ToString(),
-                new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset),
-                Color.GreenYellow,
-                false);
+                    msg,
+                    new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset),
+                    Color.GreenYellow,
+                    false
+                );
             }
 
             base.Draw(spriteBatch);
