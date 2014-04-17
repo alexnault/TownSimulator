@@ -110,7 +110,7 @@ namespace TownSimulator
                 {
                     case ClickState.Tree:
                         {
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
                             if (leftDown && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Scenery.Tree());
@@ -122,7 +122,7 @@ namespace TownSimulator
                         }
                     case ClickState.Woodcutter:
                         {
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new TownSimulator.Villagers.Woodcutter(town));
@@ -132,7 +132,7 @@ namespace TownSimulator
                         }
                     case ClickState.Rock:
                         {
-                            _tilesToDraw.Add(selectedTile, Color.White);
+                            _tilesToDraw.Add(selectedTile, selectedTile.IsSolid ? Color.Red : Color.White);
                             if (leftDown && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
@@ -199,7 +199,7 @@ namespace TownSimulator
             //Draw the GUI
 
             //Write current click state to screen
-            DrawingUtils.DrawFullRectangle(new Rectangle(0, 0, 210, 30), new Color(Color.Black, 150), true);            
+            DrawingUtils.DrawFullRectangle(new Rectangle(0, 0, 210, 30), new Color(Color.Black, 150), true);
             DrawingUtils.DrawMessage("Current : " + _state.ToString(), Color.Orange);
             DrawSelectedUnitInfos();
 

@@ -60,7 +60,7 @@ namespace TileEngine
                     0,
                     Vector2.Zero,
                     SpriteEffects.None,
-                    0);
+                    0 + GetZDelta());
 
                 //Left line
                 _spriteBatch.Draw(
@@ -71,7 +71,7 @@ namespace TileEngine
                     0,
                     Vector2.Zero,
                     SpriteEffects.None,
-                    0);
+                    0 + GetZDelta());
 
                 //Bottom line
                 _spriteBatch.Draw(
@@ -82,7 +82,7 @@ namespace TileEngine
                     0,
                     Vector2.Zero,
                     SpriteEffects.None,
-                    0);
+                    0 + GetZDelta());
 
                 //Right line
                 _spriteBatch.Draw(
@@ -93,7 +93,7 @@ namespace TileEngine
                     0,
                     Vector2.Zero,
                     SpriteEffects.None,
-                    0);
+                    0 + GetZDelta());
             }
            
         }
