@@ -14,28 +14,49 @@ namespace TownSimulator.Buildings
     {
         Town town;
 
-        public bool InConstruction { get; private set; }
+        private bool _inConstruction;
+        public bool InConstruction
+        {
+            get { return _inConstruction; }
+            set
+            {
+                if (value)
+                    ObjectSprite.TexturePortion = new Rectangle(0, 0, ObjectSprite.Width, ObjectSprite.Height);
+                else
+                    ObjectSprite.TexturePortion = new Rectangle(ObjectSprite.Width, 0, ObjectSprite.Width, ObjectSprite.Height);
+                _inConstruction = value;
+            }
+        }
+        
         public Builder Foreman { get; private set; }
 
         public abstract int NB_REQUIRED_WOOD { get; }
         public abstract int NB_REQUIRED_STONE { get; }
+        public bool ResourcesSpent { get; set; }
+        //protected TimeSpan BuildTime { get; set; } // TODO revert to this
+        //protected TimeSpan LastGameTime { get; private set; }
+        protected int Progress;
 
         protected int WoodCount { get; set; }
         protected int StoneCount { get; set; }
 
         protected Semaphore _mutex { get; set; }
 
-        public Building(Town town, bool inConstruction = true)
+        public Building(Town town, Sprite sprite, bool inConstruction = true)
             :base()
         {
             town.AddBuilding(this);
 
             _mutex = new Semaphore(1, 1);
 
-            ObjectSprite = new Sprite(7, Position.X, Position.Y, 95, 94);
             IsSolid = true;
             IsBig = true;
+            ObjectSprite = sprite;
             InConstruction = inConstruction;
+            ResourcesSpent = !inConstruction;
+            Progress = 0;
+            //LastGameTime = new TimeSpan();
+            //BuildTime = new TimeSpan(0, 0, 5);
         }
       
         public bool Consort(Builder foreman)
@@ -76,6 +97,36 @@ namespace TownSimulator.Buildings
             WoodCount += amountDropped;
             _mutex.Release();
             return amountDropped;
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            if (InConstruction)
+            {
+                if (Foreman != null)
+                {
+                    if (ResourcesSpent)
+                    {
+                        Progress++;
+                        //LastGameTime += gameTime.ElapsedGameTime;
+                        //if (LastGameTime > BuildTime)
+                        if (Progress == 1000)
+                        {
+                            InConstruction = false;
+                            Foreman.Warn(EnvironmentEvent.BuildingBuilt);
+                        }
+                    }
+                    else
+                    {
+                        if (WoodCount == NB_REQUIRED_WOOD && StoneCount >= NB_REQUIRED_STONE)
+                        {
+                            WoodCount -= NB_REQUIRED_WOOD;
+                            StoneCount -= NB_REQUIRED_STONE;
+                            ResourcesSpent = true;
+                        }
+                    }
+                }
+            }
         }
 
         public override void Draw(SpriteBatch spriteBatch)

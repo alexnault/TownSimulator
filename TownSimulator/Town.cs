@@ -76,6 +76,7 @@ namespace TownSimulator
                 TileMap.Tiles[16, 14].AddObject(new House(this, false));
                 TileMap.Tiles[22, 14].AddObject(new House(this, false));
                 TileMap.Tiles[29, 10].AddObject(new House(this, true));
+                TileMap.Tiles[32, 10].AddObject(new House(this, true));
                 //TileMap.Tiles[29, 10].AddObject(new ConstructionSite(this));
 
                 // TODO refactor to Rock object

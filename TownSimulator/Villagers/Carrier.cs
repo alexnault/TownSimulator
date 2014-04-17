@@ -102,7 +102,7 @@ namespace TownSimulator.Villagers
                 }
                 case (CarrierTask.GoingToConstructionSite):
                 {
-                    Building cs = Pathfinding.FindClosest<Building>(Position, (x => x.InConstruction), true);
+                    Building cs = Pathfinding.FindClosest<Building>(Position, (x => x.InConstruction && !x.ResourcesSpent), true);
                     if (cs != null)
                     {
                         if (Position.IsNextTo(cs.Position))
