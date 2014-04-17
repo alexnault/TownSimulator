@@ -46,28 +46,28 @@ namespace TownSimulator.Scenery
                     ObjectSprite.Height = 128;
                     XDrawOffset = -16;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(257, 0, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(256, 0, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (1):
                     ObjectSprite.Width = 64;
                     ObjectSprite.Height = 128;
                     XDrawOffset = -16;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(321, 0, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(320, 0, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (2):
                     ObjectSprite.Width = 96;
                     ObjectSprite.Height = 128;
                     XDrawOffset = -32;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(0, 129, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(0, 128, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (3):
                     ObjectSprite.Width = 96;
                     ObjectSprite.Height = 128;
                     XDrawOffset = -32;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(95, 129, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(96, 128, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (4):
                     ObjectSprite.Width = 96;
@@ -93,6 +93,7 @@ namespace TownSimulator.Scenery
 
             return isSlayer;
         }
+
         public bool Deconsort()
         {
             bool released = false;
@@ -111,7 +112,7 @@ namespace TownSimulator.Scenery
         public override void Update(GameTime gameTime)
         {
             if (Slayer != null)
-            {
+            {                
                 if (Health == 0)
                     Slayer.Warn(EnvironmentEvent.TreeCutted);
                 else
