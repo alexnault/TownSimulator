@@ -161,9 +161,10 @@ namespace TownSimulator
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(house);
+
+                                foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
+                                    v.Value.Warn(EnvironmentEvent.BuildingAdded);
                             }
-
-
                             break;
                         }
                     //case ClickState.LumberMill:

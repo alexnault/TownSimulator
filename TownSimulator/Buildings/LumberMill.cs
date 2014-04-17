@@ -17,12 +17,13 @@ namespace TownSimulator.Buildings
 
         Carrier Worker;
 
-        public LumberMill(Town town, bool inConstruction = true) : base(town, inConstruction)
+        public LumberMill(Town town, bool inConstruction = true) : base(
+            town,
+            new Sprite(8, 0, 0, 96, 96),
+            inConstruction)
         {
             IsSolid = true;
             WoodCount = 0;
-
-            ObjectSprite = new Sprite(8, Position.X, Position.Y, 95, 94);
         }
 
         public void Consort(Carrier worker)

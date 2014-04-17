@@ -82,11 +82,12 @@ namespace TownSimulator.Villagers
                     if (latestEvent == EnvironmentEvent.BuildingBuilt)
                     {
                         Building cs = FindMyConstructionSite();
-                        TileMap.Tiles[cs.Position.X, cs.Position.Y].AddObject(new House(HomeTown));
+                        //cs.Build();
+                        //TileMap.Tiles[cs.Position.X, cs.Position.Y].AddObject(new House(HomeTown));
 
                         cs.Deconsort();
 
-                        TileMap.Tiles[cs.Position.X, cs.Position.Y].RemoveObject(cs);
+                        //TileMap.Tiles[cs.Position.X, cs.Position.Y].RemoveObject(cs);
 
                         CurrentTask = BuilderTask.None;
 

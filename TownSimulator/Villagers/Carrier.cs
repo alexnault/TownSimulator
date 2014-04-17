@@ -102,19 +102,30 @@ namespace TownSimulator.Villagers
                 }
                 case (CarrierTask.GoingToConstructionSite):
                 {
-                    Building cs = Pathfinding.FindClosest<Building>(Position, (x => x.InConstruction), true);
+                    Building cs = Pathfinding.FindClosest<Building>(Position, (x => x.InConstruction && x.NeedWood()), true);
                     if (cs != null)
                     {
                         if (Position.IsNextTo(cs.Position))
                         {
                             LoadSize -= cs.AddWood(LoadSize);
-                            CurrentTask = CarrierTask.None;
+
+                            // If load remaining, give it to another construction site
+                            if (LoadSize > 0)
+                                CurrentTask = CarrierTask.GoingToConstructionSite;                                
+                            else
+                                CurrentTask = CarrierTask.None;
+
                             Warn(EnvironmentEvent.WoodStored);
                         }
-                        else // keep going to house
+                        else // keep going to construction site
                         {
                             GoTo(cs.Position);
                         }
+                    }
+                    else
+                    {
+                        CurrentTask = CarrierTask.GoingToLumberMill;
+                        GoTo(Workplace.Position);
                     }
                     break;
                 }
