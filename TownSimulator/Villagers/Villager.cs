@@ -9,18 +9,20 @@ using TownSimulator.Items;
 
 namespace TownSimulator.Villagers
 {
-    public enum EnvironmentEvent
+    enum EnvironmentEvent
     {
         Manual,
+        Auto,
         PathBlocked,
         DestinationReached,
         TreeGrowed,
         TreeCutted,
         WoodPickedUp,
         WoodStored,
+        BuildingBuilt
     };
 
-    public abstract class Villager : TileEngine.Actor
+    abstract class Villager : TileEngine.Actor
     {
 
         private const int _INITIAL_NB_DECISIONS = 1;

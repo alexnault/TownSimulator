@@ -10,7 +10,7 @@ using TownSimulator.Villagers;
 
 namespace TownSimulator
 {
-    public static class GodMode
+    static class GodMode
     {
         public enum ClickState
         {
@@ -221,10 +221,13 @@ namespace TownSimulator
                     elements.Add("State : " + ((Woodcutter)_selectedUnit).CurrentState.ToString());
                     elements.Add("Task : " + ((Woodcutter)_selectedUnit).CurrentTask.ToString());
                 }
-                else
+                else if (_selectedUnit.GetType() == typeof(Carrier))
                 {
                     elements.Add("Task : " + ((Carrier)_selectedUnit).CurrentTask.ToString());
-
+                }
+                else if (_selectedUnit.GetType() == typeof(Builder))
+                {
+                    elements.Add("Task : " + ((Builder)_selectedUnit).CurrentTask.ToString());
                 }
 
                 //Add the path of the Villager

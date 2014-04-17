@@ -77,7 +77,9 @@ namespace TownSimulator.Villagers
                         CurrentTask = CarrierTask.PickUpWood;
                         Workplace.Consort(this);
                         SetFacingDirection(Workplace.Position);
-                        Warn(EnvironmentEvent.DestinationReached);
+
+                        // in case lumbermill already has the supply needed
+                        Warn(EnvironmentEvent.Auto);
                     }
                     else // keep going to lumberMill
                     {
@@ -100,7 +102,7 @@ namespace TownSimulator.Villagers
                 }
                 case (CarrierTask.GoingToConstructionSite):
                 {
-                    ConstructionSite cs = Pathfinding.FindClosest<ConstructionSite>(Position);
+                    Building cs = Pathfinding.FindClosest<Building>(Position, (x => x.InConstruction), true);
                     if (cs != null)
                     {
                         if (Position.IsNextTo(cs.Position))

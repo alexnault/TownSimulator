@@ -7,9 +7,12 @@ using TileEngine;
 
 namespace TownSimulator.Buildings
 {
-    public class House : Building
+    class House : Building
     {
-        public House(Town town) : base(town)
+        public override int NB_REQUIRED_WOOD { get { return 10; } }
+        public override int NB_REQUIRED_STONE { get { return 0; } }
+
+        public House(Town town, bool inConstruction = true) : base(town, inConstruction)
         {
             IsSolid = true;
 

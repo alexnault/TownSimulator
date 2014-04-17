@@ -12,18 +12,15 @@ namespace TownSimulator.Buildings
 {
     class LumberMill : Building
     {
-        public int WoodCount { get; private set; }
-
-        private Semaphore _mutex;
+        public override int NB_REQUIRED_WOOD { get { return 20; } }
+        public override int NB_REQUIRED_STONE { get { return 0; } }
 
         Carrier Worker;
 
-        public LumberMill(Town town) : base(town)
+        public LumberMill(Town town, bool inConstruction = true) : base(town, inConstruction)
         {
             IsSolid = true;
             WoodCount = 0;
-
-            _mutex = new Semaphore(1, 1);
 
             ObjectSprite = new Sprite(8, Position.X, Position.Y, 95, 94);
         }

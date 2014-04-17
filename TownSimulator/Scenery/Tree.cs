@@ -93,16 +93,29 @@ namespace TownSimulator.Scenery
 
             return isSlayer;
         }
+        public bool Deconsort()
+        {
+            bool released = false;
+
+            _mutex.WaitOne();
+            if (Slayer != null)
+            {
+                Slayer = null;
+                released = true;
+            }
+            _mutex.Release();
+
+            return released;
+        }
 
         public override void Update(GameTime gameTime)
         {
             if (Slayer != null)
             {
-                Health--;
                 if (Health == 0)
-                {
                     Slayer.Warn(EnvironmentEvent.TreeCutted);
-                }
+                else
+                    Health--;
             }
 
             CalculateWind(gameTime);

@@ -11,7 +11,7 @@ using TownSimulator.Villagers;
 
 namespace TownSimulator
 {
-    public class Town
+    class Town
     {
         public Dictionary<int, Villager> Villagers { get; private set; }
         //public Villager[] Villagers { get; private set; }
@@ -62,20 +62,21 @@ namespace TownSimulator
                     TileMap.PlaceGameObjectRandomly(new House(this));
                 }
 
-                int nbBuildSite = rand.Next(1, 2);
-                for (int i = 0; i < nbBuildSite; i++)
-                {
-                    TileMap.PlaceGameObjectRandomly(new ConstructionSite(this));
-                }
+                //int nbBuildSite = rand.Next(1, 2);
+                //for (int i = 0; i < nbBuildSite; i++)
+                //{
+                //    TileMap.PlaceGameObjectRandomly(new ConstructionSite(this));
+                //}
             }
             else
             {
-                TileMap.Tiles[18, 10].AddObject(new LumberMill(this));
-                TileMap.Tiles[15, 10].AddObject(new House(this));
-                TileMap.Tiles[21, 10].AddObject(new House(this));
-                TileMap.Tiles[16, 14].AddObject(new House(this));
-                TileMap.Tiles[22, 14].AddObject(new House(this));
-                TileMap.Tiles[29, 10].AddObject(new ConstructionSite(this));
+                TileMap.Tiles[18, 10].AddObject(new LumberMill(this, false));
+                TileMap.Tiles[15, 10].AddObject(new House(this, false));
+                TileMap.Tiles[21, 10].AddObject(new House(this, false));
+                TileMap.Tiles[16, 14].AddObject(new House(this, false));
+                TileMap.Tiles[22, 14].AddObject(new House(this, false));
+                TileMap.Tiles[29, 10].AddObject(new House(this, true));
+                //TileMap.Tiles[29, 10].AddObject(new ConstructionSite(this));
 
                 // TODO refactor to Rock object
                 TileMap.Tiles[23, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
@@ -119,6 +120,7 @@ namespace TownSimulator
                         this,
                         (LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill)))
                         );
+                TileMap.Tiles[0, 0].AddObject(new Builder(this));
             }
         }
 
