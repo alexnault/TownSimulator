@@ -75,8 +75,9 @@ namespace TownSimulator.Villagers
 
         ~Villager()
         {
-            thread.Abort();
-            thread.Join();
+            //Console.WriteLine("Waiting for the thread to end.");
+            //thread.Abort();
+            //thread.Join();
         }
 
         protected void Start()

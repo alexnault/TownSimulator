@@ -41,8 +41,13 @@ namespace TownSimulator
 
             camera = new Camera();
 
-            bool generateRandomly = false;
+            DrawingUtils.Initialize(spriteBatch, camera);
 
+#if !DEBUG
+            DrawingUtils.DrawingRectangle = false;
+#endif
+
+            bool generateRandomly = false;
             GenerateMap(generateRandomly);
             town = new Town(generateRandomly);
 			//string path = "test.xml";
@@ -53,11 +58,9 @@ namespace TownSimulator
             //TileMap.LoadFromXML(path);
             TextureManager.Initialize();
 
-            DrawingUtils.Initialize(spriteBatch, camera);
+           
 
-#if !DEBUG
-            DrawingUtils.DrawingRectangle = false;
-#endif
+
 
             base.Initialize();
         }
@@ -102,6 +105,34 @@ namespace TownSimulator
             }
             else
             {
+                //Place a "forest" on the top of the map
+                for (int i = 4; i < TileMap.Width; i++)
+                {
+                    if(i % 5 == 0)
+                        TileMap.Tiles[i, 0].AddObject(new Scenery.Tree());
+                }
+
+                for (int i = 5; i < TileMap.Width; i++)
+                {
+                    if (i % 2 == 0)
+                        TileMap.Tiles[i, 1].AddObject(new Scenery.Tree());
+                }
+
+
+                for (int i = 8; i < TileMap.Width; i++) 
+                {
+                    if (i % 3 == 0)
+                        TileMap.Tiles[i, 2].AddObject(new Scenery.Tree());
+                }
+
+
+                for (int i = 15; i < TileMap.Width; i++)
+                {
+                    if (i % 4 == 0)
+                        TileMap.Tiles[i, 3].AddObject(new Scenery.Tree());
+                }
+                
+
                 TileMap.Tiles[5, 1].AddObject(new Scenery.Tree());
                 TileMap.Tiles[7, 3].AddObject(new Scenery.Tree());
                 TileMap.Tiles[2, 7].AddObject(new Scenery.Tree());

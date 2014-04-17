@@ -142,12 +142,12 @@ namespace TownSimulator
                         }
                     case ClickState.House:
                         {
-                            //Problem
+                            //TODO: Problem because the house is added in the town in the constructor
                             House house = new House(town);
 
                             Size size = house.GetTileSize();
-                            if (DrawingUtils.DrawingRectangle)
-                            {
+                            //if (DrawingUtils.DrawingRectangle)
+                            //{
                                 List<Tile> tiles = TileMap.GetTileArea(selectedTile.Position, size);
                                 if (tiles != null)
                                 {
@@ -156,7 +156,7 @@ namespace TownSimulator
                                         _tilesToDraw.Add(t, t.IsSolid ? Color.Red : Color.White);
                                     }
                                 }
-                            }
+                            //}
 
                             if (leftClicked && !selectedTile.IsSolid)
                             {

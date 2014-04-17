@@ -38,7 +38,7 @@ namespace TownSimulator.Scenery
             ObjectSprite = new Sprite(5) { Origin = new Vector2(48, 125) };
 
 
-            int spriteType =  _rand.Next(0, 5);
+            int spriteType = _rand.Next(0, 5);
             switch (spriteType)
             {
                 case (0):
@@ -46,7 +46,7 @@ namespace TownSimulator.Scenery
                     ObjectSprite.Height = 128;
                     XDrawOffset = -16;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(256, 0, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(257, 0, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (1):
                     ObjectSprite.Width = 64;
@@ -60,14 +60,14 @@ namespace TownSimulator.Scenery
                     ObjectSprite.Height = 128;
                     XDrawOffset = -32;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(0, 128, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(0, 129, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (3):
-                    ObjectSprite.Width = 96;
+                    ObjectSprite.Width = 94;
                     ObjectSprite.Height = 128;
                     XDrawOffset = -32;
                     YDrawOffset = -96;
-                    ObjectSprite.TexturePortion = new Rectangle(96, 128, ObjectSprite.Width, ObjectSprite.Height);
+                    ObjectSprite.TexturePortion = new Rectangle(97, 129, ObjectSprite.Width, ObjectSprite.Height);
                     break;
                 case (4):
                     ObjectSprite.Width = 96;

@@ -16,6 +16,8 @@ namespace TileEngine
         private static Camera _camera;
         private static bool _initialized = false;
 
+        private static Random _rand;
+
         public static SpriteFont Font {get; set; }
         public static bool DrawingRectangle { get; set; }
 
@@ -27,6 +29,7 @@ namespace TileEngine
         public static void Initialize(SpriteBatch spriteBatch, Camera camera)
         {
             DrawingRectangle = true;
+            _rand = new Random();
             _textureID = 10;
             _spriteBatch = spriteBatch;
             _camera = camera;
@@ -36,7 +39,7 @@ namespace TileEngine
 
         public static float GetZDelta()
         {
-            return (float)new Random().Next(1, 10000) / 1000000.0f;
+            return (float)_rand.Next(1, 10000) / 1000000.0f;
         }
 
         /// <summary>
