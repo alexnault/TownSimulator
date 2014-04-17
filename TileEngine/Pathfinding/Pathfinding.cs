@@ -132,7 +132,7 @@ namespace TileEngine
         /// <param name="from">The position we're starting from.</param>
         /// <param name="validate">A lambda operation to validate if the object found is good. If the lamdba operation fails, the algorithm will look for another one. Note : Won't be tested if null.</param>
         /// <returns>Return the closest object found. If none are found, returns null.</returns>
-        public static T FindClosest<T>(Point from, Func<T, bool> validate = null) where T : GameObject
+        public static T FindClosest<T>(Point from, Func<T, bool> validate = null, bool includeChilds = false) where T : GameObject
         {
             int nbElements = TileMap.Width * TileMap.Height;
             int nbSolidItems = 0;
@@ -186,7 +186,7 @@ namespace TileEngine
                 {
                     if (TileMap.Tiles[v.Position.X, v.Position.Y].ContainsObject<T>())
                     {
-                        T obj = TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>();
+                        T obj = TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>(includeChilds);
                         if (validate == null || 
                             validate.Invoke(obj))
                         {
