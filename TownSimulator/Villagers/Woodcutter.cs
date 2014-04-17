@@ -86,8 +86,8 @@ namespace TownSimulator.Villagers
                                 }
                                 else
                                 {
-                                    Warn(EnvironmentEvent.DestinationReached);
-                                }                                
+                                    Warn(EnvironmentEvent.Auto);
+                                }
                             }
                             else // keep going to tree
                             {
@@ -102,6 +102,7 @@ namespace TownSimulator.Villagers
                         if (latestEvent == EnvironmentEvent.TreeCutted)
                         {
                             Tree tree = FindMyTree();
+                            tree.Deconsort();
                             TileMap.Tiles[tree.Position.X, tree.Position.Y].RemoveObject(tree);
 
                             CurrentTask = WoodcutterTask.GoingToLumberMill;

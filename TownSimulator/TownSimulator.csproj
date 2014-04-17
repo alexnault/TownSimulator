@@ -50,6 +50,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scenery\Tree.cs" />
     <Compile Include="Town.cs" />
+    <Compile Include="Villagers\Builder.cs" />
     <Compile Include="Villagers\Carrier.cs" />
     <Compile Include="Villagers\NameGenerator.cs" />
     <Compile Include="Villagers\Villager.cs" />
@@ -72,6 +73,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Content\Sprites\builder_sheet_small.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Content\Sprites\buildsite.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
