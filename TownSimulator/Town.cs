@@ -135,11 +135,10 @@ namespace TownSimulator
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            for (int i = 0; i < NbVillagers; i++)
-            {
-                Villagers[i].Draw(spriteBatch);
-            }
-            // TODO draw items, buildings, etc.
+            //for (int i = 0; i < NbVillagers; i++)
+            //{
+            //    Villagers[i].Draw(spriteBatch);
+            //}
         }
 
         public void AddVillager(Villager villager)

@@ -161,25 +161,16 @@ namespace TileEngine
             List<Tile> tiles = TileMap.GetTileArea(Position, size.Width, size.Height);
             if (tiles != null)
             {
-                //TODO etre sur que personne touche au TileMap avant que la boucle finisse? Mutex?
-                //Aussi etre sur que les tiles ont toutes ete remplis par les Objects house 
-
-                /////////////////////////////////////////////////////////////////////
-                //Devrait etre atomique / mutex pour que personne n'ajoute rien au tilemap pendant
-
                 foreach (Tile t in tiles)
                 {
                     if (t.IsSolid) return false;
                 }
 
                 tiles.Remove(this);
-
                 foreach (Tile t in tiles)
                     t.AddObject(gameObject, false);
 
                 AddObject(gameObject, false);
-
-                //////////////////////////////////////////////////////////////////////
 
                 //Set the offset
                 gameObject.XDrawOffset = -((gameObject.ObjectSprite.Width - Engine.TileWidth) / 2);

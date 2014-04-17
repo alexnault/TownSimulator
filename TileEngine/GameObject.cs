@@ -10,7 +10,25 @@ namespace TileEngine
 {
     public class GameObject
     {
-        public Point Position { get; set; }
+        private Point _position;
+
+        public Point Position 
+        {
+            get
+            {
+                return _position;
+            } 
+            set
+            {
+                _position = value;
+                if (ObjectSprite != null)
+
+                    ObjectSprite.PixelPosition =
+                        new Vector2(
+                            value.X * Engine.TileWidth + XDrawOffset,
+                            value.Y * Engine.TileHeight + YDrawOffset);
+            }
+        }
         public Sprite ObjectSprite { get; set; }
 
         public int XDrawOffset { get; set; }
@@ -22,6 +40,8 @@ namespace TileEngine
         
         public GameObject()
         {
+            XDrawOffset = 0;
+            YDrawOffset = 0;
             IsSolid = false;
             IsBig = false;
             Position = new Point(0, 0);
@@ -72,22 +92,24 @@ namespace TileEngine
 
         public virtual void Update(GameTime gameTime)
         {
-            if (ObjectSprite != null)
-            {
-                ObjectSprite.Update(gameTime);
-            }
         }
 
         public virtual void Draw(SpriteBatch spriteBatch)
         {
+            
+
             if (ObjectSprite != null)
             {
-                Vector2 posPixels = new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileHeight);
+                DrawingUtils.DrawRectangle(
+                    new Rectangle(
+                        (int)Position.X * Engine.TileWidth,
+                        (int)Position.Y * Engine.TileHeight,
+                        Engine.TileWidth,
+                        Engine.TileHeight), Color.Blue);
 
-                DrawingUtils.DrawRectangle(new Rectangle((int)posPixels.X, (int)posPixels.Y, Engine.TileWidth, Engine.TileHeight), Color.Blue);
-                ObjectSprite.Draw(spriteBatch, (int)posPixels.X + XDrawOffset, (int)posPixels.Y + YDrawOffset);
+                ObjectSprite.Draw(spriteBatch);
             }
-
+            
 
         }
 

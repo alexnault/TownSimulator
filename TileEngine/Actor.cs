@@ -17,28 +17,59 @@ namespace TileEngine
 
     public class Actor : GameObject
     {
-        private TimeSpan lastGameTime;
+        private TimeSpan _lastGameTime;
+
+        //Animated frames 
+        //private TimeSpan _timePerFrame;
+        //private TimeSpan _frameUpdateTime;
+        private int _nbFrames;
+        private int _currentFrame;
+
 
         public TimeSpan MovingTime { get; set; }    //Time to move between 2 tiles
+        
         public List<Point> Path { get; protected set; }
         public Direction CurrentDirection { get; private set; }
-
+        
         public Actor(int movingTimeMS = 300)
             :base()
         {
-            lastGameTime = new TimeSpan();
+            _lastGameTime = new TimeSpan();
+            //_frameUpdateTime = new TimeSpan();
+            _currentFrame = 0;
+            _nbFrames = 4;
             MovingTime = TimeSpan.FromMilliseconds(movingTimeMS);
+            //_timePerFrame = TimeSpan.FromMilliseconds(movingTimeMS);
         }
 
         public override void Update(GameTime gameTime)
         {
-            if (lastGameTime > MovingTime)
+           
+           
+
+            if (_lastGameTime > MovingTime)
             {
+                //Update animation
+                if(Path != null && Path.Count > 0)
+                    _currentFrame = (_currentFrame + 1) % _nbFrames;
+
                 MoveToNext();
-                lastGameTime = TimeSpan.FromMilliseconds(0);
+                _lastGameTime = TimeSpan.FromMilliseconds(0);
             }
 
-            lastGameTime += gameTime.ElapsedGameTime;
+            _lastGameTime += gameTime.ElapsedGameTime;
+
+            if (ObjectSprite != null)
+            {
+                ObjectSprite.TexturePortion =
+                    new Rectangle(
+                        _currentFrame * ObjectSprite.Width,
+                        (int)CurrentDirection * ObjectSprite.Height,
+                        ObjectSprite.Width,
+                        ObjectSprite.Height);
+            }
+
+
 
             base.Update(gameTime);
         }
@@ -85,15 +116,20 @@ namespace TileEngine
             }
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
-        {
-            if (ObjectSprite != null)
-            {
-                ObjectSprite.TexturePortion = new Rectangle(0, (int)CurrentDirection * ObjectSprite.Height, ObjectSprite.Width, ObjectSprite.Height);
-            }
+        //public override void Draw(SpriteBatch spriteBatch)
+        //{
+        //    if (ObjectSprite != null)
+        //    {
+        //        ObjectSprite.TexturePortion = 
+        //            new Rectangle(
+        //                _currentFrame * ObjectSprite.Width,
+        //                (int)CurrentDirection * ObjectSprite.Height,
+        //                ObjectSprite.Width,
+        //                ObjectSprite.Height);
+        //    }
 
-            base.Draw(spriteBatch);
-        }
+        //    base.Draw(spriteBatch);
+        //}
 
         protected virtual void PathBlocked() { }
         protected virtual void DestinationReached() { }

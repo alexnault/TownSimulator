@@ -69,6 +69,7 @@ namespace TownSimulator.Buildings
                 new Vector2(Position.X * Engine.TileWidth, Position.Y * Engine.TileWidth + YDrawOffset), 
                 Color.GreenYellow,
                 false);
+
             base.Draw(spriteBatch);
         }
     }
