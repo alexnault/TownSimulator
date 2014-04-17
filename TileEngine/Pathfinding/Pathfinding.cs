@@ -184,9 +184,9 @@ namespace TileEngine
 
                 foreach (DijkstraNode v in u.Neighbors)
                 {
-                    if (TileMap.Tiles[v.Position.X, v.Position.Y].ContainsObject<T>())
-                    {
-                        T obj = TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>(includeChilds);
+                    T obj = TileMap.Tiles[v.Position.X, v.Position.Y].GetFirstObject<T>(includeChilds);
+                    if (obj != null)
+                    {                        
                         if (validate == null || 
                             validate.Invoke(obj))
                         {
