@@ -19,6 +19,7 @@ namespace TownSimulator.Villagers
         TreeCutted,
         WoodPickedUp,
         WoodStored,
+        BuildingAdded,
         BuildingBuilt
     };
 

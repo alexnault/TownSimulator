@@ -76,7 +76,8 @@ namespace TownSimulator
                 TileMap.Tiles[16, 14].AddObject(new House(this, false));
                 TileMap.Tiles[22, 14].AddObject(new House(this, false));
                 TileMap.Tiles[29, 10].AddObject(new House(this, true));
-                TileMap.Tiles[32, 10].AddObject(new House(this, true));
+                TileMap.Tiles[31, 14].AddObject(new House(this, true));
+                TileMap.Tiles[24, 19].AddObject(new House(this, true));
                 //TileMap.Tiles[29, 10].AddObject(new ConstructionSite(this));
 
                 // TODO refactor to Rock object
@@ -84,6 +85,16 @@ namespace TownSimulator
                 TileMap.Tiles[24, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
                 TileMap.Tiles[26, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
                 TileMap.Tiles[27, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+
+                TileMap.Tiles[12, 9].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[12, 10].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[12, 11].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[12, 12].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[12, 13].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[13, 14].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                
+                TileMap.Tiles[22, 18].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
+                TileMap.Tiles[21, 19].AddObject(new GameObject() { ObjectSprite = new Sprite(6), IsSolid = true });
             }
         }
 
@@ -121,6 +132,7 @@ namespace TownSimulator
                         this,
                         (LumberMill)Buildings.FirstOrDefault(x => x.GetType() == typeof(LumberMill)))
                         );
+                TileMap.Tiles[0, 0].AddObject(new Builder(this));
                 TileMap.Tiles[0, 0].AddObject(new Builder(this));
             }
         }

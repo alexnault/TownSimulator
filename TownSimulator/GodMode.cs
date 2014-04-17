@@ -142,7 +142,7 @@ namespace TownSimulator
                         }
                     case ClickState.House:
                         {
-                            House house = new House(town);
+                            House house = new House(town, true);
 
                             Size size = house.GetTileSize();
                             if (DrawingUtils.DrawingRectangle)
@@ -160,9 +160,10 @@ namespace TownSimulator
                             if (leftClicked && !selectedTile.IsSolid)
                             {
                                 selectedTile.AddObject(house);
+
+                                foreach (KeyValuePair<int, Villagers.Villager> v in town.Villagers)
+                                    v.Value.Warn(EnvironmentEvent.BuildingAdded);
                             }
-
-
                             break;
                         }
                     case ClickState.LumberMill:

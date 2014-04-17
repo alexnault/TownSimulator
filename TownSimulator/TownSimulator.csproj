@@ -39,7 +39,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Buildings\Building.cs" />
-    <Compile Include="Buildings\ConstructionSite.cs" />
     <Compile Include="Buildings\House.cs" />
     <Compile Include="Buildings\LumberMill.cs" />
     <Compile Include="Game1.cs" />

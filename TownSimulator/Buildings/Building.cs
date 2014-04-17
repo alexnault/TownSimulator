@@ -33,6 +33,7 @@ namespace TownSimulator.Buildings
         public abstract int NB_REQUIRED_WOOD { get; }
         public abstract int NB_REQUIRED_STONE { get; }
         public bool ResourcesSpent { get; set; }
+	
         //protected TimeSpan BuildTime { get; set; } // TODO revert to this
         //protected TimeSpan LastGameTime { get; private set; }
         protected int Progress;
@@ -99,6 +100,15 @@ namespace TownSimulator.Buildings
             return amountDropped;
         }
 
+        public bool NeedWood()
+        {
+            return (InConstruction && !ResourcesSpent && WoodCount < NB_REQUIRED_WOOD);
+        }
+        public bool NeedStone()
+        {
+            return (InConstruction && !ResourcesSpent && StoneCount < NB_REQUIRED_STONE);
+        } 
+
         public override void Update(GameTime gameTime)
         {
             if (InConstruction)
@@ -118,7 +128,7 @@ namespace TownSimulator.Buildings
                     }
                     else
                     {
-                        if (WoodCount == NB_REQUIRED_WOOD && StoneCount >= NB_REQUIRED_STONE)
+                        if (WoodCount >= NB_REQUIRED_WOOD && StoneCount >= NB_REQUIRED_STONE)
                         {
                             WoodCount -= NB_REQUIRED_WOOD;
                             StoneCount -= NB_REQUIRED_STONE;
